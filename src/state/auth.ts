@@ -3,7 +3,7 @@ import { makeAutoObservable, action, runInAction } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import api, { models, requests } from "~src/api";
 
-export class AuthState {
+export default class AuthState {
   accessToken: string | null = null;
   isAuthorized: boolean = false;
   user: models.UserView | null = null;
@@ -53,6 +53,7 @@ export class AuthState {
   }
 
   private _loginState(data: models.LoginResponse) {
+    this.tokenExpiresAt = +new Date(data.exp);
     this.accessToken = data.access_token;
     this.isPasswordResetRequired = data.password_reset_required;
     this.passwordResetToken = data.password_reset_token;
@@ -86,6 +87,7 @@ export class AuthState {
     this.isPasswordResetRequired = false;
     this.passwordResetToken = null;
     this.loginError = null;
+    this.tokenExpiresAt = -1;
     this.fetchUserError = null;
   }
 
@@ -133,6 +135,3 @@ export class AuthState {
     });
   }
 }
-
-const authState = new AuthState();
-export default authState;

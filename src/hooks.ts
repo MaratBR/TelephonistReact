@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "./features/store";
 
 export interface StateWithError<T, TError = any> {
   readonly error: TError | undefined;
@@ -130,5 +129,42 @@ export function useLoadingWithError(): LoadingWithError {
   };
 }
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export interface TrackedChanges<T extends Record<string, any>> {
+  changes: Partial<T>;
+  original: Partial<T>;
+  isChanged<K extends keyof T>(key: K): boolean;
+  value<K extends keyof T>(key: K): T[K];
+  set(values: Partial<T>): void;
+  setOriginal(value: T): void;
+  reset(): void;
+}
+
+export function useTrackedChanges<T extends Record<string, any>>(
+  originalValue?: T
+): TrackedChanges<T> {
+  const [original, setOriginal] = useState<T>(originalValue);
+  const [changes, setChanges] = useState<Partial<T>>({});
+
+  return {
+    original,
+    changes,
+    set: (values) => {
+      for (let key of Object.keys(values)) {
+        const newValue = { ...changes };
+        if (values[key] == original[key]) {
+          delete newValue[key];
+        } else {
+          newValue[key as keyof T] = values[key];
+        }
+        setChanges(newValue);
+      }
+    },
+    value: (key) => changes[key] ?? original[key],
+    isChanged: (key) => typeof changes[key] !== "undefined",
+    setOriginal: (v) => {
+      setOriginal(v);
+      setChanges({});
+    },
+    reset: () => setChanges({}),
+  };
+}

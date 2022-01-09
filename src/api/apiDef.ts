@@ -1,3 +1,5 @@
+type _ValueOf<T> = T[keyof T];
+
 export module requests {
   export type Register = {
     username: string;
@@ -28,6 +30,20 @@ export module requests {
     disabled?: boolean;
     application_type?: "arbitrary" | "host" | string;
   };
+
+  export type UpdateApplication = {
+    tags?: string[];
+    disabled?: boolean;
+    description?: string;
+    name?: string;
+  };
+
+  export type GetEventsParams = {
+    event_key?: string | null;
+    related_task?: "*" | string | null;
+    event_type?: "*" | string | null;
+    sequence_id?: string | null;
+  } & PaginationParams<"_id" | "event_type" | "related_task" | "created_at">;
 }
 
 export module models {
@@ -59,11 +75,13 @@ export module models {
     | {
         password_reset_required: false;
         access_token: string;
+        exp: string;
         password_reset_token: null;
       }
     | {
         password_reset_required: true;
         access_token: null;
+        exp: null;
         password_reset_token: string;
       }
   );
@@ -73,7 +91,7 @@ export module models {
   };
 
   export type ConnectionInfo = {
-    id: string;
+    _id: string;
     ip: string;
     connected_at: string;
     disconnected_at: string | null;
@@ -103,19 +121,16 @@ export module models {
     settings: Record<string, any>;
   };
 
-  export enum EventSource {
-    USER = "user",
-    APPLICATION = "app",
-    UNKNOWN = "?",
-  }
-
   export type Event = {
-    source_type: EventSource;
-    source_id: string;
+    event_key: string;
+    sequence_id: string | null;
+    app_id: string;
     event_type: string;
-    related_task_type: string | null;
+    related_task: string | null;
     data: any | null;
     publisher_ip: string | null;
+    created_at: string;
+    _id: string;
   };
 
   export type SendDataIf = "always" | "never" | "if_non_0_exit_code";
@@ -159,41 +174,72 @@ export module models {
 }
 
 export module ws {
-  export type Message<T = any, TMessageType = string> = {
-    msg_type: TMessageType;
-    data: T;
+  export type Message<T = any, TMessageType = string> = T extends void
+    ? { msg_type: TMessageType }
+    : {
+        msg_type: TMessageType;
+        data: T;
+      };
+
+  export type SubscribeEventsData = {
+    app_id?: string | null;
+    related_task?: string | null;
+    event_type?: string | null;
   };
 
-  export type NewEventData = {
-    event_type: string;
-    source_ip: string;
-    source_id: string;
-    source_type: models.EventSource;
-    data: any | null;
-    related_task: string;
-    created_at: string;
-  };
+  //#region entry_update
 
-  export type NewEvent = Message<NewEventData, "new_event">;
+  export type EntryKey = `${string}/${string}`;
+  export type SubscribeEntryData = EntryKey;
 
-  export type EntryUpdateData<T = any, TEntryName = string> = {
+  export type EntryUpdateDataTemplate<T = any, TEntryName = string> = {
     entry_name: TEntryName;
     id: string;
     entry: T;
   };
 
-  export type Entries = {
+  export type EntryUpdateDataRegistry = {
     app: Partial<models.ApplicationView>;
     host: Partial<models.AppHostView>;
     server: Partial<models.ServerView>;
     user: models.UserView;
   };
 
-  type _ValueOf<T> = T[keyof T];
-  export type A = _ValueOf<_ValueOf<{ [E in keyof Entries]: Entries[] }>>;
+  export type AnyEntryUpdateData = _ValueOf<{
+    [K in keyof EntryUpdateDataRegistry]: EntryUpdateDataTemplate<
+      EntryUpdateDataRegistry[K],
+      K
+    >;
+  }>;
 
-  export type EntryUpdate<K extends keyof Entries = keyof Entries> = Message<
-    EntryUpdateData<Entries[K], K>,
-    "entry_update"
-  >;
+  //#endregion
+
+  export type IncomingMessagesRegistry = {
+    entry_update: AnyEntryUpdateData;
+    new_event: models.Event;
+    introduction: {
+      server_version: string;
+      authentication: "ok" | string;
+    };
+  };
+
+  export type OutgoingMessagesRegistry = {
+    subscribe_events: SubscribeEventsData;
+    subscribe_entry: SubscribeEntryData;
+    unsubscribe_entry: EntryKey;
+    unsubscribe_events: void;
+  };
+
+  export type OutMessage = _ValueOf<{
+    [K in keyof OutgoingMessagesRegistry]: Message<
+      OutgoingMessagesRegistry[K],
+      K
+    >;
+  }>;
+  export type InMessage = _ValueOf<{
+    [K in keyof IncomingMessagesRegistry]: Message<
+      IncomingMessagesRegistry[K],
+      K
+    >;
+  }>;
 }

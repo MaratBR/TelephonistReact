@@ -31,6 +31,12 @@ export class Api {
     return this._client.get("applications/" + id).then((r) => r.data);
   }
 
+  updateApplication(id: string, update: requests.UpdateApplication) {
+    return this._client
+      .patch<models.ApplicationView>("applications/" + id, update)
+      .then((r) => r.data);
+  }
+
   getApplicationAccessKey(id: string): Promise<string> {
     return this._client
       .get("applications/" + id + "/access-key")
@@ -39,6 +45,16 @@ export class Api {
 
   createApplication(r: requests.CreateApplication): Promise<models.IdObject> {
     return this._client.post("applications", r).then((r) => r.data);
+  }
+
+  issueWSTicket(): Promise<string> {
+    return this._client.post("user/issue-ws-ticket").then((r) => r.data.ticket);
+  }
+
+  getEvents(
+    params: requests.GetEventsParams
+  ): Promise<models.Pagination<models.Event>> {
+    return this._client.get("events", { params }).then((r) => r.data);
   }
 }
 

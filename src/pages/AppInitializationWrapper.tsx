@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { Centered, Screen } from "~src/components";
 import { observer } from "mobx-react";
-import authState from "~src/state/auth";
+import state from "~src/state";
 
 const AppInitializationWrapper = ({
   children,
 }: React.PropsWithChildren<{}>) => {
-  if (!authState.isInitialized) {
+  if (!state.auth.isInitialized) {
     return (
       <Screen>
         <Centered>
@@ -17,9 +17,7 @@ const AppInitializationWrapper = ({
       </Screen>
     );
   }
-  console.log(authState.isAuthorized, authState);
-
-  if (!authState.isAuthorized) {
+  if (!state.auth.isAuthorized) {
     return (
       <Navigate
         to={{ pathname: "/login", search: "next=" + location.pathname }}

@@ -1,9 +1,4 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Heading,
-} from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Heading } from "@chakra-ui/react";
 import { t } from "@lingui/macro";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";

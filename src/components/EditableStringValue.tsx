@@ -8,7 +8,7 @@ import {
 import { t } from "@lingui/macro";
 import { useEffect, useState } from "react";
 import { StringValue } from ".";
-import { FaPen, FaSave } from "react-icons/fa"
+import { FaPen, FaSave } from "react-icons/fa";
 
 type EditableStringValueProps = {
   value?: string | null;

@@ -9,9 +9,9 @@ export default function Parameters({
   return (
     <Table>
       <Tbody>
-        {Object.entries(parameters).map((kv) => {
+        {Object.entries(parameters).map((kv, index) => {
           return (
-            <Tr>
+            <Tr key={`${index}.${kv[0]}`}>
               <Td>{kv[0]}</Td>
               <Td>{kv[1]}</Td>
             </Tr>

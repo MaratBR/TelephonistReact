@@ -15,19 +15,24 @@ import {
   TabPanels,
   Tabs,
   Tag,
+  Box,
 } from "@chakra-ui/react";
 import { t } from "@lingui/macro";
 import { useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa";
 import { NavLink, useParams } from "react-router-dom";
 import api, { models } from "~src/api";
+import { useLiveApplication } from "~src/api/hooks";
 import { Centered, RenderSettings, StringValue } from "~src/components";
 import { ContentBox } from "~src/components/ContentBox";
+import EventsViewer from "~src/components/EventsViewer";
 import Parameters from "~src/components/Parameters";
 
 export default function ViewApplication(_: {}) {
   const [response, setResponse] = useState<models.ApplicationResponse>();
   const { id } = useParams();
+
+  const application = useLiveApplication(id);
 
   useEffect(() => {
     api.getAppliction(id).then(setResponse);
@@ -66,7 +71,7 @@ function ApplicationResponseView({
   response: models.ApplicationResponse;
 }) {
   const [showKey, setShowKey] = useState<boolean>(false);
-  const params = useParams();
+  const { id } = useParams();
 
   return (
     <Tabs>
@@ -74,6 +79,7 @@ function ApplicationResponseView({
         <Tab>{t`Information`}</Tab>
         <Tab>{t`Settings`}</Tab>
         <Tab>{t`Connections`}</Tab>
+        <Tab>{t`Events`}</Tab>
       </TabList>
 
       <TabPanels>
@@ -81,7 +87,7 @@ function ApplicationResponseView({
           <HStack justifyContent="end">
             <Button
               as={NavLink}
-              to={"/applications/" + params.id + "/edit"}
+              to={"/applications/" + id + "/edit"}
               size="sm"
               leftIcon={<FaPen />}
             >
@@ -112,7 +118,7 @@ function ApplicationResponseView({
               [t`Tags`]: (
                 <HStack>
                   {response.app.tags.map((tag) => (
-                    <Tag>{tag}</Tag>
+                    <Tag key={tag}>{tag}</Tag>
                   ))}
                 </HStack>
               ),
@@ -127,14 +133,23 @@ function ApplicationResponseView({
         </TabPanel>
         <TabPanel>
           {response.connections ? (
-            response.connections.map((connection) => {
-              return <pre>{JSON.stringify(connection, null, 4)}</pre>;
-            })
+            response.connections.map((connection) => (
+              <ConnectionView key={connection._id} connection={connection} />
+            ))
           ) : (
             <Centered>{t`No connections open right now`}</Centered>
           )}
         </TabPanel>
+        <TabPanel>
+          <EventsViewer descriptor={{app_id: id}} />
+        </TabPanel>
       </TabPanels>
     </Tabs>
   );
+}
+
+function ConnectionView(props: { connection: models.ConnectionInfo }) {
+  return <Box>
+    {props.connection._id}
+  </Box>
 }

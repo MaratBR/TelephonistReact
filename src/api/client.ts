@@ -1,12 +1,20 @@
 import axios from "axios";
-import { AuthState } from "~src/state/auth";
+import { RootState } from "~src/state";
 
-const API_URL = "https://telephonist.lc:5789/";
+const API_URL = process.env.API_URL || "https://localhost:5789/";
 
-export function configureAxiosInterceptors(authState: AuthState) {
+if (process.env.NODE_ENV == "development") {
+  console.info(
+    "%c API URL: %c" + API_URL,
+    "font-weight: bold; font-size: 15px;",
+    "font-size: 30px;"
+  );
+}
+
+export function configureAxiosInterceptors(rootState: RootState) {
   axios.interceptors.request.use((config) => {
-    if (config.method != "GET" && authState.accessToken) {
-      config.headers.Authorization = "Bearer " + authState.accessToken;
+    if (config.method != "GET" && rootState.auth.accessToken) {
+      config.headers.Authorization = "Bearer " + rootState.auth.accessToken;
     }
     return config;
   });
