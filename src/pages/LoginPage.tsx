@@ -1,37 +1,72 @@
-import { t } from "@lingui/macro";
 import { observer } from "mobx-react";
 import { useRequiredStringState, validateAnd } from "~/src/hooks";
-import { Logo, Centered, Screen } from "~/src/components";
+import { Centered, Screen } from "~/src/components";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
-import { useLoaderBar } from "~src/components/LoaderBar";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
+import state from "~src/state";
 import {
   Alert,
   Button,
-  ButtonGroup,
   Input,
   Stack,
-  useToast,
-} from "@chakra-ui/react";
-import { ContentBox } from "~src/components/ContentBox";
-import state from "~src/state";
+  Card,
+  Logo,
+} from "~src/components";
+import toast from "react-hot-toast";
+import { useGlobalState } from "~src/api/hooks";
+import SerenityLayout from "~src/components/layouts/SerenityLayout";
 
-const LoginPage = observer((_: {}) => {
+function LoginPage(_: {}) {
   const loginVal = useRequiredStringState();
   const passwordVal = useRequiredStringState();
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const loaderBar = useLoaderBar();
-  const toast = useToast();
+  const { t } = useTranslation();
+  const { auth } = useGlobalState()
 
   let formBody: React.ReactNode;
+
+  const login = async () => {
+    toast.loading(t("login.progress"), {id: "login"})
+    try {
+      await auth.login({
+        login: loginVal.value,
+        password: passwordVal.value,
+      })
+    } catch (e) {
+      toast.error(t("login.error"), {id: "login"})
+      return
+    }
+
+    if (!auth.isPasswordResetRequired) {
+      toast.success(t("login.welcome"), {id: "login"})
+      if (params.has("next")) {
+        navigate(params.get("next"));
+      } else {
+        navigate("/");
+      }
+    } else {
+      toast.remove("login")
+      let query = ""
+      if (params.has("next")) {
+        query = "next=" + encodeURIComponent(params.get("next"))
+      }
+      navigate("/login/password-reset?" + query)
+    }
+  };
 
   if (state.auth.isAuthorized) {
     formBody = (
       <>
-        <Alert>{t`You are already logged in`}</Alert>
-        <Button onClick={() => state.auth.logout()}>Log out</Button>
+        <Alert>{t("alreadyloggedin")}</Alert>
+        <Button
+          left={<i className="fa " />}
+          onClick={() => state.auth.logout()}
+        >
+          {t("logout")}
+        </Button>
       </>
     );
   } else {
@@ -41,84 +76,38 @@ const LoginPage = observer((_: {}) => {
           isInvalid={loginVal.isError}
           disabled={state.auth.isLoading}
           value={loginVal.value}
-          variant="flushed"
+          variant="minimal"
           onChange={(e) => loginVal.setValue(e.target.value)}
-          placeholder={t`Your username`}
+          placeholder={t("username")}
         />
         <Input
           isInvalid={passwordVal.isError}
           type="password"
           disabled={state.auth.isLoading}
           value={passwordVal.value}
-          variant="flushed"
+          variant="minimal"
           onChange={(e) => passwordVal.setValue(e.target.value)}
-          placeholder={t`Your password`}
+          placeholder={t("password")}
         />
-        <ButtonGroup>
-          <Button
-            isLoading={state.auth.isLoading}
-            variant="contained"
-            disabled={loginVal.isError || passwordVal.isError}
-            onClick={validateAnd([loginVal, passwordVal], () =>
-              state.auth.login({
-                login: loginVal.value,
-                password: passwordVal.value,
-              })
-            )}
-          >
-            {t`Log In`}
-          </Button>
-        </ButtonGroup>
+        <Button
+          loading={state.auth.isLoading}
+          color="primary"
+          onClick={validateAnd([loginVal, passwordVal], login)}
+        >
+          {t("login._")}
+        </Button>
       </>
     );
   }
 
-  useEffect(() => {
-    if (state.auth.isAuthorized) {
-      toast({
-        title: t`Welcome back!`,
-        status: "success",
-      });
-      return;
-      if (params.has("next")) {
-        navigate({
-          pathname: params.get("next"),
-          search: "?_from=login",
-        });
-      } else {
-        //navigate("/");
-      }
-    }
-  }, [state.auth.isAuthorized]);
-
-  useEffect(() => {
-    if (state.auth.isLoading) {
-      loaderBar();
-    } else {
-      loaderBar("clear");
-    }
-
-    if (!state.auth.isLoading && state.auth.loginError) {
-      toast({
-        title: t`Oops!`,
-        description: state.auth.loginError,
-        status: "error",
-      });
-    }
-  }, [state.auth.isLoading]);
-
   return (
-    <Screen>
-      <Centered>
-        <ContentBox>
-          <Stack width={240} spacing={2}>
-            <Logo size="36" />
-            {formBody}
-          </Stack>
-        </ContentBox>
-      </Centered>
-    </Screen>
+    <SerenityLayout>
+      <Logo />
+      <Card>
+        <Stack spacing="md">{formBody}</Stack>
+      </Card>
+    </SerenityLayout>
   );
-});
+}
 
-export default LoginPage;
+export default observer(LoginPage);

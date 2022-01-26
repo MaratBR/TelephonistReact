@@ -1,17 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import theme from "~/src/theme";
+import { Toaster } from "react-hot-toast";
 import React from "react";
-import { Screen } from "./components";
-import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
+import { Centered, Screen } from "./components";
+import { ThemeProvider } from "./components/theme";
+import LoadingSpinner from "./components/LoadingSpinner";
+import styled from "@emotion/styled";
 
 function Loader(_: {}) {
   return (
-    <Screen>
-      <Center>
-        <CircularProgress isIndeterminate />
-      </Center>
-    </Screen>
+    <Centered>
+      <LoadingSpinner size={2} />
+    </Centered>
   );
 }
 
@@ -26,23 +25,27 @@ function lazy(component: () => Promise<any>) {
   );
 }
 
+const Root = styled.div`
+  height: 100vh;
+`;
+
 export function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <AppRouter />
-    </ChakraProvider>
+    <ThemeProvider>
+      <Toaster />
+      <Root>
+        <AppRouter />
+      </Root>
+    </ThemeProvider>
   );
+}
+
+const COMPONENTS = {
+  LoginPage: lazy(() => import("~src/pages/LoginPage")),
+  PasswordResetPage: lazy(() => import("~src/pages/PasswordResetPage")),
+  AllApplications: lazy(() => import("~src/pages/AllApplications")),
+  NewApplication: lazy(() => import("~src/pages/NewApplication")),
+  ViewApplication: lazy(() => import("~src/pages/ViewApplication"))
 }
 
 function AppRouter(_: {}) {
@@ -52,24 +55,28 @@ function AppRouter(_: {}) {
         <Routes>
           <Route
             path="/login"
-            element={lazy(() => import("~src/pages/LoginPage"))}
+            element={COMPONENTS.LoginPage}
+          />
+          <Route
+            path="/login/password-reset"
+            element={COMPONENTS.PasswordResetPage}
           />
           <Route path="/" element={lazy(() => import("~src/pages/MainPage"))}>
             <Route
               path="applications"
-              element={lazy(() => import("~src/pages/AllApplications"))}
+              element={COMPONENTS.AllApplications}
             />
             <Route
               path="applications/new"
-              element={lazy(() => import("~src/pages/NewApplication"))}
+              element={COMPONENTS.NewApplication}
             />
             <Route
               path="applications/:id"
-              element={lazy(() => import("~src/pages/ViewApplication"))}
+              element={COMPONENTS.ViewApplication}
             />
             <Route
-              path="applications/:id/edit"
-              element={lazy(() => import("~src/pages/EditApplication"))}
+             path="applications/:id/edit"
+             element={lazy(() => import("~src/pages/EditApplication"))}
             />
           </Route>
         </Routes>

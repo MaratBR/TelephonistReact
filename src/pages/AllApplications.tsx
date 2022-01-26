@@ -1,26 +1,16 @@
-import { Box, Button, ButtonGroup, Heading } from "@chakra-ui/react";
-import { t } from "@lingui/macro";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import api, { models } from "~src/api";
+import { Breadcrumb, ButtonGroup, Card, Heading, Stack } from "~src/components";
+import Button from "~src/components/Button";
 import DataGrid, {
   DataGridColumn,
+  renderBoolean,
   renderObjectID,
 } from "~src/components/DataGrid";
-
-const columns: DataGridColumn<models.ApplicationView>[] = [
-  {
-    key: "_id",
-    title: "ID",
-    render: (id) => (
-      <NavLink to={"/applications/" + id}>{renderObjectID(id)}</NavLink>
-    ),
-  },
-  { key: "name", title: t`Name` },
-  { key: "disabled", title: t`Disabled` },
-  { key: "description", title: t`Description` },
-];
+import Icon from "@mdi/react";
+import { mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
 
 export default function AllApplications(_: {}) {
   const [pagination, setPagination] =
@@ -30,32 +20,65 @@ export default function AllApplications(_: {}) {
     api.getApplictions({}).then(setPagination);
   }, []);
 
+  const { t } = useTranslation();
+
+  const columns: DataGridColumn<models.ApplicationView>[] = [
+    {
+      key: "_id",
+      title: "ID",
+      render: (id) => (
+        <NavLink to={"/applications/" + id}>{renderObjectID(id)}</NavLink>
+      ),
+    },
+    { key: "name", title: t("name") },
+    { key: "disabled", title: t("disabled"), render: renderBoolean },
+    { key: "description", title: t("description") },
+    {
+      custom: true,
+      render: () => (
+        <span>
+          <Button size="sm" left={<Icon size={1} path={mdiPencil} />}>
+            {t("edit")}
+          </Button>
+        </span>
+      ),
+      key: "buttons",
+      title: "",
+    },
+  ];
+
   return (
     <div>
-      <Heading>{t`All applications`}</Heading>
+      <Breadcrumb>
+        <span>{t("applications")}</span>
+        <span>{t("all_applications")}</span>
+      </Breadcrumb>
+      <Heading>{t("all_applications")}</Heading>
 
-      <Box
-        as="section"
-        backgroundColor="front"
-        borderRadius="xl"
-        p={4}
-        boxShadow="sm"
-        mt={5}
-        width="100%"
-      >
-        <ButtonGroup size="sm">
+      <Card>
+        <ButtonGroup>
           <Button
-            as={NavLink}
             to="/applications/new"
-            leftIcon={<FaPlus />}
-            colorScheme="blue"
+            left={<Icon size={1} path={mdiPlus} />}
           >
-            Create new
+            {t("create_new")}
           </Button>
-          <Button colorScheme="red">Delete</Button>
+          <Button
+            disabled
+            color="danger"
+            left={<Icon size={1} path={mdiTrashCan} />}
+          >
+            {t("delete")}
+          </Button>
         </ButtonGroup>
-        <DataGrid columns={columns} data={pagination?.result || []} />
-      </Box>
+
+        <DataGrid
+          keyFactory={(a) => a._id}
+          selectable
+          data={pagination?.result ?? []}
+          columns={columns}
+        />
+      </Card>
     </div>
   );
 }

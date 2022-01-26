@@ -16,7 +16,7 @@
         "allowSyntheticDefaultImports": true,
         "useDefineForClassFields": true,
         "emitDecoratorMetadata": true,
-        "types": ["reflect-metadata"],
+        "resolveJsonModule": true,
         "baseUrl": ".", 
         "paths": {
             "~*": ["./*"]

@@ -1,0 +1,73 @@
+{
+  "event_key": "Ключ события",
+  "related_task": "Связанный тип задачи",
+  "event_type": "Тип события",
+  "event_info": "Информация о событии",
+  "created_at": {
+    "event": "Произошло"
+  },
+  "publisher_ip": "Отправлено с IP",
+  "sequence_id": "ID последовательности",
+  "empty": "Пусто",
+  "disabled": "Выключено",
+  "all_applications": "Все приложения",
+  "save": "Сохранить",
+  "login": {
+    "progress": "Входим с систему...",
+    "error": "Упс, не получилось войти",
+    "welcome": "Добро пожаловать!",
+    "_": "Войти"
+  },
+  "alreadyloggedin": "Вы уже авторизованы",
+  "logout": "Выйти из аккаунта",
+  "username": "Имя пользователя",
+  "password": "Пароль",
+  "home": "Главная",
+  "new_application": "Новое приложение",
+  "edit": "Редактировать",
+  "id": "ID",
+  "task_name": "Имя задачи",
+  "name": "Имя",
+  "description": "Описание",
+  "create_new": "Создать",
+  "delete": "Удалить",
+  "tags": "Тэги",
+  "applications": "Приложения",
+  "application_type_description": {
+    "arbitrary": "",
+    "host": "",
+    "custom": ""
+  },
+  "application_type": {
+    "arbitrary": "Произвольный тип",
+    "host": "Хост",
+    "custom": "Свой тип"
+  },
+  "custom_application_type": "Свой тип приложения",
+  "host_application_alerts": "Данное приложение является приложением типа \"хост\", с помощью настроек ниже вы можете сконфигурировать задачи, выполняемые хостом.",
+  "task": "Задача",
+  "add_task": "Добавить задачу",
+  "new_task": "Новая задача",
+  "command": "Команда",
+  "cron_string": "CRON",
+  "information": "Информация",
+  "settings": "Настройки",
+  "connections": "Соединения",
+  "events": "События",
+  "general_information": "Общая информация",
+  "access_key": "Ключ доступа",
+  "hide_key": "Скрыть ключ",
+  "show_key": "Показать ключ",
+  "no_connections_open": "Открытых задач нет",
+  "create_new_application": "Новое приложение",
+  "pwdreset": {
+    "header": "Установка пароля",
+    "description": "Вам нужно установить новый пароль для этого аккаунта"
+  },
+  "new_password": "Новый пароль",
+  "repeat_new_password": "Повторите новый пароль",
+  "set_new_password": "Установить новый пароль",
+  "is_connected": "Подключено",
+  "client_name": "Имя клиента",
+  "connected_at": "Дата подключения"
+}

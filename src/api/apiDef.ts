@@ -11,6 +11,11 @@ export module requests {
     password: string;
   };
 
+  export type ResetPassword = {
+    password_reset_token: string
+    new_password: string
+  }
+
   export type Refresh = {
     refresh_token: string;
   };
@@ -43,6 +48,7 @@ export module requests {
     related_task?: "*" | string | null;
     event_type?: "*" | string | null;
     sequence_id?: string | null;
+    app_id?: string | null
   } & PaginationParams<"_id" | "event_type" | "related_task" | "created_at">;
 }
 
@@ -96,6 +102,7 @@ export module models {
     connected_at: string;
     disconnected_at: string | null;
     client_name: string | null;
+    is_connected: boolean;
   };
 
   export type Subscription = {
@@ -115,10 +122,13 @@ export module models {
     settings: Record<string, any>;
   };
 
+  export interface DetailedApplicationView extends ApplicationView {
+    settings: any;
+  }
+
   export type ApplicationResponse = {
-    app: ApplicationView;
+    app: DetailedApplicationView;
     connections: ConnectionInfo[];
-    settings: Record<string, any>;
   };
 
   export type Event = {
@@ -154,17 +164,6 @@ export module models {
     name: string;
   };
 
-  export type AppHostView = {
-    _id: string;
-    name: string;
-    software: HostSoftware | null;
-    last_active: string | null;
-    server_ip: string | null;
-    is_online: boolean;
-    local_config: LocalConfig;
-    local_config_rev: string;
-  };
-
   export type ServerView = {
     os: string | null;
     ip: string;
@@ -174,36 +173,36 @@ export module models {
 }
 
 export module ws {
-  export type Message<T = any, TMessageType = string> = T extends void
-    ? { msg_type: TMessageType }
-    : {
-        msg_type: TMessageType;
-        data: T;
-      };
+  export type Message<T, TMessageType> = {
+    msg_type: TMessageType;
+    data: T;
+  };
 
   export type SubscribeEventsData = {
     app_id?: string | null;
     related_task?: string | null;
     event_type?: string | null;
+    sequence_id?: string | null;
   };
 
   //#region entry_update
 
-  export type EntryKey = `${string}/${string}`;
-  export type SubscribeEntryData = EntryKey;
+  export type SubscribeEntryData = {
+    id: string;
+    entry_type: string;
+  };
 
   export type EntryUpdateDataTemplate<T = any, TEntryName = string> = {
-    entry_name: TEntryName;
+    entry_type: TEntryName;
     id: string;
     entry: T;
   };
 
-  export type EntryUpdateDataRegistry = {
-    app: Partial<models.ApplicationView>;
-    host: Partial<models.AppHostView>;
+  export interface EntryUpdateDataRegistry {
+    application: Partial<models.ApplicationView>;
     server: Partial<models.ServerView>;
-    user: models.UserView;
-  };
+    connection_info: Partial<models.ConnectionInfo>;
+  }
 
   export type AnyEntryUpdateData = _ValueOf<{
     [K in keyof EntryUpdateDataRegistry]: EntryUpdateDataTemplate<
@@ -214,32 +213,42 @@ export module ws {
 
   //#endregion
 
-  export type IncomingMessagesRegistry = {
+  export interface MREntryUpdates {
     entry_update: AnyEntryUpdateData;
+    entry_updates: { updates: AnyEntryUpdateData[] };
+  }
+
+  export interface MRNewEvents {
     new_event: models.Event;
-    introduction: {
-      server_version: string;
-      authentication: "ok" | string;
-    };
-  };
+  }
 
-  export type OutgoingMessagesRegistry = {
-    subscribe_events: SubscribeEventsData;
-    subscribe_entry: SubscribeEntryData;
-    unsubscribe_entry: EntryKey;
-    unsubscribe_events: void;
-  };
+  interface UserHubEntryDescriptor {
+    entry_type: string;
+    id: string;
+  }
 
-  export type OutMessage = _ValueOf<{
-    [K in keyof OutgoingMessagesRegistry]: Message<
-      OutgoingMessagesRegistry[K],
-      K
-    >;
+  export interface MRUserHub {
+    unsub_from_app_events: string[];
+    sub_to_app_events: string[];
+    subscribe_entry: UserHubEntryDescriptor;
+    unsubscribe_entry: UserHubEntryDescriptor;
+  }
+
+  export type RegistryMessage<Registry extends object> = _ValueOf<{
+    [K in keyof Registry]: Message<Registry[K], K>;
   }>;
-  export type InMessage = _ValueOf<{
-    [K in keyof IncomingMessagesRegistry]: Message<
-      IncomingMessagesRegistry[K],
-      K
-    >;
-  }>;
+}
+
+export module settings {
+  export interface TaskDescriptor {
+    cmd: string | null;
+    on_events: string[];
+    cron: string | null;
+    env: Record<string, string>;
+    task_name: string;
+  }
+
+  export interface HostSettings {
+    tasks: TaskDescriptor[];
+  }
 }

@@ -2,6 +2,7 @@ import axios from "axios";
 import { RootState } from "~src/state";
 
 const API_URL = process.env.API_URL || "https://localhost:5789/";
+const WS_URL = API_URL.replace(/http(s?):\/\//, "ws$1://");
 
 if (process.env.NODE_ENV == "development") {
   console.info(
@@ -28,4 +29,4 @@ export function getAxiosInstance() {
   return axios;
 }
 
-export { API_URL };
+export { API_URL, WS_URL };

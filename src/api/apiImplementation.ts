@@ -13,6 +13,10 @@ export class Api {
     return this._client.post("auth/token", r).then((r) => r.data);
   }
 
+  async resetPassword(r: requests.ResetPassword) {
+    await this._client.post("auth/reset-password", r)
+  }
+
   refreshToken(): Promise<models.LoginResponse> {
     return this._client.post("auth/refresh").then((r) => r.data);
   }

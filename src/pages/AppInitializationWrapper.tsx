@@ -1,9 +1,9 @@
-import { CircularProgress } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 import { Centered, Screen } from "~src/components";
 import { observer } from "mobx-react";
 import state from "~src/state";
+import LoadingSpinner from "~src/components/LoadingSpinner";
 
 const AppInitializationWrapper = ({
   children,
@@ -12,11 +12,12 @@ const AppInitializationWrapper = ({
     return (
       <Screen>
         <Centered>
-          <CircularProgress isIndeterminate />
+          <LoadingSpinner size={2} />
         </Centered>
       </Screen>
     );
   }
+  
   if (!state.auth.isAuthorized) {
     return (
       <Navigate

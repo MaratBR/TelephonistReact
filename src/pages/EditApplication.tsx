@@ -1,23 +1,19 @@
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, NavLink, useParams } from "react-router-dom";
+import api, { models, requests } from "~src/api";
 import {
+  Alert,
   Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  CircularProgress,
-  Heading,
-  Stack,
-  Input,
   Button,
   ButtonGroup,
+  Card,
+  Heading,
+  Input,
+  Stack,
   Textarea,
-  Alert,
-} from "@chakra-ui/react";
-import { t } from "@lingui/macro";
-import { useEffect, useState } from "react";
-import { FaSave } from "react-icons/fa";
-import { NavLink, useParams } from "react-router-dom";
-import api, { models, requests } from "~src/api";
-import { ContentBox } from "~src/components/ContentBox";
+} from "~src/components";
+import LoadingSpinner from "~src/components/LoadingSpinner";
 import TagInput from "~src/components/TagInput";
 import { useTrackedChanges } from "~src/hooks";
 
@@ -67,37 +63,37 @@ export default function EditApplication(_: {}) {
 
   let content;
 
+  const { t } = useTranslation();
+
   if (loading) {
-    content = <CircularProgress isIndeterminate />;
+    content = <LoadingSpinner />;
   } else {
     content = (
-      <Stack spacing={2}>
+      <Stack spacing="md">
         <Input
-          placeholder={t`Name`}
+          placeholder={t("name")}
           variant="flushed"
           value={track.value("name")}
           onChange={(e) => track.set({ name: e.target.value })}
         />
         <Textarea
-          placeholder={t`Description`}
+          placeholder={t("description")}
           value={track.value("description")}
           onChange={(e) => track.set({ description: e.target.value })}
         />
         <TagInput
-          placeholder={t`Input some tags for this application`}
+          placeholder={t("tags")}
           tags={track.value("tags")}
-          onTagsChange={(_se, tags) => track.set({ tags })}
+          onTags={(tags) => track.set({ tags })}
         />
-        {error ? (
-          <Alert colorScheme="red">{error.toString()}</Alert>
-        ) : undefined}
+        {error ? <Alert color="danger">{error.toString()}</Alert> : undefined}
         <ButtonGroup>
           <Button
-            leftIcon={<FaSave />}
-            isLoading={submitting}
+            left={<i className="fas fa-save" />}
+            loading={submitting}
             onClick={() => submit()}
           >
-            {t`Save`}
+            {t("save")}
           </Button>
         </ButtonGroup>
       </Stack>
@@ -107,20 +103,12 @@ export default function EditApplication(_: {}) {
   return (
     <Stack>
       <Breadcrumb>
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            as={NavLink}
-            to="/applications"
-          >{t`Applications`}</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink>{name}</BreadcrumbLink>
-        </BreadcrumbItem>
+        <Link to="/applications">{t("applications")}</Link>
+        <span>{name}</span>
       </Breadcrumb>
 
       <Heading>{name}</Heading>
-      <ContentBox>{content}</ContentBox>
+      <Card>{content}</Card>
     </Stack>
   );
 }

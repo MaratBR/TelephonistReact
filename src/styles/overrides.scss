@@ -1,0 +1,16 @@
+a {
+  text-decoration: none;
+  color: var(--t-primary);
+  outline: none !important;
+  &:hover {
+    color: var(--t-color);
+  }
+}
+
+code {
+  font-family: monospace;
+  background-color: var(--t-neutral-8);
+  padding: var(--t-spacing-sm);
+  border-radius: var(--t-radius-sm);
+  color: rgb(129, 27, 27);
+}

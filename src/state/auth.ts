@@ -16,6 +16,7 @@ export default class AuthState {
   passwordResetToken: string | null = null;
   isInitialized: boolean = false;
   tokenExpiresAt: number = -1;
+  resetPasswordError: any = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -30,6 +31,7 @@ export default class AuthState {
         "accessToken",
         "passwordResetToken",
         "passwordResetExpiresAt",
+        "isPasswordResetRequired"
       ],
     }).then(
       action(() => {
@@ -47,6 +49,7 @@ export default class AuthState {
       runInAction(() => {
         this.loginError = e.toString();
       });
+      throw e;
     } finally {
       runInAction(() => (this.isLoading = false));
     }
@@ -57,9 +60,7 @@ export default class AuthState {
     this.accessToken = data.access_token;
     this.isPasswordResetRequired = data.password_reset_required;
     this.passwordResetToken = data.password_reset_token;
-    if (this.passwordResetToken) {
-      this.passwordResetExpiresAt = Date.now() + 10 * 60 * 1000; // add 10 min
-    }
+    this.passwordResetExpiresAt = +new Date(data.exp); // add 10 min
     this.isAuthorized = !!data.access_token;
   }
 
@@ -99,6 +100,7 @@ export default class AuthState {
       if (axios.isAxiosError(e) && e.response.status == 401) {
         runInAction(() => this._logoutState());
       }
+      throw e
     }
   }
 
@@ -122,10 +124,6 @@ export default class AuthState {
           this.passwordResetToken = null;
           this.isPasswordResetRequired = false;
           this.isPasswordResetRequired = false;
-        } else {
-          this.passwordResetToken = null;
-          this.passwordResetExpiresAt = -1;
-          this.isPasswordResetRequired = false;
         }
       });
     }
@@ -133,5 +131,30 @@ export default class AuthState {
     runInAction(() => {
       this.isInitialized = true;
     });
+  }
+
+  async resetPassword(newPassword: string) {
+    if (!this.isPasswordResetRequired) {
+      throw new Error("invalid operation: cannot reset pasword since isPasswordResetRequired set to false")
+    }
+    if (this.isLoading) {
+      throw new Error("another process is already happenning (i.e. logging in), can't do much for now")
+    }
+    this.isLoading = true
+    try {
+      await api.resetPassword({password_reset_token: this.passwordResetToken, new_password: newPassword})
+      runInAction(() => {
+        this.isPasswordResetRequired = false
+        this.passwordResetToken = null
+        this.passwordResetExpiresAt = -1
+        this.isLoading = false
+      })
+    } catch (e) {
+      runInAction(() => {
+        this.resetPasswordError = e
+        this.isLoading = false
+      })
+      throw e
+    }
   }
 }

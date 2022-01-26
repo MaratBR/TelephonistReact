@@ -1,11 +1,7 @@
-import { Box, BoxProps } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 
-export const ContentBox = (props: BoxProps) => (
-  <Box
-    backgroundColor="front"
-    boxShadow="md"
-    borderRadius="xl"
-    padding={5}
-    {...props}
-  />
-);
+const ContentBox = styled.div`
+  background-color: grey;
+`;
+
+export default ContentBox;

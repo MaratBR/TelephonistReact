@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 
 export interface StateWithError<T, TError = any> {
   readonly error: TError | undefined;
@@ -129,6 +129,14 @@ export function useLoadingWithError(): LoadingWithError {
   };
 }
 
+function passwordValidation(pwd: string) {
+  
+}
+
+export function useProperPasswordState() {
+  return useStateWithValidation<string>("", passwordValidation)
+}
+
 export interface TrackedChanges<T extends Record<string, any>> {
   changes: Partial<T>;
   original: Partial<T>;
@@ -167,4 +175,61 @@ export function useTrackedChanges<T extends Record<string, any>>(
     },
     reset: () => setChanges({}),
   };
+}
+
+export interface NextParamController {
+  nextIfPresent(): void
+  isPresent(): boolean
+  nextOr(path: string): void
+  nextOrMain(): void
+  redirectWithNext(path: string): void
+  next: string
+}
+
+class Next implements NextParamController {
+  readonly next: string | undefined
+  private readonly _navigate: NavigateFunction
+
+  constructor(next: string | undefined, navigate: NavigateFunction) {
+    this.next = next
+    this._navigate = navigate
+    this.isPresent = this.isPresent.bind(this)
+    this.nextIfPresent = this.nextIfPresent.bind(this)
+    this.nextOr = this.nextOr.bind(this)
+    this.nextOrMain = this.nextOrMain.bind(this)
+    this.redirectWithNext = this.redirectWithNext.bind(this)
+  }
+
+  isPresent(): boolean {
+      return typeof this.next === "string" && this.next.trim() !== ""
+  }
+
+  nextIfPresent(): void {
+      if (this.isPresent()) {
+        this._navigate(this.next)
+      }
+  }
+
+  nextOr(path: string): void {
+    this._navigate(this.isPresent() ? this.next : path)
+  }
+
+  nextOrMain(): void {
+      this.nextOr("/")
+  }
+
+  redirectWithNext(path: string): void {
+    if (path.indexOf("?") === -1) {
+      path += "?next=" + encodeURIComponent(this.next)
+    } else {
+      path += "&next=" + encodeURIComponent(this.next)
+    }
+    this._navigate(path)
+  }
+}
+
+export function useNextParam(): NextParamController {
+  const navigate = useNavigate()
+  const {next} = useParams()
+  return new Next(next, navigate)
 }

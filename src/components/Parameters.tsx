@@ -1,5 +1,5 @@
-import { Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import React from "react";
+import Table from "./Table";
 
 export default function Parameters({
   parameters,
@@ -8,16 +8,16 @@ export default function Parameters({
 }) {
   return (
     <Table>
-      <Tbody>
+      <tbody>
         {Object.entries(parameters).map((kv, index) => {
           return (
-            <Tr key={`${index}.${kv[0]}`}>
-              <Td>{kv[0]}</Td>
-              <Td>{kv[1]}</Td>
-            </Tr>
+            <tr key={`${index}.${kv[0]}`}>
+              <td>{kv[0]}</td>
+              <td>{kv[1]}</td>
+            </tr>
           );
         })}
-      </Tbody>
+      </tbody>
     </Table>
   );
 }

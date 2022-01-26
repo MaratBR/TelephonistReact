@@ -1,14 +1,6 @@
-import {
-  Box,
-  CircularProgress,
-  HStack,
-  IconButton,
-  Input,
-} from "@chakra-ui/react";
-import { t } from "@lingui/macro";
 import { useEffect, useState } from "react";
-import { StringValue } from ".";
-import { FaPen, FaSave } from "react-icons/fa";
+import StringValue from "./StringValue";
+import { HStack } from ".";
 
 type EditableStringValueProps = {
   value?: string | null;
@@ -36,12 +28,11 @@ export default function EditabledStringValue(props: EditableStringValueProps) {
         />
         <IconButton
           size="xs"
-          aria-label={t`Save`}
           icon={
             props.isLoading ? (
               <CircularProgress isIndeterminate size="xs" />
             ) : (
-              <FaSave />
+              <i className="fa " />
             )
           }
         />
@@ -57,8 +48,8 @@ export default function EditabledStringValue(props: EditableStringValueProps) {
       <IconButton
         onClick={() => setEditing(true)}
         size="xs"
-        aria-label={t`Edit`}
-        icon={<FaPen />}
+        aria-label={t("edit")}
+        icon={<i className="fa " />}
       />
     </HStack>
   );

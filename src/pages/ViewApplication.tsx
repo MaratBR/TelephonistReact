@@ -1,66 +1,67 @@
+import { css } from "@emotion/react";
+import {
+  mdiCheck,
+  mdiCheckCircle,
+  mdiEye,
+  mdiEyeMinus,
+  mdiEyeOff,
+  mdiPen,
+  mdiPencil,
+} from "@mdi/js";
+import Icon from "@mdi/react";
+import { observer } from "mobx-react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { NavLink, useParams } from "react-router-dom";
+import { models } from "~src/api";
+import { useApplicationEvents, useLiveApplication } from "~src/api/hooks";
 import {
   Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  CircularProgress,
-  Code,
+  Button,
+  Card,
+  Centered,
+  Grid,
   Heading,
   HStack,
   Stack,
+  StringValue,
   Tab,
-  Button,
   TabList,
   TabPanel,
-  TabPanels,
   Tabs,
-  Tag,
-  Box,
-} from "@chakra-ui/react";
-import { t } from "@lingui/macro";
-import { useEffect, useState } from "react";
-import { FaPen } from "react-icons/fa";
-import { NavLink, useParams } from "react-router-dom";
-import api, { models } from "~src/api";
-import { useLiveApplication } from "~src/api/hooks";
-import { Centered, RenderSettings, StringValue } from "~src/components";
-import { ContentBox } from "~src/components/ContentBox";
+} from "~src/components";
+import DataGrid, {
+  dateRender,
+  renderBoolean,
+  renderObjectID,
+} from "~src/components/DataGrid";
 import EventsViewer from "~src/components/EventsViewer";
+import LoadingSpinner from "~src/components/LoadingSpinner";
 import Parameters from "~src/components/Parameters";
+import Tag from "~src/components/Tag";
+import SettingsView from "./SettingsView";
 
-export default function ViewApplication(_: {}) {
-  const [response, setResponse] = useState<models.ApplicationResponse>();
+function ViewApplication(_: {}) {
   const { id } = useParams();
-
-  const application = useLiveApplication(id);
-
-  useEffect(() => {
-    api.getAppliction(id).then(setResponse);
-  }, [id]);
+  const [application, _refetch] = useLiveApplication(id);
+  const name = application.loading ? id : application.value.app.name;
+  const { t } = useTranslation();
 
   return (
     <Stack>
       <Breadcrumb>
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            as={NavLink}
-            to="/applications"
-          >{t`Applications`}</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink>{response ? response.app.name : id}</BreadcrumbLink>
-        </BreadcrumbItem>
+        <NavLink to="/applications">{t("applications")}</NavLink>
+        <span>{name}</span>
       </Breadcrumb>
 
-      <Heading>{response ? response.app.name : id}</Heading>
-      <ContentBox>
-        {response ? (
-          <ApplicationResponseView response={response} />
+      <Heading>{name}</Heading>
+      <Card>
+        {!application.loading ? (
+          <ApplicationResponseView response={application.value} />
         ) : (
-          <CircularProgress isIndeterminate />
+          <LoadingSpinner size={2} />
         )}
-      </ContentBox>
+      </Card>
     </Stack>
   );
 }
@@ -72,84 +73,113 @@ function ApplicationResponseView({
 }) {
   const [showKey, setShowKey] = useState<boolean>(false);
   const { id } = useParams();
+  const { t } = useTranslation();
 
   return (
-    <Tabs>
+    <Tabs tabsID="1">
       <TabList>
-        <Tab>{t`Information`}</Tab>
-        <Tab>{t`Settings`}</Tab>
-        <Tab>{t`Connections`}</Tab>
-        <Tab>{t`Events`}</Tab>
+        <Tab>{t("information")}</Tab>
+        <Tab>{t("settings")}</Tab>
+        <Tab>{t("connections")}</Tab>
+        <Tab>{t("events")}</Tab>
       </TabList>
 
-      <TabPanels>
-        <TabPanel>
-          <HStack justifyContent="end">
-            <Button
-              as={NavLink}
-              to={"/applications/" + id + "/edit"}
-              size="sm"
-              leftIcon={<FaPen />}
-            >
-              {t`Edit`}
-            </Button>
-          </HStack>
-          <Heading as="h3" size="md">{t`General information`}</Heading>
-          <Parameters
-            parameters={{
-              [t`ID`]: <Code>{response.app._id}</Code>,
-              [t`Name`]: <StringValue value={response.app.name} />,
-              [t`Description`]: (
-                <StringValue value={response.app.description} />
-              ),
-              [t`Access key`]: (
-                <>
-                  <Code>
-                    {showKey
-                      ? response.app.access_key
-                      : "application.################"}
-                  </Code>
-                  <br />
-                  <Button onClick={() => setShowKey(!showKey)} variant="link">
-                    {showKey ? t`Hide key` : t`Show key`}
-                  </Button>
-                </>
-              ),
-              [t`Tags`]: (
-                <HStack>
-                  {response.app.tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
-                  ))}
-                </HStack>
-              ),
-            }}
+      <TabPanel>
+        <HStack>
+          <Button
+            to={"/applications/" + id + "/edit"}
+            left={<Icon size={1} path={mdiPencil} />}
+          >
+            {t("edit")}
+          </Button>
+        </HStack>
+        <Heading as="h3">{t("general_information")}</Heading>
+        <Parameters
+          parameters={{
+            [t("id")]: <code>{response.app._id}</code>,
+            [t("name")]: <StringValue value={response.app.name} />,
+            [t("description")]: (
+              <StringValue value={response.app.description} />
+            ),
+            [t("access_key")]: (
+              <HStack spacing="md">
+                <code>
+                  {showKey
+                    ? response.app.access_key
+                    : "application.################"}
+                </code>
+                <Button
+                  variant="link"
+                  onClick={() => setShowKey(!showKey)}
+                  left={<Icon size={0.8} path={showKey ? mdiEyeOff : mdiEye} />}
+                >
+                  {showKey ? t("hide_key") : t("show_key")}
+                </Button>
+              </HStack>
+            ),
+            [t("tags")]: (
+              <HStack>
+                {response.app.tags.map((tag) => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+              </HStack>
+            ),
+          }}
+        />
+      </TabPanel>
+      <TabPanel>
+        <SettingsView
+          applicationType={response.app.application_type}
+          settings={response.app.settings}
+          editable
+        />
+      </TabPanel>
+      <TabPanel>
+        {response.connections ? (
+          <DataGrid
+            keyFactory={(app) => app._id}
+            columns={[
+              {
+                title: t("id"),
+                key: "_id",
+                render: renderObjectID,
+              },
+              {
+                title: t("is_connected"),
+                key: "is_connected",
+                render: renderBoolean,
+              },
+              {
+                title: t("client_name"),
+                key: "client_name",
+              },
+              {
+                key: "connected_at",
+                title: t("connected_at"),
+                render: dateRender,
+              },
+            ]}
+            data={response.connections}
           />
-        </TabPanel>
-        <TabPanel>
-          <RenderSettings
-            type={response.app.application_type}
-            settings={response.app.settings}
-          />
-        </TabPanel>
-        <TabPanel>
-          {response.connections ? (
-            response.connections.map((connection) => (
-              <ConnectionView key={connection._id} connection={connection} />
-            ))
-          ) : (
-            <Centered>{t`No connections open right now`}</Centered>
-          )}
-        </TabPanel>
-        <TabPanel>
-          <EventsViewer descriptor={{app_id: id}} />
-        </TabPanel>
-      </TabPanels>
+        ) : (
+          <Centered>{t("no_connections_open")}</Centered>
+        )}
+      </TabPanel>
+      <TabPanel>
+        <ApplicationEvents id={id} />
+      </TabPanel>
     </Tabs>
   );
 }
 
-function ConnectionView(props: { connection: models.ConnectionInfo }) {
-  return <Box>
-    {props.connection._id}
-  </Box>
+interface ApplicationEventsProps {
+  id: string
 }
+
+const ApplicationEvents = observer(({id}: ApplicationEventsProps) => {
+  const events = useApplicationEvents(id)
+  return <EventsViewer
+    events={events.value} />
+})
+
+export default observer(ViewApplication);

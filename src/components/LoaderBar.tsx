@@ -1,4 +1,3 @@
-import { useTheme } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import React, { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";

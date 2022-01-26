@@ -1,10 +1,7 @@
-import { Text } from "@chakra-ui/react";
-import { t } from "@lingui/macro";
+import { useTranslation } from "react-i18next";
 
 export default function StringValue({ value }: { value?: null | string }) {
-  return value ? (
-    <>{value}</>
-  ) : (
-    <Text as="span" color="gray.500">{t`empty`}</Text>
-  );
+  const { t } = useTranslation();
+
+  return value ? <>{value}</> : <span>{t("empty")}</span>;
 }

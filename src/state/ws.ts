@@ -1,11 +1,9 @@
 import { autorun, makeObservable, observable, runInAction } from "mobx";
-import api from "~src/api";
-import { API_URL } from "~src/api/client";
-import WSClient from "~src/api/ws";
+import { UserHubWS } from "~src/api";
 import AuthState from "./auth";
 
 export class WSState {
-  private _client: WSClient;
+  private _client: UserHubWS;
   private _authState: AuthState;
   private _dispose: () => void;
   isConnected: boolean = false;
@@ -17,10 +15,7 @@ export class WSState {
 
   constructor(authState: AuthState) {
     this._authState = authState;
-    this._client = new WSClient({
-      path: API_URL.replace(/http(s?):\/\//, "ws$1://") + "user/ws",
-      wsTicketFactory: () => api.issueWSTicket(),
-    });
+    this._client = new UserHubWS();
     this._dispose = autorun(async () => {
       if (this._authState.isAuthorized) {
         if (!this.isConnected) {
@@ -54,7 +49,7 @@ export class WSState {
   }
 
   async disconnect() {
-    this._client.close();
+    this._client.disconnect();
     runInAction(() => {
       this.isConnected = false;
     });
