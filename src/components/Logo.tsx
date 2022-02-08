@@ -1,4 +1,6 @@
 import { css } from "@emotion/react";
+import S from "./Logo.module.scss";
+import LogoSVG from "@assets/logo.svg";
 
 const _css = css`
   font-size: 2em;
@@ -6,8 +8,6 @@ const _css = css`
   padding: var(--t-spacing-lg) var(--t-spacing-md);
 `;
 
-const Logo = ({ size }: { size?: string }) => (
-  <span css={_css}>Telephonist</span>
-);
+const Logo = ({ size }: { size?: string }) => <LogoSVG scale={0.4} />;
 
 export default Logo;

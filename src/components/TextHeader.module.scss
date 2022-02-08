@@ -1,0 +1,11 @@
+.header {
+    margin: 1.25em 0;
+    & > h2 {
+        margin: 0;;
+    }
+
+    & > span {
+        font-size: 1em;
+        color: var(--t-color-2);
+    }
+}

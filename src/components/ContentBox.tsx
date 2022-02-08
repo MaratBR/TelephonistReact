@@ -1,7 +1,10 @@
-import styled from "@emotion/styled";
+import S from "./ContentBox.module.scss";
+import React from "react";
 
-const ContentBox = styled.div`
-  background-color: grey;
-`;
-
-export default ContentBox;
+export default function ContentBox(
+  props: React.HTMLAttributes<HTMLDivElement>
+) {
+  return (
+    <div className={S.contentBox + " " + (props.className || "")} {...props} />
+  );
+}

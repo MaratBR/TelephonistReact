@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+
+// #region validation
 
 export interface StateWithError<T, TError = any> {
   readonly error: TError | undefined;
@@ -73,6 +75,9 @@ export function useRequiredStringState(
   });
 }
 
+// validateAnd validates multiple Validated objects and if all
+// of them were validated successfully calls onValidAction,
+// if any of them failed calls onInvalidAction (if present)
 export function validateAnd(
   validateables: Validated[],
   onValidAction: () => any,
@@ -94,48 +99,80 @@ export function validateAnd(
   };
 }
 
-export interface Loading {
+function passwordValidation(pwd: string) {}
+
+export function useProperPasswordState() {
+  return useStateWithValidation<string>("", passwordValidation);
+}
+
+// #endregion
+
+// #region "loading" hooks
+
+interface LoadingBase {
   isLoading: boolean;
+  error: boolean;
+}
+
+export interface SubmitLoading extends LoadingBase {
   submit<T>(promise: Promise<T>): void;
 }
 
-export function useLoading(): Loading {
-  const [isLoading, setLoading] = useState(false);
+export function useSubmitLoading(): SubmitLoading {
+  const [state, setState] = useState(() => ({
+    loading: true,
+    error: undefined,
+  }));
 
   return {
-    isLoading,
+    isLoading: state.loading,
+    error: state.error,
     submit: (promise) => {
-      setLoading(true);
-      promise.finally(() => setLoading(false));
+      setState({ loading: true, error: state.error });
+      promise
+        .then(() => setState({ error: undefined, loading: false }))
+        .catch((err) => setState({ error: err, loading: true }));
     },
   };
 }
 
-export interface LoadingWithError extends Loading {
-  readonly error: any;
+export interface AsyncValue<T> extends LoadingBase {
+  value: T | undefined;
+  retry(): void;
 }
 
-export function useLoadingWithError(): LoadingWithError {
-  const { isLoading, submit } = useLoading();
-  const [error, setError] = useState<any>();
+export function useAsyncValue<T>(
+  getter: () => Promise<T>,
+  deps?: any[],
+  prefetch: boolean = true
+): AsyncValue<T> {
+  const [state, setState] = useState({
+    value: undefined,
+    isLoading: prefetch,
+    error: undefined,
+  });
+  const retry = () => {
+    setState({ ...state, isLoading: true });
+    getter()
+      .then((value) => setState({ isLoading: false, error: undefined, value }))
+      .catch((error) =>
+        setState({ isLoading: false, error, value: state.value })
+      );
+  };
+
+  useEffect(() => {
+    if (prefetch) {
+      retry();
+    }
+  }, deps ?? []);
 
   return {
-    isLoading,
-    submit: (promise) => {
-      promise.catch(setError);
-      submit(promise);
-    },
-    error,
+    ...state,
+    retry,
   };
 }
 
-function passwordValidation(pwd: string) {
-  
-}
-
-export function useProperPasswordState() {
-  return useStateWithValidation<string>("", passwordValidation)
-}
+// #endregion
 
 export interface TrackedChanges<T extends Record<string, any>> {
   changes: Partial<T>;
@@ -178,58 +215,85 @@ export function useTrackedChanges<T extends Record<string, any>>(
 }
 
 export interface NextParamController {
-  nextIfPresent(): void
-  isPresent(): boolean
-  nextOr(path: string): void
-  nextOrMain(): void
-  redirectWithNext(path: string): void
-  next: string
+  nextIfPresent(): void;
+  isPresent(): boolean;
+  nextOr(path: string): void;
+  nextOrMain(): void;
+  redirectWithNext(path: string): void;
+  next: string;
 }
 
 class Next implements NextParamController {
-  readonly next: string | undefined
-  private readonly _navigate: NavigateFunction
+  readonly next: string | undefined;
+  private readonly _navigate: NavigateFunction;
 
   constructor(next: string | undefined, navigate: NavigateFunction) {
-    this.next = next
-    this._navigate = navigate
-    this.isPresent = this.isPresent.bind(this)
-    this.nextIfPresent = this.nextIfPresent.bind(this)
-    this.nextOr = this.nextOr.bind(this)
-    this.nextOrMain = this.nextOrMain.bind(this)
-    this.redirectWithNext = this.redirectWithNext.bind(this)
+    this.next = next;
+    this._navigate = navigate;
+    this.isPresent = this.isPresent.bind(this);
+    this.nextIfPresent = this.nextIfPresent.bind(this);
+    this.nextOr = this.nextOr.bind(this);
+    this.nextOrMain = this.nextOrMain.bind(this);
+    this.redirectWithNext = this.redirectWithNext.bind(this);
   }
 
   isPresent(): boolean {
-      return typeof this.next === "string" && this.next.trim() !== ""
+    return typeof this.next === "string" && this.next.trim() !== "";
   }
 
   nextIfPresent(): void {
-      if (this.isPresent()) {
-        this._navigate(this.next)
-      }
+    if (this.isPresent()) {
+      this._navigate(this.next);
+    }
   }
 
   nextOr(path: string): void {
-    this._navigate(this.isPresent() ? this.next : path)
+    this._navigate(this.isPresent() ? this.next : path);
   }
 
   nextOrMain(): void {
-      this.nextOr("/")
+    this.nextOr("/");
   }
 
   redirectWithNext(path: string): void {
     if (path.indexOf("?") === -1) {
-      path += "?next=" + encodeURIComponent(this.next)
+      path += "?next=" + encodeURIComponent(this.next);
     } else {
-      path += "&next=" + encodeURIComponent(this.next)
+      path += "&next=" + encodeURIComponent(this.next);
     }
-    this._navigate(path)
+    this._navigate(path);
   }
 }
 
 export function useNextParam(): NextParamController {
-  const navigate = useNavigate()
-  const {next} = useParams()
-  return new Next(next, navigate)
+  const navigate = useNavigate();
+  const { next } = useParams();
+  return new Next(next, navigate);
+}
+
+export function useOnClickOutside(ref: React.RefObject<HTMLElement>, handler) {
+  useEffect(
+    () => {
+      const listener = (event) => {
+        // Do nothing if clicking ref's element or descendent elements
+        if (!ref.current || ref.current.contains(event.target)) {
+          return;
+        }
+        handler(event);
+      };
+      document.addEventListener("mousedown", listener);
+      document.addEventListener("touchstart", listener);
+      return () => {
+        document.removeEventListener("mousedown", listener);
+        document.removeEventListener("touchstart", listener);
+      };
+    },
+    // Add ref and handler to effect dependencies
+    // It's worth noting that because passed in handler is a new ...
+    // ... function on every render that will cause this effect ...
+    // ... callback/cleanup to run every render. It's not a big deal ...
+    // ... but to optimize you can wrap handler in useCallback before ...
+    // ... passing it into this hook.
+    [ref, handler]
+  );
 }

@@ -13,14 +13,13 @@ import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useParams } from "react-router-dom";
-import { models } from "~src/api";
-import { useApplicationEvents, useLiveApplication } from "~src/api/hooks";
+import { models } from "@/api";
+import { useApplicationEvents, useLiveApplication } from "@/api/hooks";
 import {
   Breadcrumb,
   Button,
   Card,
   Centered,
-  Grid,
   Heading,
   HStack,
   Stack,
@@ -29,22 +28,25 @@ import {
   TabList,
   TabPanel,
   Tabs,
-} from "~src/components";
+  TextHeader,
+} from "@components";
 import DataGrid, {
   dateRender,
   renderBoolean,
   renderObjectID,
-} from "~src/components/DataGrid";
-import EventsViewer from "~src/components/EventsViewer";
-import LoadingSpinner from "~src/components/LoadingSpinner";
-import Parameters from "~src/components/Parameters";
-import Tag from "~src/components/Tag";
-import SettingsView from "./SettingsView";
+} from "@components/DataGrid";
+import EventsViewer from "@components/EventsViewer";
+import LoadingSpinner from "@components/LoadingSpinner";
+import Parameters from "@components/Parameters";
+import Tag from "@components/Tag";
+import S from "./PopupModule.module.scss";
+import { ApplicationTasks } from "../parts/TasksView";
+import ViewApplicationInfo from "./ViewApplicationInfo";
 
 function ViewApplication(_: {}) {
   const { id } = useParams();
   const [application, _refetch] = useLiveApplication(id);
-  const name = application.loading ? id : application.value.app.name;
+  const name = application.loading ? id : application.value.app.display_name;
   const { t } = useTranslation();
 
   return (
@@ -54,7 +56,7 @@ function ViewApplication(_: {}) {
         <span>{name}</span>
       </Breadcrumb>
 
-      <Heading>{name}</Heading>
+      <TextHeader title={name} subtitle={application.loading ? 0 : application.value.app.name} />
       <Card>
         {!application.loading ? (
           <ApplicationResponseView response={application.value} />
@@ -79,61 +81,19 @@ function ApplicationResponseView({
     <Tabs tabsID="1">
       <TabList>
         <Tab>{t("information")}</Tab>
-        <Tab>{t("settings")}</Tab>
+        <Tab>{t("tasks")}</Tab>
         <Tab>{t("connections")}</Tab>
         <Tab>{t("events")}</Tab>
       </TabList>
 
       <TabPanel>
-        <HStack>
-          <Button
-            to={"/applications/" + id + "/edit"}
-            left={<Icon size={1} path={mdiPencil} />}
-          >
-            {t("edit")}
-          </Button>
-        </HStack>
-        <Heading as="h3">{t("general_information")}</Heading>
-        <Parameters
-          parameters={{
-            [t("id")]: <code>{response.app._id}</code>,
-            [t("name")]: <StringValue value={response.app.name} />,
-            [t("description")]: (
-              <StringValue value={response.app.description} />
-            ),
-            [t("access_key")]: (
-              <HStack spacing="md">
-                <code>
-                  {showKey
-                    ? response.app.access_key
-                    : "application.################"}
-                </code>
-                <Button
-                  variant="link"
-                  onClick={() => setShowKey(!showKey)}
-                  left={<Icon size={0.8} path={showKey ? mdiEyeOff : mdiEye} />}
-                >
-                  {showKey ? t("hide_key") : t("show_key")}
-                </Button>
-              </HStack>
-            ),
-            [t("tags")]: (
-              <HStack>
-                {response.app.tags.map((tag) => (
-                  <Tag key={tag}>{tag}</Tag>
-                ))}
-              </HStack>
-            ),
-          }}
-        />
+        <ViewApplicationInfo app={response.app} />
       </TabPanel>
+
       <TabPanel>
-        <SettingsView
-          applicationType={response.app.application_type}
-          settings={response.app.settings}
-          editable
-        />
+        <ApplicationTasks appID={id} />
       </TabPanel>
+
       <TabPanel>
         {response.connections ? (
           <DataGrid
@@ -173,13 +133,12 @@ function ApplicationResponseView({
 }
 
 interface ApplicationEventsProps {
-  id: string
+  id: string;
 }
 
-const ApplicationEvents = observer(({id}: ApplicationEventsProps) => {
-  const events = useApplicationEvents(id)
-  return <EventsViewer
-    events={events.value} />
-})
+const ApplicationEvents = observer(({ id }: ApplicationEventsProps) => {
+  const events = useApplicationEvents(id);
+  return <EventsViewer events={events.value} />;
+});
 
 export default observer(ViewApplication);

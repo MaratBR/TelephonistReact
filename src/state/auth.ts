@@ -1,7 +1,7 @@
 import axios from "axios";
 import { makeAutoObservable, action, runInAction } from "mobx";
 import { makePersistable } from "mobx-persist-store";
-import api, { models, requests } from "~src/api";
+import api, { models, requests } from "@/api";
 
 export default class AuthState {
   accessToken: string | null = null;
@@ -31,7 +31,7 @@ export default class AuthState {
         "accessToken",
         "passwordResetToken",
         "passwordResetExpiresAt",
-        "isPasswordResetRequired"
+        "isPasswordResetRequired",
       ],
     }).then(
       action(() => {
@@ -100,7 +100,7 @@ export default class AuthState {
       if (axios.isAxiosError(e) && e.response.status == 401) {
         runInAction(() => this._logoutState());
       }
-      throw e
+      throw e;
     }
   }
 
@@ -135,26 +135,33 @@ export default class AuthState {
 
   async resetPassword(newPassword: string) {
     if (!this.isPasswordResetRequired) {
-      throw new Error("invalid operation: cannot reset pasword since isPasswordResetRequired set to false")
+      throw new Error(
+        "invalid operation: cannot reset pasword since isPasswordResetRequired set to false"
+      );
     }
     if (this.isLoading) {
-      throw new Error("another process is already happenning (i.e. logging in), can't do much for now")
+      throw new Error(
+        "another process is already happenning (i.e. logging in), can't do much for now"
+      );
     }
-    this.isLoading = true
+    this.isLoading = true;
     try {
-      await api.resetPassword({password_reset_token: this.passwordResetToken, new_password: newPassword})
+      await api.resetPassword({
+        password_reset_token: this.passwordResetToken,
+        new_password: newPassword,
+      });
       runInAction(() => {
-        this.isPasswordResetRequired = false
-        this.passwordResetToken = null
-        this.passwordResetExpiresAt = -1
-        this.isLoading = false
-      })
+        this.isPasswordResetRequired = false;
+        this.passwordResetToken = null;
+        this.passwordResetExpiresAt = -1;
+        this.isLoading = false;
+      });
     } catch (e) {
       runInAction(() => {
-        this.resetPasswordError = e
-        this.isLoading = false
-      })
-      throw e
+        this.resetPasswordError = e;
+        this.isLoading = false;
+      });
+      throw e;
     }
   }
 }

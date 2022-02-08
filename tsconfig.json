@@ -9,7 +9,7 @@
             "dom.iterable",
             "esnext"
         ],
-        "module": "esnext",
+        "module": "commonjs",
         "moduleResolution": "node",
         "noEmit": true,
         "esModuleInterop": true,
@@ -17,9 +17,12 @@
         "useDefineForClassFields": true,
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
-        "baseUrl": ".", 
+        "baseUrl": "./src", 
         "paths": {
-            "~*": ["./*"]
+            "@assets/*": ["./assets/*"],
+            "@components/*": ["./components/*"],
+            "@components": ["./components"],
+            "@locales/*": ["../locales/*"],
         }
     },
     "include": [

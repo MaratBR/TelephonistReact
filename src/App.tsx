@@ -41,31 +41,27 @@ export function App() {
 }
 
 const COMPONENTS = {
-  LoginPage: lazy(() => import("~src/pages/LoginPage")),
-  PasswordResetPage: lazy(() => import("~src/pages/PasswordResetPage")),
-  AllApplications: lazy(() => import("~src/pages/AllApplications")),
-  NewApplication: lazy(() => import("~src/pages/NewApplication")),
-  ViewApplication: lazy(() => import("~src/pages/ViewApplication"))
-}
+  LoginPage: lazy(() => import("@/pages/LoginPage")),
+  PasswordResetPage: lazy(() => import("@/pages/PasswordResetPage")),
+  AllApplications: lazy(() => import("@/pages/AllApplications")),
+  NewApplication: lazy(() => import("@/pages/NewApplication")),
+  ViewApplication: lazy(
+    () => import("@/pages/ViewApplication/ViewApplication")
+  ),
+};
 
 function AppRouter(_: {}) {
   return (
     <React.Suspense fallback={<Loader />}>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/login"
-            element={COMPONENTS.LoginPage}
-          />
+          <Route path="/login" element={COMPONENTS.LoginPage} />
           <Route
             path="/login/password-reset"
             element={COMPONENTS.PasswordResetPage}
           />
-          <Route path="/" element={lazy(() => import("~src/pages/MainPage"))}>
-            <Route
-              path="applications"
-              element={COMPONENTS.AllApplications}
-            />
+          <Route path="/" element={lazy(() => import("@/pages/MainPage"))}>
+            <Route path="applications" element={COMPONENTS.AllApplications} />
             <Route
               path="applications/new"
               element={COMPONENTS.NewApplication}
@@ -75,8 +71,8 @@ function AppRouter(_: {}) {
               element={COMPONENTS.ViewApplication}
             />
             <Route
-             path="applications/:id/edit"
-             element={lazy(() => import("~src/pages/EditApplication"))}
+              path="applications/:id/edit"
+              element={lazy(() => import("@/pages/EditApplication"))}
             />
           </Route>
         </Routes>

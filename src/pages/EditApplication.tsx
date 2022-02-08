@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
-import api, { models, requests } from "~src/api";
+import api, { models, requests } from "@/api";
 import {
   Alert,
   Breadcrumb,
@@ -10,12 +10,13 @@ import {
   Card,
   Heading,
   Input,
+  SaveButton,
   Stack,
   Textarea,
-} from "~src/components";
-import LoadingSpinner from "~src/components/LoadingSpinner";
-import TagInput from "~src/components/TagInput";
-import { useTrackedChanges } from "~src/hooks";
+} from "@components";
+import LoadingSpinner from "@components/LoadingSpinner";
+import TagInput from "@components/TagInput";
+import { useTrackedChanges } from "@/hooks";
 
 export default function EditApplication(_: {}) {
   const { id } = useParams();
@@ -24,11 +25,11 @@ export default function EditApplication(_: {}) {
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const track = useTrackedChanges<requests.UpdateApplication>();
-  const name = track.original ? track.original.name : id;
+  const name = track.original ? track.original.display_name : id;
 
   const _setOriginal = (app: models.ApplicationView) =>
     track.setOriginal({
-      name: app.name,
+      display_name: app.display_name,
       disabled: app.disabled,
       description: app.description,
       tags: app.tags,
@@ -73,8 +74,8 @@ export default function EditApplication(_: {}) {
         <Input
           placeholder={t("name")}
           variant="flushed"
-          value={track.value("name")}
-          onChange={(e) => track.set({ name: e.target.value })}
+          value={track.value("display_name")}
+          onChange={(e) => track.set({ display_name: e.target.value })}
         />
         <Textarea
           placeholder={t("description")}
@@ -88,13 +89,7 @@ export default function EditApplication(_: {}) {
         />
         {error ? <Alert color="danger">{error.toString()}</Alert> : undefined}
         <ButtonGroup>
-          <Button
-            left={<i className="fas fa-save" />}
-            loading={submitting}
-            onClick={() => submit()}
-          >
-            {t("save")}
-          </Button>
+          <SaveButton />
         </ButtonGroup>
       </Stack>
     );

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import api from "~src/api";
+import api from "@/api";
 import { useTranslation } from "react-i18next";
 import {
   Breadcrumb,
@@ -12,7 +12,7 @@ import {
   Stack,
   TagInput,
   Textarea,
-} from "~src/components";
+} from "@components";
 
 export default function NewApplication(_: {}) {
   const [name, setName] = useState("");

@@ -1,0 +1,5 @@
+.fields {
+    & > :not(:last-child) {
+        border-bottom: 1px solid var(--t-neutral-8);
+    }
+}

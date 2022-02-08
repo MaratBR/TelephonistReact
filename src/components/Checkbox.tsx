@@ -25,8 +25,8 @@ const checkboxRootCSS = css`
     display: block;
     height: 1px;
     width: 1px;
-    left: .8em;
-    top: .8em;
+    left: 0.8em;
+    top: 0.8em;
     border-radius: 100px;
     position: absolute;
     transition: box-shadow var(--t-transition-sm);
@@ -60,8 +60,7 @@ const checkboxIconCSS = css`
   justify-content: center;
   align-items: center;
   color: var(--checkbox-color-fg);
-  border: .15em solid var(--checkbox-color-border);
-
+  border: 0.15em solid var(--checkbox-color-border);
 `;
 
 const css_ = css`

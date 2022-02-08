@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RootState } from "~src/state";
+import { RootState } from "state";
 
 const API_URL = process.env.API_URL || "https://localhost:5789/";
 const WS_URL = API_URL.replace(/http(s?):\/\//, "ws$1://");
@@ -21,7 +21,7 @@ export function configureAxiosInterceptors(rootState: RootState) {
   });
 }
 
-axios.defaults.baseURL = API_URL;
+axios.defaults.baseURL = API_URL + (API_URL.endsWith("/") ? "" : "/");
 axios.defaults.timeout = 15000;
 axios.defaults.withCredentials = true;
 

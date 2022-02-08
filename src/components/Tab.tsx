@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as tabs from "react-tabs";
-import { setHashQuery, useHashValue } from "~src/utils/hash";
+import { setHashQuery, useHashValue } from "@/utils/hash";
 
 interface TabsProps extends tabs.TabsProps {
   tabsID?: string;

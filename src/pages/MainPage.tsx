@@ -1,13 +1,13 @@
 import AppInitializationWrapper from "./AppInitializationWrapper";
-import Stack from "~src/components/Stack";
-import Alert from "~src/components/Alert";
+import Stack from "@components/Stack";
+import Alert from "@components/Alert";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { ErrorInfo } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { TFunction } from "i18next";
-import { Nav, NavGroup, NavItem, NavItems } from "~src/components/Nav";
+import { Nav, NavGroup, NavItem, NavItems } from "@components/Nav";
 import Icon from "@mdi/react";
 import {
   mdiApplication,

@@ -1,5 +1,5 @@
 import { autorun, makeObservable, observable, runInAction } from "mobx";
-import { UserHubWS } from "~src/api";
+import { UserHubWS } from "@/api";
 import AuthState from "./auth";
 
 export class WSState {

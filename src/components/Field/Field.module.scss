@@ -1,0 +1,23 @@
+.root {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: .8em;
+    padding: var(--t-spacing-md) 0;
+}
+
+.head {
+
+    label {
+        font-weight: bold;
+        font-size: 1em;
+        font-family: var(--t-font-headers);
+    }
+
+    span {
+        font-size: .9em;
+        color: var(--t-color-2);
+    }
+}
+
+.body {
+}

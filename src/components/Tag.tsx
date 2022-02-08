@@ -1,8 +1,9 @@
 import { css, Interpolation } from "@emotion/react";
 import React from "react";
 import tinycolor, { Instance } from "tinycolor2";
-import { IconButton } from "./Button";
+import { IconButton } from "./Button/Button";
 import { ThemeData } from "./theme";
+import S from "./Tag.module.scss"
 
 interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: string;
@@ -10,30 +11,19 @@ interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   onClose?: () => void;
 }
 
-const _css = css`
-  border-radius: var(--t-radius-sm);
-  display: inline-block;
-  background-color: var(--t-neutral-7);
-  padding: var(--t-spacing-sm) 0 var(--t-spacing-sm) var(--t-spacing-sm);
-`;
 
 function Tag({ color, children, closeable, ...props }: TagProps) {
   let c: Interpolation<ThemeData>;
   if (color) {
     const tc = tinycolor(color);
-    c = [
-      _css,
-      css`
-        background-color: ${tc.toString()};
-        color: ${tc.isLight() ? "black" : "white"};
-      `,
-    ];
-  } else {
-    c = _css;
+    c = css`
+      background-color: ${tc.toString()};
+      color: ${tc.isLight() ? "black" : "white"};
+    `;
   }
 
   return (
-    <div css={c} {...props}>
+    <div className={S.tag} css={c} {...props}>
       {children}
       {closeable ? (
         <IconButton onClick={() => props?.onClose()}>

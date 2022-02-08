@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { models, ws } from "~src/api";
+import { models, ws } from "@/api";
 import HStack from "./HStack";
 import { useTranslation } from "react-i18next";
 import DataGrid, { DataGridColumn } from "./DataGrid";
@@ -14,7 +14,7 @@ const noContentCSS = css`
   justify-content: center;
   align-items: center;
   padding: 2em;
-`
+`;
 
 const EventsViewer = (props: { events: models.Event[] }) => {
   const { t } = useTranslation();
@@ -82,14 +82,16 @@ const EventsViewer = (props: { events: models.Event[] }) => {
       selectable
       data={props.events}
       columns={columns}
-      noItemsRenderer={() => <div css={noContentCSS}>
-        {
-          props.events ? <Icon size={2} path={mdiConnection} /> : <LoadingSpinner size={2} />
-        }
-        <span>
-          {props.events ? t("no_events") : t("loading")}
-        </span>
-      </div>}
+      noItemsRenderer={() => (
+        <div css={noContentCSS}>
+          {props.events ? (
+            <Icon size={2} path={mdiConnection} />
+          ) : (
+            <LoadingSpinner size={2} />
+          )}
+          <span>{props.events ? t("no_events") : t("loading")}</span>
+        </div>
+      )}
     />
   );
 };

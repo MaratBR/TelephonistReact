@@ -1,0 +1,29 @@
+.task {
+  &:hover {
+    border-radius: var(--t-radius-xl);
+  }
+
+  &-name {
+    color: red;
+  }
+}
+
+
+.name {
+  h2 {
+    margin: 0;
+    font-size: 1.2em;
+
+    & > span:first-child {
+      opacity: .7;
+    }
+  }
+
+  code {
+    color: var(--t-color-3);
+    background: none;
+    font-size: .8em;
+    padding: 0;
+  }
+
+}

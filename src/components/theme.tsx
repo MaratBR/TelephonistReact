@@ -99,9 +99,9 @@ export const defaultTheme: ThemeData = {
   },
   fonts: {
     main: "Roboto",
-    headers: "'Inter', sans-serif",
     logo: '"Abril Fatface"',
-    headers2: '"Noto Sans Display"',
+    headers: '"Noto Sans Display"',
+    button: 'Inter'
   },
   transition: {
     xs: ".1s",

@@ -1,0 +1,7 @@
+.tags {
+    display: flex;
+
+    & > * {
+        margin: var(--t-spacing-xs);
+    }
+}

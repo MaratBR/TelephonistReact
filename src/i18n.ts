@@ -3,8 +3,8 @@ import { initReactI18next } from "react-i18next";
 import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import resourcesToBackend from "i18next-resources-to-backend";
 
-const ruI18N = () => import(`~locales/ru/translation.json`);
-const enI18N = () => import(`~locales/en/translation.json`);
+const ruI18N = () => import(`@locales/ru/translation.json`);
+const enI18N = () => import(`@locales/en/translation.json`);
 
 const languages = {
   en: enI18N,

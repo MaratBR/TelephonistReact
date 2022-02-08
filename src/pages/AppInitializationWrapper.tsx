@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { Centered, Screen } from "~src/components";
+import { Centered, Screen } from "@components";
 import { observer } from "mobx-react";
-import state from "~src/state";
-import LoadingSpinner from "~src/components/LoadingSpinner";
+import state from "@/state";
+import LoadingSpinner from "@components/LoadingSpinner";
 
 const AppInitializationWrapper = ({
   children,
@@ -17,7 +17,7 @@ const AppInitializationWrapper = ({
       </Screen>
     );
   }
-  
+
   if (!state.auth.isAuthorized) {
     return (
       <Navigate

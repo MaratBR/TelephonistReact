@@ -9,7 +9,7 @@ import {
 import { useLocalObservable } from "mobx-react";
 import { useEffect, useState } from "react";
 import { filter, Subscription } from "rxjs";
-import state from "~src/state";
+import state from "@/state";
 import api, { models, UserHubWS, ws } from ".";
 import { EntryUpdateListener } from "./userHub";
 
@@ -38,7 +38,7 @@ class LiveValueImpl<T> implements LiveValue<T> {
     makeObservable(this, {
       value: observable,
       error: observable,
-      loading: observable
+      loading: observable,
     });
   }
 }
@@ -52,17 +52,17 @@ export function useLiveApplication(
   const { ws } = useGlobalState();
 
   const refetch = async () => {
-    runInAction(() => live.loading = true)
+    runInAction(() => (live.loading = true));
     try {
       const app = await api.getAppliction(id);
       runInAction(() => {
         live.value = app;
         live.error = undefined;
-      })
+      });
     } catch (e) {
-      runInAction(() => live.error = e)
+      runInAction(() => (live.error = e));
     } finally {
-      runInAction(() => live.loading = false)
+      runInAction(() => (live.loading = false));
     }
   };
 
@@ -106,7 +106,7 @@ abstract class LiveSubscriptionBase<TItem>
   constructor() {
     super();
     makeObservable(this, {
-      isSubscribed: observable
+      isSubscribed: observable,
     });
   }
 
@@ -165,8 +165,8 @@ class ApplicationEventsSubscription extends LiveSubscriptionBase<models.Event> {
       .events()
       .pipe(filter((e) => e.app_id == this._id))
       .subscribe(this._onEvent);
-    const events = await api.getEvents({app_id: this._id})
-    this.value = events.result
+    const events = await api.getEvents({ app_id: this._id });
+    this.value = events.result;
   }
 
   protected _stop(): void {

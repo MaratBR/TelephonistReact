@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "./Table";
+import { Field, Fields } from "./Field";
 
 export default function Parameters({
   parameters,
@@ -7,17 +7,16 @@ export default function Parameters({
   parameters: Record<string, React.ReactNode>;
 }) {
   return (
-    <Table>
-      <tbody>
-        {Object.entries(parameters).map((kv, index) => {
-          return (
-            <tr key={`${index}.${kv[0]}`}>
-              <td>{kv[0]}</td>
-              <td>{kv[1]}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
+    <Fields>
+      {Object.entries(parameters).map((kv, index) => {
+        return (
+          <Field key={index + ":" + kv[0]} name={kv[0]}>
+            {kv[1]}
+          </Field>
+        );
+      })}
+
+    </Fields>
+        
   );
 }

@@ -1,14 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import api, { models } from "~src/api";
-import { Breadcrumb, ButtonGroup, Card, Heading, Stack } from "~src/components";
-import Button from "~src/components/Button";
+import api, { models } from "@/api";
+import { Breadcrumb, ButtonGroup, Card, Heading, Stack } from "@components";
+import Button from "@/components/Button/Button";
 import DataGrid, {
   DataGridColumn,
   renderBoolean,
   renderObjectID,
-} from "~src/components/DataGrid";
+} from "@components/DataGrid";
 import Icon from "@mdi/react";
 import { mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
 
@@ -58,6 +58,7 @@ export default function AllApplications(_: {}) {
       <Card>
         <ButtonGroup>
           <Button
+            color="primary"
             to="/applications/new"
             left={<Icon size={1} path={mdiPlus} />}
           >

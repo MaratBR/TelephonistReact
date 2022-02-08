@@ -46,7 +46,7 @@ export type DataGridProps<T> = {
   columns?: DataGridColumn<T>[];
   selectable?: boolean;
   keyFactory: (value: T) => React.Key;
-  noItemsRenderer?: () => React.ReactNode
+  noItemsRenderer?: () => React.ReactNode;
 };
 
 function defaultRender(o: any): React.ReactNode {
@@ -105,7 +105,7 @@ class DataGrid<T> extends React.Component<DataGridProps<T>, DataGridState> {
   }
 
   private get _length() {
-    return this.props.data ? this.props.data.length : 0
+    return this.props.data ? this.props.data.length : 0;
   }
 
   private _setAllSelected(selected: boolean) {
@@ -127,7 +127,7 @@ class DataGrid<T> extends React.Component<DataGridProps<T>, DataGridState> {
       newSelect[index] = selected;
       this.setState({
         selected: newSelect,
-        selectedCount: this.state.selectedCount + (selected ? 1 : -1)
+        selectedCount: this.state.selectedCount + (selected ? 1 : -1),
       });
     }
   }
@@ -167,13 +167,15 @@ class DataGrid<T> extends React.Component<DataGridProps<T>, DataGridState> {
           columns={columns}
           item={v}
         />
-      ))
+      ));
     } else if (this.props.noItemsRenderer) {
-      return <td colSpan={this.props.columns ? this.props.columns.length + 1 : 1}>
-        {this.props.noItemsRenderer()}
-      </td>
+      return (
+        <td colSpan={this.props.columns ? this.props.columns.length + 1 : 1}>
+          {this.props.noItemsRenderer()}
+        </td>
+      );
     } else {
-      return null
+      return null;
     }
   }
 
@@ -186,9 +188,7 @@ class DataGrid<T> extends React.Component<DataGridProps<T>, DataGridState> {
     return (
       <Table>
         <thead>{header}</thead>
-        <tbody>
-          {this._renderBody(columns)}
-        </tbody>
+        <tbody>{this._renderBody(columns)}</tbody>
         <tfoot>{header}</tfoot>
       </Table>
     );

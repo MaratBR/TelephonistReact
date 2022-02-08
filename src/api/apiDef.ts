@@ -1,5 +1,18 @@
 type _ValueOf<T> = T[keyof T];
 
+type ApplicationTaskTypeRegistry = {
+  arbitrary: any;
+  exec: string;
+  script: string;
+};
+
+type ApplicationTaskTypeSpecific = _ValueOf<{
+  [K in keyof ApplicationTaskTypeRegistry]: {
+    task_type: K;
+    body: ApplicationTaskTypeRegistry[K];
+  };
+}>;
+
 export module requests {
   export type Register = {
     username: string;
@@ -12,9 +25,9 @@ export module requests {
   };
 
   export type ResetPassword = {
-    password_reset_token: string
-    new_password: string
-  }
+    password_reset_token: string;
+    new_password: string;
+  };
 
   export type Refresh = {
     refresh_token: string;
@@ -31,6 +44,7 @@ export module requests {
   export type CreateApplication = {
     name: string;
     description?: string;
+    display_name?: string;
     tags?: string[];
     disabled?: boolean;
     application_type?: "arbitrary" | "host" | string;
@@ -40,7 +54,7 @@ export module requests {
     tags?: string[];
     disabled?: boolean;
     description?: string;
-    name?: string;
+    display_name?: string;
   };
 
   export type GetEventsParams = {
@@ -48,8 +62,26 @@ export module requests {
     related_task?: "*" | string | null;
     event_type?: "*" | string | null;
     sequence_id?: string | null;
-    app_id?: string | null
+    app_id?: string | null;
   } & PaginationParams<"_id" | "event_type" | "related_task" | "created_at">;
+
+  export type DefineTask = {
+    _id?: string;
+    name: string;
+    display_name?: string | null;
+    description?: string;
+    env?: Record<string, string>;
+    tags?: string[];
+    triggers?: models.TaskTrigger[];
+  } & ApplicationTaskTypeSpecific;
+
+  export type UpdateTask = (ApplicationTaskTypeSpecific | {}) & {
+    description?: string;
+    tags?: string[];
+    name?: string;
+    env?: Record<string, string>;
+    triggers?: models.TaskTrigger[];
+  };
 }
 
 export module models {
@@ -113,6 +145,7 @@ export module models {
 
   export type ApplicationView = {
     _id: string;
+    display_name: string;
     tags: string[];
     disabled: boolean;
     name: string;
@@ -131,6 +164,37 @@ export module models {
     connections: ConnectionInfo[];
   };
 
+  export type TaskType = "arbitrary" | "exec" | "script";
+
+  type TaskTriggerRegistry = {
+    fsnotify: string;
+    cron: string;
+    event: string;
+  };
+
+  export type TaskTrigger = _ValueOf<{
+    [K in keyof TaskTriggerRegistry]: {
+      name: K;
+      body: TaskTriggerRegistry[K];
+    };
+  }>;
+
+  export type ApplicationTaskType = keyof ApplicationTaskTypeRegistry
+
+  export type ApplicationTask = ApplicationTaskTypeSpecific & {
+    _id: string;
+    app_id: string;
+    name: string;
+    qualified_name: string;
+    description: string | null;
+    tags: string[];
+    triggers: TaskTrigger[];
+    env: Record<string, string>;
+    last_updated: string;
+    disabled: boolean;
+    errors: Record<string, string>
+  };
+
   export type Event = {
     event_key: string;
     sequence_id: string | null;
@@ -142,6 +206,29 @@ export module models {
     created_at: string;
     _id: string;
   };
+
+  export enum SequenceState {
+    FAILED = "failed",
+    SUCCEEDED = "succeeded",
+    SKIPPED = "skipped",
+    IN_PROGRESS = "in_progress",
+  }
+
+  export interface Sequence {
+    _id: string;
+    name: string;
+    app_id: string;
+    finished_at: string | null;
+    description: string | null;
+    meta: null | Record<string, any>;
+    state: SequenceState;
+    task_name: string | null;
+    task_id: string | null;
+    expires_at: string | null;
+    frozen: boolean;
+    error: string | null;
+    connection_id: string | null;
+  }
 
   export type SendDataIf = "always" | "never" | "if_non_0_exit_code";
 
