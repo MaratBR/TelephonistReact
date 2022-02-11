@@ -1,14 +1,37 @@
-import { Configuration, EnvironmentPlugin } from "webpack"
+import { Configuration, EnvironmentPlugin, WebpackPluginInstance } from "webpack"
 import { resolve } from "path"
 import HTMLWebpackPlugin from "html-webpack-plugin"
 import "webpack-dev-server"
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
 
  
 const SRC = resolve(__dirname, "src")
-const DIST = resolve(__dirname, "dist")
 const isDevelopment = process.env.NODE_ENV !== "production"
 
+const styleLoader = isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader
+const cssLoader = {
+    loader: "css-loader",
+    options: {
+        modules: {
+            auto: true,
+            localIdentName: isDevelopment ? "[name]__[local]--[hash:base64:6]" : "[hash:base64:6]",
+        }
+    }
+}
+
+const plugins: WebpackPluginInstance[] = [
+    new HTMLWebpackPlugin({
+        title: "Telephonist"
+    }),
+    new EnvironmentPlugin(['NODE_ENV', 'DEBUG', 'API_URL']),
+]
+
+if (isDevelopment) {
+    plugins.push(
+        new ReactRefreshWebpackPlugin()
+    )
+}
 
 const configuration: Configuration = {
     mode: isDevelopment ? "development" : "production",
@@ -23,11 +46,9 @@ const configuration: Configuration = {
     },
     resolve: {
         alias: {
-            "~": SRC,
-            "@": SRC,
-            "@components": SRC + "/components",
             "@locales": __dirname + "/locales",
-            "@assets": SRC + "/assets"
+            "@assets": SRC + "/assets",
+            "@cc": SRC + "/core/components"
         },
         extensions: [".tsx", ".ts", ".jsx", ".js"],
         modules: [
@@ -40,16 +61,16 @@ const configuration: Configuration = {
             {
                 test: /\.scss$/,
                 use: [
-                    "style-loader",
-                    "css-loader",
+                    styleLoader,
+                    cssLoader,
                     "sass-loader"
                 ]
             },
             {
                 test: /\.css$/,
                 use: [
-                    "style-loader",
-                    "css-loader"
+                    styleLoader,
+                    cssLoader
                 ]
             },
             {
@@ -73,13 +94,7 @@ const configuration: Configuration = {
             },
         ]
     },
-    plugins: [
-        new HTMLWebpackPlugin({
-            title: "Telephonist"
-        }),
-        new EnvironmentPlugin(['NODE_ENV', 'DEBUG', 'API_URL']),
-        isDevelopment && new ReactRefreshWebpackPlugin()
-    ].filter(Boolean),
+    plugins,
     devServer: {
         historyApiFallback: true,
         hot: isDevelopment

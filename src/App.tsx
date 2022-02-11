@@ -1,12 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import React from "react";
-import { Centered, Screen } from "./components";
-import { ThemeProvider } from "./components/theme";
-import LoadingSpinner from "./components/LoadingSpinner";
-import styled from "@emotion/styled";
+import { Centered } from '@cc/Layout';
+import LoadingSpinner from '@cc/LoadingSpinner';
+import { ThemeProvider } from '@cc/theme';
+import styled from '@emotion/styled';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-function Loader(_: {}) {
+function Loader() {
   return (
     <Centered>
       <LoadingSpinner size={2} />
@@ -29,28 +29,16 @@ const Root = styled.div`
   height: 100vh;
 `;
 
-export function App() {
-  return (
-    <ThemeProvider>
-      <Toaster />
-      <Root>
-        <AppRouter />
-      </Root>
-    </ThemeProvider>
-  );
-}
-
 const COMPONENTS = {
-  LoginPage: lazy(() => import("@/pages/LoginPage")),
-  PasswordResetPage: lazy(() => import("@/pages/PasswordResetPage")),
-  AllApplications: lazy(() => import("@/pages/AllApplications")),
-  NewApplication: lazy(() => import("@/pages/NewApplication")),
-  ViewApplication: lazy(
-    () => import("@/pages/ViewApplication/ViewApplication")
-  ),
+  LoginPage: lazy(() => import('pages/LoginPage')),
+  PasswordResetPage: lazy(() => import('pages/PasswordResetPage')),
+  AllApplications: lazy(() => import('pages/AllApplications')),
+  NewApplication: lazy(() => import('pages/NewApplication')),
+  ViewApplication: lazy(() => import('pages/ViewApplication/ViewApplication')),
+  ViewApplicationTask: lazy(() => import('pages/ViewApplicationTask')),
 };
 
-function AppRouter(_: {}) {
+function AppRouter() {
   return (
     <React.Suspense fallback={<Loader />}>
       <BrowserRouter>
@@ -60,7 +48,7 @@ function AppRouter(_: {}) {
             path="/login/password-reset"
             element={COMPONENTS.PasswordResetPage}
           />
-          <Route path="/" element={lazy(() => import("@/pages/MainPage"))}>
+          <Route path="/" element={lazy(() => import('pages/MainPage'))}>
             <Route path="applications" element={COMPONENTS.AllApplications} />
             <Route
               path="applications/new"
@@ -72,11 +60,26 @@ function AppRouter(_: {}) {
             />
             <Route
               path="applications/:id/edit"
-              element={lazy(() => import("@/pages/EditApplication"))}
+              element={lazy(() => import('pages/EditApplication'))}
+            />
+            <Route
+              path="applications/:appID/tasks/:taskID"
+              element={COMPONENTS.ViewApplicationTask}
             />
           </Route>
         </Routes>
       </BrowserRouter>
     </React.Suspense>
+  );
+}
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <Toaster />
+      <Root>
+        <AppRouter />
+      </Root>
+    </ThemeProvider>
   );
 }

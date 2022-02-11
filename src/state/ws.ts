@@ -1,12 +1,18 @@
-import { autorun, makeObservable, observable, runInAction } from "mobx";
-import { UserHubWS } from "@/api";
-import AuthState from "./auth";
+import { UserHubWS } from 'api';
+import {
+  autorun, makeObservable, observable, runInAction,
+} from 'mobx';
+import AuthState from './auth';
 
 export class WSState {
   private _client: UserHubWS;
+
   private _authState: AuthState;
+
   private _dispose: () => void;
+
   isConnected: boolean = false;
+
   lastError: string | null = null;
 
   get client() {
@@ -21,10 +27,8 @@ export class WSState {
         if (!this.isConnected) {
           await this.connect();
         }
-      } else {
-        if (this.isConnected) {
-          await this.disconnect();
-        }
+      } else if (this.isConnected) {
+        await this.disconnect();
       }
     });
     makeObservable(this, {

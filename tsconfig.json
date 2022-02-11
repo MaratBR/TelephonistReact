@@ -17,12 +17,11 @@
         "useDefineForClassFields": true,
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
-        "baseUrl": "./src", 
+        "baseUrl": "./src",
+        "strictBindCallApply": true,
         "paths": {
-            "@assets/*": ["./assets/*"],
-            "@components/*": ["./components/*"],
-            "@components": ["./components"],
-            "@locales/*": ["../locales/*"],
+            "@cc/*": ["./core/components/*"],
+            "@locales/*": ["../locales/*"]
         }
     },
     "include": [

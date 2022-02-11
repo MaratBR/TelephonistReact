@@ -1,48 +1,60 @@
-import axios from "axios";
-import { makeAutoObservable, action, runInAction } from "mobx";
-import { makePersistable } from "mobx-persist-store";
-import api, { models, requests } from "@/api";
+import api, { models, requests } from 'api';
+import axios from 'axios';
+import { action, makeAutoObservable, runInAction } from 'mobx';
+import { makePersistable } from 'mobx-persist-store';
 
 export default class AuthState {
   accessToken: string | null = null;
+
   isAuthorized: boolean = false;
+
   user: models.UserView | null = null;
+
   lastUsername: string | null = null;
+
   loginError: string | null = null;
+
   fetchUserError: string | null = null;
+
   isLoading: boolean = false;
+
   isPasswordResetRequired: boolean = false;
+
   passwordResetExpiresAt: number = -1;
+
   passwordResetToken: string | null = null;
+
   isInitialized: boolean = false;
+
   tokenExpiresAt: number = -1;
+
   resetPasswordError: any = null;
 
   constructor() {
     makeAutoObservable(this);
     makePersistable(this, {
-      name: "auth",
+      name: 'auth',
       storage: window.localStorage,
       properties: [
-        "isAuthorized",
-        "tokenExpiresAt",
-        "user",
-        "lastUsername",
-        "accessToken",
-        "passwordResetToken",
-        "passwordResetExpiresAt",
-        "isPasswordResetRequired",
+        'isAuthorized',
+        'tokenExpiresAt',
+        'user',
+        'lastUsername',
+        'accessToken',
+        'passwordResetToken',
+        'passwordResetExpiresAt',
+        'isPasswordResetRequired',
       ],
     }).then(
       action(() => {
         this.initialize();
-      })
+      }),
     );
   }
 
   async login(r: requests.Login) {
     try {
-      runInAction(() => (this.isLoading = true));
+      runInAction(() => { this.isLoading = true; });
       const data = await api.authorize(r);
       runInAction(() => this._loginState(data));
     } catch (e) {
@@ -51,7 +63,7 @@ export default class AuthState {
       });
       throw e;
     } finally {
-      runInAction(() => (this.isLoading = false));
+      runInAction(() => { this.isLoading = false; });
     }
   }
 
@@ -97,7 +109,7 @@ export default class AuthState {
       const response = await api.refreshToken();
       runInAction(() => this._loginState(response));
     } catch (e) {
-      if (axios.isAxiosError(e) && e.response.status == 401) {
+      if (axios.isAxiosError(e) && e.response.status === 401) {
         runInAction(() => this._logoutState());
       }
       throw e;
@@ -136,12 +148,12 @@ export default class AuthState {
   async resetPassword(newPassword: string) {
     if (!this.isPasswordResetRequired) {
       throw new Error(
-        "invalid operation: cannot reset pasword since isPasswordResetRequired set to false"
+        'invalid operation: cannot reset pasword since isPasswordResetRequired set to false',
       );
     }
     if (this.isLoading) {
       throw new Error(
-        "another process is already happenning (i.e. logging in), can't do much for now"
+        "another process is already happenning (i.e. logging in), can't do much for now",
       );
     }
     this.isLoading = true;

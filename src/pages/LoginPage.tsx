@@ -1,18 +1,20 @@
-import { observer } from "mobx-react";
-import { useRequiredStringState, validateAnd } from "@/hooks";
-import { Centered, Screen } from "@components";
-import { useNavigate } from "react-router";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
-import state from "@/state";
-import { Alert, Button, Input, Stack, Card, Logo } from "@components";
-import toast from "react-hot-toast";
-import { useGlobalState } from "@/api/hooks";
-import SerenityLayout from "@components/layouts/SerenityLayout";
-import ContentBox from "~/components/ContentBox";
+import { Alert } from '@cc/Alert';
+import { Logo } from '@cc/brand';
+import { Button } from '@cc/Button';
+import { ContentBox } from '@cc/ContentBox';
+import { Input } from '@cc/Input';
+import { SerenityLayout } from '@cc/Layout';
+import { Stack } from '@cc/Stack';
+import { useRequiredStringState, validateAnd } from 'core/hooks';
+import { observer } from 'mobx-react';
+import React from 'react';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
+import { useGlobalState } from 'state/hooks';
 
-function LoginPage(_: {}) {
+function LoginPage() {
   const loginVal = useRequiredStringState();
   const passwordVal = useRequiredStringState();
   const [params] = useSearchParams();
@@ -23,44 +25,39 @@ function LoginPage(_: {}) {
   let formBody: React.ReactNode;
 
   const login = async () => {
-    toast.loading(t("login.progress"), { id: "login" });
+    toast.loading(t('login.progress'), { id: 'login' });
     try {
       await auth.login({
         login: loginVal.value,
         password: passwordVal.value,
       });
     } catch (e) {
-      toast.error(t("login.error"), { id: "login" });
+      toast.error(t('login.error'), { id: 'login' });
       return;
     }
 
     if (!auth.isPasswordResetRequired) {
-      toast.success(t("login.welcome"), { id: "login" });
-      if (params.has("next")) {
-        navigate(params.get("next"));
+      toast.success(t('login.welcome'), { id: 'login' });
+      if (params.has('next')) {
+        navigate(params.get('next'));
       } else {
-        navigate("/");
+        navigate('/');
       }
     } else {
-      toast.remove("login");
-      let query = "";
-      if (params.has("next")) {
-        query = "next=" + encodeURIComponent(params.get("next"));
+      toast.remove('login');
+      let query = '';
+      if (params.has('next')) {
+        query = `next=${encodeURIComponent(params.get('next'))}`;
       }
-      navigate("/login/password-reset?" + query);
+      navigate(`/login/password-reset?${query}`);
     }
   };
 
-  if (state.auth.isAuthorized) {
+  if (auth.isAuthorized) {
     formBody = (
       <>
-        <Alert>{t("alreadyloggedin")}</Alert>
-        <Button
-          left={<i className="fa " />}
-          onClick={() => state.auth.logout()}
-        >
-          {t("logout")}
-        </Button>
+        <Alert>{t('alreadyloggedin')}</Alert>
+        <Button onClick={() => auth.logout()}>{t('logout')}</Button>
       </>
     );
   } else {
@@ -68,27 +65,27 @@ function LoginPage(_: {}) {
       <>
         <Input
           isInvalid={loginVal.isError}
-          disabled={state.auth.isLoading}
+          disabled={auth.isLoading}
           value={loginVal.value}
           variant="minimal"
           onChange={(e) => loginVal.setValue(e.target.value)}
-          placeholder={t("username")}
+          placeholder={t('username')}
         />
         <Input
           isInvalid={passwordVal.isError}
           type="password"
-          disabled={state.auth.isLoading}
+          disabled={auth.isLoading}
           value={passwordVal.value}
           variant="minimal"
           onChange={(e) => passwordVal.setValue(e.target.value)}
-          placeholder={t("password")}
+          placeholder={t('password')}
         />
         <Button
-          loading={state.auth.isLoading}
+          loading={auth.isLoading}
           color="primary"
           onClick={validateAnd([loginVal, passwordVal], login)}
         >
-          {t("login._")}
+          {t('login._')}
         </Button>
       </>
     );

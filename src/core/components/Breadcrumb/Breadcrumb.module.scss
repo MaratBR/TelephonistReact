@@ -1,0 +1,22 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & > .item:last-child {
+    & > .separator {
+      display: none;
+    }
+  }
+}
+
+.item {
+  align-items: center;
+  display: flex;
+}
+
+.separator {
+  padding: 0 var(--t-spacing-md);
+  user-select: none;
+  display: inline-block;
+}

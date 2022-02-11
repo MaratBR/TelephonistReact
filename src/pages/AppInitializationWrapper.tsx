@@ -1,13 +1,14 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { Centered, Screen } from "@components";
-import { observer } from "mobx-react";
-import state from "@/state";
-import LoadingSpinner from "@components/LoadingSpinner";
+import { Centered } from '@cc/Layout';
+import LoadingSpinner from '@cc/LoadingSpinner';
+import Screen from '@cc/Screen';
+import { observer } from 'mobx-react';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import state from 'state';
 
-const AppInitializationWrapper = ({
+function AppInitializationWrapper({
   children,
-}: React.PropsWithChildren<{}>) => {
+}: React.PropsWithChildren<{}>) {
   if (!state.auth.isInitialized) {
     return (
       <Screen>
@@ -21,12 +22,17 @@ const AppInitializationWrapper = ({
   if (!state.auth.isAuthorized) {
     return (
       <Navigate
-        to={{ pathname: "/login", search: "next=" + location.pathname }}
+        to={{ pathname: '/login', search: `next=${window.location.pathname}` }}
       />
     );
   }
 
-  return <>{children}</>;
-};
+  return (
+    <>
+      {/* eslint-ignore-line react/jsx-no-useless-fragment */}
+      {children}
+    </>
+  );
+}
 
 export default observer(AppInitializationWrapper);

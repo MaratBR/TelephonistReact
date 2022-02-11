@@ -1,0 +1,23 @@
+.modal {
+  border-radius: var(--t-radius-md);
+  background-color: var(--t-paper);
+  box-shadow: 0 2px 5px var(--t-neutral-3);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--t-neutral-7);
+
+  & > h4 {
+    margin: 1em 0.6em 1em 1em;
+    flex-grow: 1;
+  }
+}
+
+.close {
+}
+
+.body {
+  padding: 0.5em 1em 1em 1em;
+}

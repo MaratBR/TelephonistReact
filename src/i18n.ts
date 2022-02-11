@@ -1,27 +1,29 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
-import resourcesToBackend from "i18next-resources-to-backend";
+import i18n from 'i18next';
+import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
+import resourcesToBackend from 'i18next-resources-to-backend';
+import { initReactI18next } from 'react-i18next';
 
-const ruI18N = () => import(`@locales/ru/translation.json`);
-const enI18N = () => import(`@locales/en/translation.json`);
+const ruI18N = () => import('@locales/ru/translation.json');
+const enI18N = () => import('@locales/en/translation.json');
+
+interface TranslationObject extends Record<string, string | TranslationObject> {}
 
 const languages = {
   en: enI18N,
   ru: ruI18N,
 };
 
-async function loadTranslations(language: string, namespace: string) {
-  if (namespace !== "translation")
-    throw new Error("Only the default namespace is supported at the moment");
-  if (/^\w+-\w+$/.test(language))
-    language = language.split("-")[0].toLowerCase();
-  else language = language.toLowerCase();
-  const promise = languages[language];
+function loadTranslations(language: string, namespace: string) {
+  if (namespace !== 'translation') throw new Error('Only the default namespace is supported at the moment');
+  let normalizedLang: string;
+  if (/^\w+-\w+$/.test(language)) normalizedLang = language.split('-')[0].toLowerCase();
+  else normalizedLang = language.toLowerCase();
+
+  const promise: () => Promise<TranslationObject> = languages[normalizedLang];
   if (promise) {
-    return await promise();
+    return promise();
   }
-  throw new Error("language " + language + " is not supported");
+  throw new Error(`language ${normalizedLang} is not supported`);
 }
 
 export function initI18N() {
@@ -32,13 +34,13 @@ export function initI18N() {
         loadTranslations(language, namespace)
           .then((response) => callback(null, response))
           .catch((error) => callback(error, null));
-      })
+      }),
     )
     .use(I18nextBrowserLanguageDetector)
     .init({
-      debug: process.env.NODE_ENV === "development",
-      fallbackLng: "en",
-      pluralSeparator: "+",
+      debug: process.env.NODE_ENV === 'development',
+      fallbackLng: 'en',
+      pluralSeparator: '+',
       interpolation: {
         escapeValue: false,
       },

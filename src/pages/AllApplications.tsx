@@ -1,20 +1,23 @@
-import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import api, { models } from "@/api";
-import { Breadcrumb, ButtonGroup, Card, Heading, Stack } from "@components";
-import Button from "@/components/Button/Button";
-import DataGrid, {
+import { Breadcrumb } from '@cc/Breadcrumb';
+import { Button } from '@cc/Button';
+import ButtonGroup from '@cc/ButtonGroup';
+import { Card } from '@cc/Card';
+import {
+  DataGrid,
   DataGridColumn,
   renderBoolean,
   renderObjectID,
-} from "@components/DataGrid";
-import Icon from "@mdi/react";
-import { mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
+} from '@cc/DataGrid';
+import { Heading } from '@cc/Text';
+import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
+import Icon from '@mdi/react';
+import api, { models } from 'api';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 
-export default function AllApplications(_: {}) {
-  const [pagination, setPagination] =
-    useState<models.Pagination<models.ApplicationView>>();
+export default function AllApplications() {
+  const [pagination, setPagination] = useState<models.Pagination<models.ApplicationView>>();
 
   useEffect(() => {
     api.getApplictions({}).then(setPagination);
@@ -24,36 +27,36 @@ export default function AllApplications(_: {}) {
 
   const columns: DataGridColumn<models.ApplicationView>[] = [
     {
-      key: "_id",
-      title: "ID",
+      key: '_id',
+      title: 'ID',
       render: (id) => (
-        <NavLink to={"/applications/" + id}>{renderObjectID(id)}</NavLink>
+        <NavLink to={`/applications/${id}`}>{renderObjectID(id)}</NavLink>
       ),
     },
-    { key: "name", title: t("name") },
-    { key: "disabled", title: t("disabled"), render: renderBoolean },
-    { key: "description", title: t("description") },
+    { key: 'name', title: t('name') },
+    { key: 'disabled', title: t('disabled'), render: renderBoolean },
+    { key: 'description', title: t('description') },
     {
       custom: true,
       render: () => (
         <span>
           <Button size="sm" left={<Icon size={1} path={mdiPencil} />}>
-            {t("edit")}
+            {t('edit')}
           </Button>
         </span>
       ),
-      key: "buttons",
-      title: "",
+      key: 'buttons',
+      title: '',
     },
   ];
 
   return (
     <div>
       <Breadcrumb>
-        <span>{t("applications")}</span>
-        <span>{t("all_applications")}</span>
+        <span>{t('applications')}</span>
+        <span>{t('all_applications')}</span>
       </Breadcrumb>
-      <Heading>{t("all_applications")}</Heading>
+      <Heading>{t('all_applications')}</Heading>
 
       <Card>
         <ButtonGroup>
@@ -62,14 +65,14 @@ export default function AllApplications(_: {}) {
             to="/applications/new"
             left={<Icon size={1} path={mdiPlus} />}
           >
-            {t("create_new")}
+            {t('create_new')}
           </Button>
           <Button
             disabled
             color="danger"
             left={<Icon size={1} path={mdiTrashCan} />}
           >
-            {t("delete")}
+            {t('delete')}
           </Button>
         </ButtonGroup>
 

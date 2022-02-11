@@ -1,0 +1,11 @@
+.button {
+  border: none;
+  border-radius: 10000px;
+  width: 3.5em;
+  height: 3.5em;
+  background: transparent;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--t-highlight);
+  }
+}

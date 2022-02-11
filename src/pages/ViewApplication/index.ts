@@ -1,3 +1,3 @@
-import ViewApplication from "./ViewApplication";
+import ViewApplication from './ViewApplication';
 
 export default ViewApplication;

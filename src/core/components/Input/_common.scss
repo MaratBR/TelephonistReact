@@ -1,0 +1,21 @@
+
+
+// clear, styleless input
+@mixin defaultInput {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: var(--t-spacing-lg);
+  font-size: 1em;
+  outline: none;
+  border: none;
+  line-height: 1.2;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+  }
+}

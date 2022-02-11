@@ -1,9 +1,9 @@
-import { autorun } from "mobx";
-import AuthState from "./auth";
-import { WSState } from "./ws";
+import AuthState from './auth';
+import { WSState } from './ws';
 
 export class RootState {
   auth: AuthState;
+
   ws: WSState;
 
   constructor() {

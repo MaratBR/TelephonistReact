@@ -1,55 +1,52 @@
-import { models } from "@/api";
-import { Button, Heading, HStack, Parameters, StringValue } from "@/components";
-import Tag from "@/components/Tag";
-import { mdiEye, mdiEyeOff, mdiPencil } from "@mdi/js";
-import Icon from "@mdi/react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Button } from '@cc/Button';
+import { Parameters, StringValue } from '@cc/Parameters';
+import { Stack } from '@cc/Stack';
+import Tags from '@cc/Tags';
+import { Heading } from '@cc/Text';
+import { mdiEye, mdiEyeOff, mdiPencil } from '@mdi/js';
+import Icon from '@mdi/react';
+import { models } from 'api';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type ApplicationInfoProps = {
-  app: models.ApplicationView;
-};
+  app: models.ApplicationView
+}
 
 export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
   const [showKey, setShowKey] = useState(false);
   const { t } = useTranslation();
   return (
     <>
-      <HStack>
+      <Stack h>
         <Button
-          to={"/applications/" + app._id + "/edit"}
+          to={`/applications/${app._id}/edit`}
           left={<Icon size={1} path={mdiPencil} />}
         >
-          {t("edit")}
+          {t('edit')}
         </Button>
-      </HStack>
-      <Heading as="h3">{t("general_information")}</Heading>
+      </Stack>
+      <Heading as="h3">{t('general_information')}</Heading>
       <Parameters
         parameters={{
-          [t("id")]: <code>{app._id}</code>,
-          [t("name")]: <StringValue value={app.name} />,
-          [t("description")]: <StringValue value={app.description} />,
-          [t("access_key")]: (
-            <HStack spacing="md">
+          [t('id')]: <code>{app._id}</code>,
+          [t('name')]: <StringValue value={app.name} />,
+          [t('description')]: <StringValue value={app.description} />,
+          [t('access_key')]: (
+            <Stack h spacing="md">
               <code>
-                {showKey ? app.access_key : "application.################"}
+                {showKey ? app.access_key : 'application.################'}
               </code>
               <Button
                 variant="link"
                 onClick={() => setShowKey(!showKey)}
                 left={<Icon size={0.8} path={showKey ? mdiEyeOff : mdiEye} />}
               >
-                {showKey ? t("hide_key") : t("show_key")}
+                {showKey ? t('hide_key') : t('show_key')}
               </Button>
-            </HStack>
+            </Stack>
           ),
-          [t("tags")]: (
-            <HStack>
-              {app.tags.map((tag) => (
-                <Tag key={tag}>{tag}</Tag>
-              ))}
-            </HStack>
-          ),
+          [t('tags')]: <Tags tags={app.tags} />,
         }}
       />
     </>

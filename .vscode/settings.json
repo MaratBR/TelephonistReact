@@ -1,3 +1,4 @@
 {
-    "liveServer.settings.file": "/dist/index.html"
+    "liveServer.settings.file": "/dist/index.html",
+    "editor.tabSize": 2
 }

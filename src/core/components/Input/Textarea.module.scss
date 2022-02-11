@@ -1,0 +1,9 @@
+@import "_common";
+
+.textarea {
+  @include defaultInput();
+  --input-color: var(--t-primary); 
+  font-family: var(--t-font-main);
+  outline: none !important;
+  resize: vertical;
+}

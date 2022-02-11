@@ -1,0 +1,5 @@
+.fields {
+  & > *:not(:last-child) {
+    margin-bottom: var(--t-spacing-md);
+  }
+}

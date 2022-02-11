@@ -1,3 +1,9 @@
-export * from "./apiDef";
-export { default } from "./apiImplementation";
-export { default as UserHubWS } from "./userHub";
+import api from './apiImplementation';
+import UserHubWS from './userHub';
+
+export * from './apiDef';
+export {
+  UserHubWS,
+};
+
+export default api;

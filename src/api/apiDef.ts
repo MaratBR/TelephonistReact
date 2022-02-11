@@ -34,7 +34,7 @@ export module requests {
   };
 
   export type PaginationParams<TOrderBy = string> = {
-    order?: "asc" | "desc";
+    order?: 'asc' | 'desc';
     order_by?: TOrderBy;
     page?: number;
     page_size?: number;
@@ -47,7 +47,7 @@ export module requests {
     display_name?: string;
     tags?: string[];
     disabled?: boolean;
-    application_type?: "arbitrary" | "host" | string;
+    application_type?: 'arbitrary' | 'host' | string;
   };
 
   export type UpdateApplication = {
@@ -57,13 +57,15 @@ export module requests {
     display_name?: string;
   };
 
+  export type EventsOrderBy = '_id' | 'event_type' | 'related_task' | 'created_at';
+
   export type GetEventsParams = {
     event_key?: string | null;
-    related_task?: "*" | string | null;
-    event_type?: "*" | string | null;
+    related_task?: '*' | string | null;
+    event_type?: '*' | string | null;
     sequence_id?: string | null;
     app_id?: string | null;
-  } & PaginationParams<"_id" | "event_type" | "related_task" | "created_at">;
+  } & PaginationParams<EventsOrderBy>;
 
   export type DefineTask = {
     _id?: string;
@@ -93,7 +95,7 @@ export module models {
     total: number;
     pages_total: number;
     order_by: TOrderBy;
-    order: "desc" | "asc";
+    order: 'desc' | 'asc';
     pages_returned: number;
     result: T[];
   };
@@ -108,7 +110,7 @@ export module models {
 
   export type LoginResponse = {
     refresh_token: null;
-    token_type: "bearer";
+    token_type: 'bearer';
   } & (
     | {
         password_reset_required: false;
@@ -151,7 +153,7 @@ export module models {
     name: string;
     description: string | null;
     access_key: string;
-    application_type: "host" | "arbitrary" | string;
+    application_type: 'host' | 'arbitrary' | string;
     settings: Record<string, any>;
   };
 
@@ -164,7 +166,7 @@ export module models {
     connections: ConnectionInfo[];
   };
 
-  export type TaskType = "arbitrary" | "exec" | "script";
+  export type TaskType = 'arbitrary' | 'exec' | 'script';
 
   type TaskTriggerRegistry = {
     fsnotify: string;
@@ -172,18 +174,15 @@ export module models {
     event: string;
   };
 
-  export type TaskTrigger = _ValueOf<{
-    [K in keyof TaskTriggerRegistry]: {
-      name: K;
-      body: TaskTriggerRegistry[K];
-    };
-  }>;
+  export type TaskTrigger = {
+    name: string;
+    body: any;
+  };
 
-  export type ApplicationTaskType = keyof ApplicationTaskTypeRegistry
+  export type ApplicationTaskType = keyof ApplicationTaskTypeRegistry;
 
   export type ApplicationTask = ApplicationTaskTypeSpecific & {
     _id: string;
-    app_id: string;
     name: string;
     qualified_name: string;
     description: string | null;
@@ -192,7 +191,12 @@ export module models {
     env: Record<string, string>;
     last_updated: string;
     disabled: boolean;
-    errors: Record<string, string>
+    errors: Record<string, string>;
+    app: {
+      _id: string;
+      name: string;
+      display_name: string;
+    };
   };
 
   export type Event = {
@@ -208,10 +212,10 @@ export module models {
   };
 
   export enum SequenceState {
-    FAILED = "failed",
-    SUCCEEDED = "succeeded",
-    SKIPPED = "skipped",
-    IN_PROGRESS = "in_progress",
+    FAILED = 'failed',
+    SUCCEEDED = 'succeeded',
+    SKIPPED = 'skipped',
+    IN_PROGRESS = 'in_progress',
   }
 
   export interface Sequence {
@@ -230,7 +234,7 @@ export module models {
     connection_id: string | null;
   }
 
-  export type SendDataIf = "always" | "never" | "if_non_0_exit_code";
+  export type SendDataIf = 'always' | 'never' | 'if_non_0_exit_code';
 
   export type HostedApplication = {
     name: string;
@@ -272,7 +276,7 @@ export module ws {
     sequence_id?: string | null;
   };
 
-  //#region entry_update
+  // #region entry_update
 
   export type SubscribeEntryData = {
     id: string;
@@ -298,7 +302,7 @@ export module ws {
     >;
   }>;
 
-  //#endregion
+  // #endregion
 
   export interface MREntryUpdates {
     entry_update: AnyEntryUpdateData;

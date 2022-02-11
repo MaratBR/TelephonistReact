@@ -1,0 +1,46 @@
+.box {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  --input-color: var(--t-primary);
+
+  &.invalid {
+    --input-color: var(--t-primary);
+  }
+
+  &.flushed {
+    border-bottom: 1px solid var(--input-color);
+    border-radius: var(--t-radius-sm) var(--t-radius-sm) 0 0;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: var(--input-color);
+      transition: transform var(--t-transition-sm);
+      transform: scaleX(0);
+    }
+
+    &.focused {
+      background-color: var(--t-neutral-9);
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  &.default {
+    transition: border-color var(--t-transition-sm);
+    border-radius: var(--t-radius-sm);
+    border: 2px solid var(--t-neutral-8);
+
+    &.invalid, &.focused {
+      border-color: var(--input-color);
+    }
+  }
+}

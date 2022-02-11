@@ -1,5 +1,5 @@
-import { Container } from "inversify";
-import React, { useContext } from "react";
+import { Container } from 'inversify';
+import React, { useContext } from 'react';
 
 const DiContext = React.createContext<Container | null>(null);
 
@@ -19,8 +19,10 @@ export type WithContainerParams = { diContainer: Container | null };
 export function withContainer<P, S>(
   Component:
     | React.FC<P & { diContainer: Container | null }>
-    | React.ComponentClass<P & WithContainerParams>
+    | React.ComponentClass<P & WithContainerParams>,
 ): React.FC<P> {
   const container = useContainer();
-  return (props) => <Component diContainer={container} {...props} />;
+  return function (props) {
+    return <Component diContainer={container} {...props} />;
+  };
 }
