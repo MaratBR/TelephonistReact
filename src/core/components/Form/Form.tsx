@@ -1,10 +1,10 @@
-import { asPromise } from 'core/utils/async';
 import { useState } from 'react';
 import {
   FormEnvironmentProvider,
   FormStatus,
   FormStatusContext,
 } from './context';
+import { asPromise } from 'core/utils/async';
 
 type FormProps = React.FormHTMLAttributes<HTMLFormElement> & {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void | Promise<void>;

@@ -20,7 +20,7 @@
         "baseUrl": "./src",
         "strictBindCallApply": true,
         "paths": {
-            "@cc/*": ["./core/components/*"],
+            "@ui/*": ["./core/components/*"],
             "@locales/*": ["../locales/*"]
         }
     },

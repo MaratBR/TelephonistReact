@@ -1,13 +1,13 @@
-import { Alert } from '@cc/Alert';
-import ButtonGroup from '@cc/ButtonGroup';
-import ContentSection from '@cc/ContentSection';
-import { Form, SaveButton } from '@cc/Form';
-import { Input, InputLayout, Textarea } from '@cc/Input';
-import TagInput from '@cc/TagInput';
+import React, { useEffect, useState } from 'react';
+import { Alert } from '@ui/Alert';
+import ButtonGroup from '@ui/ButtonGroup';
+import ContentSection from '@ui/ContentSection';
+import { Form, SaveButton } from '@ui/Form';
+import { Input, InputLayout, Textarea } from '@ui/Input';
+import TagInput from '@ui/TagInput';
 import api, { models, requests } from 'api';
 import { useTrackedChanges } from 'core/hooks';
 import { ParametersStack } from 'pages/parts/Parameters';
-import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type EditApplicationProps = {

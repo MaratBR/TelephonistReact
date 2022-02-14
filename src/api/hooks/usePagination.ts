@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Pagination, PaginationParams } from 'api/definition';
 import { AsyncValue, useRefreshableAsyncValue } from 'core/hooks';
-import { useEffect, useState } from 'react';
 
 export interface PaginationValue<T, TOrderBy extends string>
   extends AsyncValue<Pagination<T>> {

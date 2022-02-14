@@ -1,13 +1,13 @@
-import { Breadcrumb } from '@cc/Breadcrumb';
-import { ContentBox } from '@cc/ContentBox';
-import Error from '@cc/Error';
-import { Form, SaveButton } from '@cc/Form';
-import { Input, InputLayout, Select, Textarea } from '@cc/Input';
-import { Stack } from '@cc/Stack';
-import TagInput from '@cc/TagInput';
-import { Heading } from '@cc/Text';
-import api from 'api';
 import { FormEvent, useState } from 'react';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import { ContentBox } from '@ui/ContentBox';
+import Error from '@ui/Error';
+import { Form, SaveButton } from '@ui/Form';
+import { Input, InputLayout, Select, Textarea } from '@ui/Input';
+import { Stack } from '@ui/Stack';
+import TagInput from '@ui/TagInput';
+import { Heading } from '@ui/Text';
+import api from 'api';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 

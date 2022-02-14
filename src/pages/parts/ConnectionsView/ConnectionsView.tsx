@@ -3,10 +3,10 @@ import {
   dateRender,
   renderBoolean,
   renderObjectID,
-} from '@cc/DataGrid';
+} from '@ui/DataGrid';
+import { Shruggie } from '../misc';
 import { ConnectionInfo } from 'api/definition';
 import { useTranslation } from 'react-i18next';
-import { Shruggie } from '../misc';
 
 type ConnectionsViewProps = {
   connections: ConnectionInfo[];

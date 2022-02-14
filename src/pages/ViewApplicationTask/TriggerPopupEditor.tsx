@@ -1,15 +1,15 @@
-import { Breadcrumb } from '@cc/Breadcrumb';
-import ButtonGroup from '@cc/ButtonGroup';
-import { Field } from '@cc/Field';
-import { InputLayout } from '@cc/Input';
-import { ModalDialog } from '@cc/Modal';
-import { TaskTrigger, TRIGGER_EVENT } from 'api/definition';
-import { useApi } from 'api/hooks';
-import { ParametersStack } from 'pages/parts/Parameters';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import ButtonGroup from '@ui/ButtonGroup';
+import { Field } from '@ui/Field';
+import { InputLayout } from '@ui/Input';
+import { ModalDialog } from '@ui/Modal';
 import TriggerBodyView from './TriggerBodyView';
 import S from './TriggerPopupEditor.module.scss';
+import { TRIGGER_EVENT, TaskTrigger } from 'api/definition';
+import { useApi } from 'api/hooks';
+import { ParametersStack } from 'pages/parts/Parameters';
+import { useTranslation } from 'react-i18next';
 
 type TriggerPopupEditorProps = {
   trigger?: TaskTrigger;

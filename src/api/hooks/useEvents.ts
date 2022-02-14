@@ -1,6 +1,6 @@
-import { Event, EventsOrderBy, GetEventsParams } from 'api/definition';
 import { useApi } from '.';
 import usePagination from './usePagination';
+import { Event, EventsOrderBy, GetEventsParams } from 'api/definition';
 
 export function useEventPagination(params?: GetEventsParams) {
   const api = useApi();

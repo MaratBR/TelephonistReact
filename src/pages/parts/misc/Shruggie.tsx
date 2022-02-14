@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import S from './Shruggie.module.scss';
+import { useTranslation } from 'react-i18next';
 
 type ShruggieProps = React.PropsWithChildren<{}>;
 

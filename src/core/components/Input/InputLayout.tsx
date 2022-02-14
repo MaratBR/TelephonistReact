@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import { forwardRef } from 'react';
 import S from './InputLayout.module.scss';
+import classNames from 'classnames';
 
 type InputLayoutVariant = 'inline' | 'top' | 'aside' | 'aside-right';
 

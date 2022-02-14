@@ -1,14 +1,14 @@
-import { Alert } from '@cc/Alert';
-import { Nav, NavGroup, NavItem, NavItems } from '@cc/Nav';
-import { Stack } from '@cc/Stack';
+import React, { ErrorInfo } from 'react';
+import { Alert } from '@ui/Alert';
+import { Nav, NavGroup, NavItem, NavItems } from '@ui/Nav';
+import { Stack } from '@ui/Stack';
+import AppInitializationWrapper from '../AppInitializationWrapper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { mdiDotsGrid, mdiHomeCircleOutline, mdiPlus } from '@mdi/js';
 import { TFunction } from 'i18next';
-import React, { ErrorInfo } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
-import AppInitializationWrapper from '../AppInitializationWrapper';
 
 const rootCSS = css`
   display: grid;

@@ -1,10 +1,10 @@
-import { Button } from '@cc/Button';
+import { useContext, useEffect, useState } from 'react';
+import { Button } from '@ui/Button';
+import S from './SaveButton.module.scss';
+import { FormStatusContext } from './context';
 import { mdiCheck, mdiClose, mdiContentSave } from '@mdi/js';
 import Icon from '@mdi/react';
-import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormStatusContext } from './context';
-import S from './SaveButton.module.scss';
 
 export default function SaveButton() {
   const { isSubmitting, error } = useContext(FormStatusContext);

@@ -1,4 +1,4 @@
-import { Stack } from '@cc/Stack';
+import { Stack } from '@ui/Stack';
 import { css } from '@emotion/react';
 import Icon from '@mdi/react';
 import { NavLink } from 'react-router-dom';

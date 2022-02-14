@@ -1,8 +1,8 @@
-import { Centered } from '@cc/Layout';
-import LoadingSpinner from '@cc/LoadingSpinner';
-import Screen from '@cc/Screen';
-import { observer } from 'mobx-react';
 import React from 'react';
+import { Centered } from '@ui/Layout';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import Screen from '@ui/Screen';
+import { observer } from 'mobx-react';
 import { Navigate } from 'react-router-dom';
 import state from 'state';
 

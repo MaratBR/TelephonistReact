@@ -1,4 +1,4 @@
-import { Input } from '@cc/Input';
+import { Input } from '@ui/Input';
 import { TRIGGER_CRON, TRIGGER_EVENT, TRIGGER_FSNOTIFY } from 'api/definition';
 import { useTranslation } from 'react-i18next';
 

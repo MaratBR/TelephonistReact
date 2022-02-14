@@ -1,9 +1,9 @@
-import ContentSection from '@cc/ContentSection';
-import { StringValue } from '@cc/Parameters';
+import ContentSection from '@ui/ContentSection';
+import { StringValue } from '@ui/Parameters';
+import S from './TaskGeneralInfo.module.scss';
 import { Task } from 'api/definition';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import S from './TaskGeneralInfo.module.scss';
 
 type IsDisabledProps = {
   disabled: boolean;

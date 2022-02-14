@@ -1,12 +1,12 @@
-import { css, Interpolation } from '@emotion/react';
+import React from 'react';
+import S from './Button.module.scss';
+import { Interpolation, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import classNames from 'classnames';
 import LoadingSpinner from 'core/components/LoadingSpinner';
 import { useColor } from 'core/components/theme';
-import React from 'react';
 import { NavLink, To } from 'react-router-dom';
 import tinycolor, { Instance } from 'tinycolor2';
-import S from './Button.module.scss';
 
 type ButtonVariant = 'ghost' | 'default' | 'outline' | 'link';
 

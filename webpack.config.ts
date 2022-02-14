@@ -48,7 +48,7 @@ const configuration: Configuration = {
         alias: {
             "@locales": __dirname + "/locales",
             "@assets": SRC + "/assets",
-            "@cc": SRC + "/core/components"
+            "@ui": SRC + "/core/components"
         },
         extensions: [".tsx", ".ts", ".jsx", ".js"],
         modules: [

@@ -1,8 +1,8 @@
+import React from 'react';
+import S from './Stack.module.scss';
 import { css } from '@emotion/react';
 import classNames from 'classnames';
 import { maybeCSSVariable } from 'core/components/utils';
-import React from 'react';
-import S from './Stack.module.scss';
 
 type StackProps = {
   horizontal?: boolean;

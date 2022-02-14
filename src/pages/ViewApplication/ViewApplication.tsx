@@ -1,8 +1,10 @@
-import ContentSection from '@cc/ContentSection';
-import ErrorView from '@cc/Error';
-import LoadingSpinner from '@cc/LoadingSpinner';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@cc/tabs';
-import { TextHeader } from '@cc/Text';
+import { useCallback } from 'react';
+import ContentSection from '@ui/ContentSection';
+import ErrorView from '@ui/Error';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import { TextHeader } from '@ui/Text';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@ui/tabs';
+import ViewApplicationInfo from './ViewApplicationInfo';
 import { TaskStandalone } from 'api/definition';
 import { useApi, useEventPagination } from 'api/hooks';
 import { Breadcrumb } from 'core/components/Breadcrumb';
@@ -11,10 +13,8 @@ import { observer } from 'mobx-react';
 import ConnectionsView from 'pages/parts/ConnectionsView';
 import EventsViewer from 'pages/parts/EventsViewer';
 import ApplicationTasks from 'pages/parts/TasksView/TasksView';
-import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useParams } from 'react-router-dom';
-import ViewApplicationInfo from './ViewApplicationInfo';
 
 interface ApplicationEventsProps {
   id: string;

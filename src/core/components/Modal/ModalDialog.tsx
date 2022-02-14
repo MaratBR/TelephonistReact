@@ -1,6 +1,6 @@
-import { IconButton } from '@cc/Button';
-import { mdiClose } from '@mdi/js';
+import { IconButton } from '@ui/Button';
 import S from './ModalDialog.module.scss';
+import { mdiClose } from '@mdi/js';
 
 interface ModalDialogProps {
   header?: React.ReactNode;

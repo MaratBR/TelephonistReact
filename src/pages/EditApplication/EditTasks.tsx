@@ -1,17 +1,17 @@
-import { Button } from '@cc/Button';
-import ButtonGroup from '@cc/ButtonGroup';
-import ContentSection from '@cc/ContentSection';
-import { DataGrid } from '@cc/DataGrid';
-import { Modal } from '@cc/Modal';
+import { useState } from 'react';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import ContentSection from '@ui/ContentSection';
+import { DataGrid } from '@ui/DataGrid';
+import { Modal } from '@ui/Modal';
+import DeleteTaskModal from './DeleteTaskModal';
 import { mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Task } from 'api/definition';
 import { useApi } from 'api/hooks';
 import Padded from 'pages/Padded';
 import { Shruggie } from 'pages/parts/misc';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import DeleteTaskModal from './DeleteTaskModal';
 
 type EditTasksProps = {
   tasks: Task[];

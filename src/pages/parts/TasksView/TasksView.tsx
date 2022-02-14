@@ -1,17 +1,17 @@
-import { Button } from '@cc/Button';
-import ButtonGroup from '@cc/ButtonGroup';
-import { Modal } from '@cc/Modal';
+import { useState } from 'react';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import { Modal } from '@ui/Modal';
+import NewTaskModalDialog from '../NewTask/NewTaskModalDialog';
+import { Shruggie } from '../misc';
+import S from './TasksView.module.scss';
 import { mdiExclamationThick } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Task, TaskStandalone } from 'api/definition';
 import { DataGrid, renderBoolean } from 'core/components/DataGrid';
 import Padded from 'pages/Padded';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { Shruggie } from '../misc';
-import NewTaskModalDialog from '../NewTask/NewTaskModalDialog';
-import S from './TasksView.module.scss';
 
 type ApplicationTasksProps = {
   tasks: Task[];

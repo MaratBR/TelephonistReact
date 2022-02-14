@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import { Heading } from 'core/components/Text';
 import React from 'react';
 import S from './ContentSection.module.scss';
+import classNames from 'classnames';
+import { Heading } from 'core/components/Text';
 
 type ContentSectionProps = React.PropsWithChildren<{
   header?: React.ReactNode;

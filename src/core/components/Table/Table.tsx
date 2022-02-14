@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
 import S from './Table.module.scss';
+import classNames from 'classnames';
 
 interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
   minimal?: boolean;

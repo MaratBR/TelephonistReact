@@ -1,5 +1,5 @@
-import { Field, Fields } from '@cc/Field';
 import React from 'react';
+import { Field, Fields } from '@ui/Field';
 
 export default function Parameters({
   parameters,

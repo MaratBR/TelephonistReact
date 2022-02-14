@@ -1,15 +1,15 @@
-import { Button } from '@cc/Button';
-import { Input, Textarea } from '@cc/Input';
-import { Parameters } from '@cc/Parameters';
-import Tags from '@cc/Tags';
+import { useState } from 'react';
+import { Button } from '@ui/Button';
+import { Input, Textarea } from '@ui/Input';
+import { Parameters } from '@ui/Parameters';
+import Tags from '@ui/Tags';
+import S from './TaskView.module.scss';
 import { mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Task } from 'api/definition';
 import cn from 'classnames';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactJson from 'react-json-view';
-import S from './TaskView.module.scss';
 
 type TaskBodyProps = {
   value: any;

@@ -1,7 +1,7 @@
+import WSClientBase from './WsClientBase';
 import { RegistryMessage } from 'api/definition';
 import { Events, newEventHandler } from 'api/events';
 import { Dispose, ListenerFunction } from 'api/events/Events';
-import WSClientBase from './WsClientBase';
 
 export default class WSClient<
   InEventsRegistry extends object,

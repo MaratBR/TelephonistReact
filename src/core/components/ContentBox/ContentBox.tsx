@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import { HTMLAttributes } from 'react';
 import S from './ContentBox.module.scss';
+import classNames from 'classnames';
 
 type ContentBoxProps = HTMLAttributes<HTMLDivElement> & {
   padded?: boolean;

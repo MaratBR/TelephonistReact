@@ -1,7 +1,7 @@
-import { ModalDialog } from '@cc/Modal';
+import { ModalDialog } from '@ui/Modal';
+import TaskForm from './TaskForm';
 import { TaskStandalone } from 'api/definition';
 import { useTranslation } from 'react-i18next';
-import TaskForm from './TaskForm';
 
 type NewTaskModalDialogProps = {
   onClose: () => void;

@@ -1,20 +1,20 @@
-import { Form, FormError, SaveButton } from '@cc/Form';
-import { Input, InputLayout, Select } from '@cc/Input';
+import { useCallback, useEffect, useState } from 'react';
+import { Form, FormError, SaveButton } from '@ui/Form';
+import { Input, InputLayout, Select } from '@ui/Input';
+import { ParametersStack } from '../Parameters';
+import S from './TaskForm.module.scss';
 import {
   DEFAULT_TASK_BODY,
-  TaskStandalone,
-  TaskTrigger,
   TASK_ARBITRARY,
   TASK_EXEC,
   TASK_SCRIPT,
+  TaskStandalone,
+  TaskTrigger,
 } from 'api/definition';
 import { useApi } from 'api/hooks';
 import { useStateWithValidation } from 'core/hooks';
 import { TFunction } from 'i18next';
-import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ParametersStack } from '../Parameters';
-import S from './TaskForm.module.scss';
 
 type TaskFormProps = {
   task?: TaskStandalone;

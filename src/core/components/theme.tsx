@@ -1,11 +1,11 @@
+import React from 'react';
 import {
-  css,
+  ThemeProvider as EmotionThemeProvider,
   Global,
   Interpolation,
-  ThemeProvider as EmotionThemeProvider,
+  css,
   useTheme,
 } from '@emotion/react';
-import React from 'react';
 import tc, { ColorInput, Instance } from 'tinycolor2';
 
 export interface ThemeData {

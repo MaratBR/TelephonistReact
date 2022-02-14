@@ -1,8 +1,8 @@
-import { combineRefs } from '@cc/utils';
+import React, { ForwardedRef, useEffect, useRef, useState } from 'react';
+import { combineRefs } from '@ui/utils';
+import S from './Checkbox.module.scss';
 import { mdiCheck, mdiMinus } from '@mdi/js';
 import Icon from '@mdi/react';
-import React, { ForwardedRef, useEffect, useRef, useState } from 'react';
-import S from './Checkbox.module.scss';
 
 type ControlledCheckboxProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

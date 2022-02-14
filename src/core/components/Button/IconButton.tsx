@@ -1,8 +1,8 @@
+import { ButtonHTMLAttributes } from 'react';
+import S from './IconButton.module.scss';
 import { css } from '@emotion/react';
 import Icon from '@mdi/react';
 import classNames from 'classnames';
-import { ButtonHTMLAttributes } from 'react';
-import S from './IconButton.module.scss';
 
 type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: number;

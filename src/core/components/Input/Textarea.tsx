@@ -1,8 +1,8 @@
-import { combineListeners } from '@cc/utils';
-import classNames from 'classnames';
 import { useState } from 'react';
+import { combineListeners } from '@ui/utils';
 import InputBox, { InputBoxVariant } from './InputBox';
 import S from './Textarea.module.scss';
+import classNames from 'classnames';
 
 type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   variant?: InputBoxVariant;

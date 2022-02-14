@@ -1,8 +1,8 @@
-import { Centered } from '@cc/Layout';
-import LoadingSpinner from '@cc/LoadingSpinner';
-import { ThemeProvider } from '@cc/theme';
-import styled from '@emotion/styled';
 import React from 'react';
+import { Centered } from '@ui/Layout';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import { ThemeProvider } from '@ui/theme';
+import styled from '@emotion/styled';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 

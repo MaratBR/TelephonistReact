@@ -1,17 +1,17 @@
-import { Button } from '@cc/Button';
-import ButtonGroup from '@cc/ButtonGroup';
-import ContentSection from '@cc/ContentSection';
-import { DataGrid } from '@cc/DataGrid';
-import { Modal } from '@cc/Modal';
+import { useCallback, useState } from 'react';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import ContentSection from '@ui/ContentSection';
+import { DataGrid } from '@ui/DataGrid';
+import { Modal } from '@ui/Modal';
+import TriggerPopupEditor from './TriggerPopupEditor';
 import { mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { TaskStandalone, TaskTrigger } from 'api/definition';
 import { MD5 } from 'object-hash';
 import { Shruggie } from 'pages/parts/misc';
-import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import TriggerPopupEditor from './TriggerPopupEditor';
 
 function renderTriggerBody(trigger: TaskTrigger) {
   if (trigger.name === 'event') {

@@ -1,9 +1,9 @@
-import { Checkbox } from '@cc/Input';
-import { Stack } from '@cc/Stack';
+import React from 'react';
+import { Checkbox } from '@ui/Input';
+import { Stack } from '@ui/Stack';
 import { mdiCalendar, mdiCheckCircle, mdiCloseCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import Table from 'core/components/Table';
-import React from 'react';
 
 type StrKeyOf<T> = keyof T & string;
 type DataGridColumnObjectField<T, K extends StrKeyOf<T>> = {

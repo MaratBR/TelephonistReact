@@ -1,11 +1,11 @@
-import { App } from 'App';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { configureAxiosInterceptors } from './api/client';
 import { initI18N } from './i18n';
 import './logging';
 import state from './state';
 import './styles/index.scss';
+import { App } from 'App';
+import ReactDOM from 'react-dom';
 
 configureAxiosInterceptors(state);
 initI18N();

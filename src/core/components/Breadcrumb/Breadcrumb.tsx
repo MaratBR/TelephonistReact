@@ -1,8 +1,8 @@
+import React from 'react';
+import S from './Breadcrumb.module.scss';
 import { mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import classNames from 'classnames';
-import React from 'react';
-import S from './Breadcrumb.module.scss';
 
 interface BreadcrumbProps extends React.HTMLAttributes<HTMLDivElement> {
   separator?: React.ReactNode;

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Context } from './context';
 import { isTab } from './Tab';
 import S from './TabList.module.scss';
+import { Context } from './context';
 
 type ControlledTabListProps = React.HTMLAttributes<HTMLUListElement> & {
   selected: string | number;

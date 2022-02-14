@@ -1,7 +1,7 @@
-import classNames from 'classnames';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import S from './Modal.module.scss';
+import classNames from 'classnames';
+import ReactDOM from 'react-dom';
 
 interface ModalContext {}
 

@@ -1,6 +1,6 @@
-import classNames from 'classnames';
-import { forwardRef, HTMLAttributes } from 'react';
+import { HTMLAttributes, forwardRef } from 'react';
 import S from './InputBox.module.scss';
+import classNames from 'classnames';
 
 export type InputBoxVariant = 'flushed' | 'none' | 'default';
 

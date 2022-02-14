@@ -1,13 +1,13 @@
-import { Button } from '@cc/Button';
-import { Parameters, StringValue } from '@cc/Parameters';
-import { Stack } from '@cc/Stack';
-import Tags from '@cc/Tags';
-import { Heading } from '@cc/Text';
+import { useState } from 'react';
+import { Button } from '@ui/Button';
+import { Parameters, StringValue } from '@ui/Parameters';
+import { Stack } from '@ui/Stack';
+import Tags from '@ui/Tags';
+import { Heading } from '@ui/Text';
 import { mdiEye, mdiEyeOff, mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Application } from 'api/definition';
 import Padded from 'pages/Padded';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type ApplicationInfoProps = {

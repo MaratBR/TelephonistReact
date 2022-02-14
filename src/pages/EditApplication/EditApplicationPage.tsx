@@ -1,13 +1,13 @@
-import { Breadcrumb } from '@cc/Breadcrumb';
-import LoadingSpinner from '@cc/LoadingSpinner';
-import { TextHeader } from '@cc/Text';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import { TextHeader } from '@ui/Text';
+import EditApplication from './EditApplication';
+import EditTasks from './EditTasks';
 import { useApi } from 'api/hooks';
 import { useRefreshableAsyncValue } from 'core/hooks';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import EditApplication from './EditApplication';
-import EditTasks from './EditTasks';
 
 export default function EditApplicationPage() {
   const api = useApi();

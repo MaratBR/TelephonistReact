@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import S from './Fields.module.scss';
+import classNames from 'classnames';
 
 type FieldsProps = React.HTMLAttributes<HTMLDivElement>;
 

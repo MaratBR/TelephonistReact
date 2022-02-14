@@ -1,9 +1,9 @@
-import { IconButton } from '@cc/Button';
-import { css, Interpolation } from '@emotion/react';
-import { mdiClose } from '@mdi/js';
 import React from 'react';
-import tinycolor from 'tinycolor2';
+import { IconButton } from '@ui/Button';
 import S from './Tag.module.scss';
+import { Interpolation, css } from '@emotion/react';
+import { mdiClose } from '@mdi/js';
+import tinycolor from 'tinycolor2';
 
 interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: string;

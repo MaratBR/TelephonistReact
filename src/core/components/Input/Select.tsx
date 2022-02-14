@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import S from './Select.module.scss';
+import classNames from 'classnames';
 
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 

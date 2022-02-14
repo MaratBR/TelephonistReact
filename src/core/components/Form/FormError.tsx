@@ -1,5 +1,5 @@
-import Error from '@cc/Error';
 import { useContext } from 'react';
+import Error from '@ui/Error';
 import { FormStatusContext } from './context';
 
 export default function FormError() {

@@ -1,5 +1,5 @@
-import Tag from 'core/components/Tag';
 import S from './Tags.module.scss';
+import Tag from 'core/components/Tag';
 
 type TagsProps = {
   tags?: string[];

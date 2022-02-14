@@ -1,6 +1,6 @@
+import React from 'react';
 import { css } from '@emotion/react';
 import img from 'assets/bg_texture.png';
-import React from 'react';
 
 const css_ = css`
   height: 100vh;

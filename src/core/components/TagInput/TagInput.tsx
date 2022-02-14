@@ -1,9 +1,9 @@
-import { InputBoxVariant } from '@cc/Input/InputBox';
-import { Stack } from '@cc/Stack';
+import React from 'react';
+import { InputBoxVariant } from '@ui/Input/InputBox';
+import { Stack } from '@ui/Stack';
 import { css } from '@emotion/react';
 import Input from 'core/components/Input/Input';
 import Tag from 'core/components/Tag';
-import React from 'react';
 
 interface TagsInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   tags: TagDescriptor[];

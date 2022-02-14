@@ -1,18 +1,18 @@
-import { Breadcrumb } from '@cc/Breadcrumb';
-import { Button } from '@cc/Button';
-import ButtonGroup from '@cc/ButtonGroup';
-import { Card } from '@cc/Card';
+import { useEffect, useState } from 'react';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import { Card } from '@ui/Card';
 import {
   DataGrid,
   DataGridColumn,
   renderBoolean,
   renderObjectID,
-} from '@cc/DataGrid';
-import { Heading } from '@cc/Text';
+} from '@ui/DataGrid';
+import { Heading } from '@ui/Text';
 import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import api, { models } from 'api';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 

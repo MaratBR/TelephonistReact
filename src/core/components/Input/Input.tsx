@@ -1,8 +1,8 @@
-import { combineListeners } from '@cc/utils';
-import classNames from 'classnames';
 import React, { useState } from 'react';
+import { combineListeners } from '@ui/utils';
 import S from './Input.module.scss';
 import InputBox, { InputBoxVariant } from './InputBox';
+import classNames from 'classnames';
 
 type AnyInputProps = {
   variant?: InputBoxVariant;

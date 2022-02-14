@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import S from './Error.module.scss';
+import { useTranslation } from 'react-i18next';
 
 interface ErrorProps {
   error: any;

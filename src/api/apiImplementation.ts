@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { getAxiosInstance } from './client';
 import {
   Application,
@@ -22,6 +21,7 @@ import {
   ResetPassword,
   User,
 } from './definition/auth';
+import { AxiosInstance } from 'axios';
 
 export class Api {
   private readonly _client: AxiosInstance;

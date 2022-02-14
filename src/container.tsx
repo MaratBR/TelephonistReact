@@ -1,5 +1,5 @@
-import { Container } from 'inversify';
 import React, { useContext } from 'react';
+import { Container } from 'inversify';
 
 const DiContext = React.createContext<Container | null>(null);
 

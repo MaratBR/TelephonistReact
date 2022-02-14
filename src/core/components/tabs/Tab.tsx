@@ -1,8 +1,8 @@
-import { combineListeners } from '@cc/utils';
-import classNames from 'classnames';
 import React from 'react';
-import { isReactElement } from './helpers';
+import { combineListeners } from '@ui/utils';
 import S from './Tab.module.scss';
+import { isReactElement } from './helpers';
+import classNames from 'classnames';
 
 interface TabProps extends React.LiHTMLAttributes<HTMLLIElement> {
   selected?: boolean;

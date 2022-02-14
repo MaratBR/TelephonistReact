@@ -1,6 +1,6 @@
+import AuthState from './auth';
 import { UserHubWS } from 'api';
 import { autorun, makeObservable, observable, runInAction } from 'mobx';
-import AuthState from './auth';
 
 export class WSState {
   private _client: UserHubWS;
