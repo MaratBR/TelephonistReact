@@ -1,0 +1,17 @@
+.tab {
+  padding: var(--t-spacing-md);
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+  user-select: none;
+
+  &:hover {
+    color: var(--t-color-3);
+  }
+
+  &.selected {
+    font-weight: 600;
+    color: var(--t-primary);
+    border-bottom: 3px solid var(--t-primary);
+  }
+}

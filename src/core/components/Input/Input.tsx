@@ -49,20 +49,3 @@ const Input = React.forwardRef(
 );
 
 export default Input;
-
-type TextareaProps = AnyInputProps &
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-
-export const Textarea = React.forwardRef(
-  (
-    { variant, isInvalid, ...props }: TextareaProps,
-    ref: React.ForwardedRef<HTMLTextAreaElement>,
-  ) => (
-    <textarea
-      {...props}
-      aria-invalid={isInvalid ? 'true' : 'false'}
-      className={classNames(S.textarea, { [S.invalid]: isInvalid })}
-      ref={ref}
-    />
-  ),
-);

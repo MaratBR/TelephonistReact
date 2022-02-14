@@ -1,6 +1,7 @@
+import { InputBoxVariant } from '@cc/Input/InputBox';
 import { Stack } from '@cc/Stack';
 import { css } from '@emotion/react';
-import Input, { InputVariant } from 'core/components/Input/Input';
+import Input from 'core/components/Input/Input';
 import Tag from 'core/components/Tag';
 import React from 'react';
 
@@ -14,7 +15,7 @@ interface TagsInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onTagRemoved?: (tag: TagDescriptor, oldIndex: number) => void;
   // eslint-disable-next-line no-unused-vars
   onTagAdded?: (tag: TagDescriptor, newIndex: number) => void;
-  variant?: InputVariant;
+  variant?: InputBoxVariant;
   inline?: boolean;
   submitOnSpace?: boolean;
   disallowDuplicates?: boolean;
@@ -117,10 +118,10 @@ function TagInput({
 
   return (
     <div css={_css}>
-      <Stack h spacing="xs" wrap>
+      <Input variant={variant} {...props} onKeyDown={onSubmit} />
+      <Stack h spacing="xs" alignItems="center" wrap>
         {tagsChildren}
       </Stack>
-      <Input variant={variant} {...props} onKeyDown={onSubmit} />
     </div>
   );
 }

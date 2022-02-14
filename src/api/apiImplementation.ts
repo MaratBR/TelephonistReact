@@ -1,6 +1,27 @@
 import { AxiosInstance } from 'axios';
-import { models, requests } from './apiDef';
 import { getAxiosInstance } from './client';
+import {
+  Application,
+  ApplicationResponse,
+  CreateApplication,
+  DefineTask,
+  EventsOrderBy,
+  GetEventsParams,
+  IdObject,
+  Pagination,
+  PaginationParams,
+  Sequence,
+  Task,
+  TaskStandalone,
+  UpdateApplication,
+  UpdateTask,
+} from './definition';
+import {
+  LoginRequest,
+  LoginResponse,
+  ResetPassword,
+  User,
+} from './definition/auth';
 
 export class Api {
   private readonly _client: AxiosInstance;
@@ -11,19 +32,19 @@ export class Api {
 
   // #region auth
 
-  authorize(data: requests.Login): Promise<models.LoginResponse> {
+  authorize(data: LoginRequest): Promise<LoginResponse> {
     return this._client.post('auth/token', data).then((r) => r.data);
   }
 
-  async resetPassword(data: requests.ResetPassword) {
+  async resetPassword(data: ResetPassword) {
     await this._client.post('auth/reset-password', data);
   }
 
-  refreshToken(): Promise<models.LoginResponse> {
+  refreshToken(): Promise<LoginResponse> {
     return this._client.post('auth/refresh').then((r) => r.data);
   }
 
-  getUser(): Promise<models.UserView> {
+  getUser(): Promise<User> {
     return this._client.get('auth/user').then((r) => r.data);
   }
 
@@ -32,30 +53,30 @@ export class Api {
   // #region applications
 
   getApplictions(
-    params?: requests.PaginationParams<'_id' | 'name'>,
-  ): Promise<models.Pagination<models.ApplicationView>> {
+    params?: PaginationParams<'_id' | 'name'>
+  ): Promise<Pagination<Application>> {
     return this._client
       .get('user-api/applications', { params })
       .then((r) => r.data);
   }
 
-  getAppliction(id: string): Promise<models.ApplicationResponse> {
+  getAppliction(id: string): Promise<ApplicationResponse> {
     return this._client.get(`user-api/applications/${id}`).then((r) => r.data);
   }
 
-  getApplictionByName(name: string): Promise<models.ApplicationResponse> {
+  getApplictionByName(name: string): Promise<ApplicationResponse> {
     return this._client
       .get(`user-api/applications/name/${name}`)
       .then((r) => r.data);
   }
 
-  updateApplication(id: string, update: requests.UpdateApplication) {
+  updateApplication(id: string, update: UpdateApplication) {
     return this._client
-      .patch<models.ApplicationView>(`user-api/applications/${id}`, update)
+      .patch<Application>(`user-api/applications/${id}`, update)
       .then((r) => r.data);
   }
 
-  createApplication(data: requests.CreateApplication): Promise<models.IdObject> {
+  createApplication(data: CreateApplication): Promise<IdObject> {
     return this._client.post('user-api/applications', data).then((r) => r.data);
   }
 
@@ -80,16 +101,16 @@ export class Api {
   // #region events
 
   getEvents(
-    params: requests.GetEventsParams,
-  ): Promise<models.Pagination<models.Event, requests.EventsOrderBy>> {
+    params: GetEventsParams
+  ): Promise<Pagination<Event, EventsOrderBy>> {
     return this._client.get('events', { params }).then((r) => r.data);
   }
 
-  getEvent(id: string): Promise<models.Event> {
+  getEvent(id: string): Promise<Event> {
     return this._client.get(`events/${id}`).then((r) => r.data);
   }
 
-  getSequence(sequenceID: string): Promise<models.Sequence> {
+  getSequence(sequenceID: string): Promise<Sequence> {
     return this._client
       .get(`events/sequences/${sequenceID}`)
       .then((r) => r.data);
@@ -99,16 +120,13 @@ export class Api {
 
   // #region application tasks
 
-  getApplicationTask(
-    appID: string,
-    taskID: string,
-  ): Promise<models.ApplicationTask> {
+  getApplicationTask(appID: string, taskID: string): Promise<TaskStandalone> {
     return this._client
       .get(`user-api/applications/${appID}/defined-tasks/${taskID}`)
       .then((r) => r.data);
   }
 
-  getApplicationTasks(appID: string): Promise<models.ApplicationTask[]> {
+  getApplicationTasks(appID: string): Promise<Task[]> {
     return this._client
       .get(`user-api/applications/${appID}/defined-tasks`)
       .then((r) => r.data);
@@ -116,8 +134,8 @@ export class Api {
 
   defineNewApplicationTask(
     appID: string,
-    body: requests.DefineTask,
-  ): Promise<models.ApplicationTask> {
+    body: DefineTask
+  ): Promise<TaskStandalone> {
     return this._client
       .post(`user-api/applications/${appID}/defined-tasks`, body)
       .then((r) => r.data);
@@ -125,15 +143,15 @@ export class Api {
 
   async deleteApplicationTask(appID: string, taskID: string): Promise<void> {
     await this._client.delete(
-      `user-api/applications/${appID}/defined-tasks/${taskID}`,
+      `user-api/applications/${appID}/defined-tasks/${taskID}`
     );
   }
 
   updateApplicationTask(
     appID: string,
     taskID: string,
-    body: requests.UpdateTask,
-  ): Promise<models.ApplicationTask> {
+    body: UpdateTask
+  ): Promise<TaskStandalone> {
     return this._client
       .patch(`user-api/applications/${appID}/defined-tasks/${taskID}`, body)
       .then((r) => r.data);

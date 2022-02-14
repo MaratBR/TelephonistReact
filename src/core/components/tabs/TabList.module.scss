@@ -1,0 +1,7 @@
+.tabList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--t-neutral-8);
+}

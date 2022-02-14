@@ -1,17 +1,13 @@
-import { models, requests } from "api";
+import { Event, EventsOrderBy, GetEventsParams } from "api/definition";
 import { useApi } from ".";
 import usePagination from "./usePagination";
 
 export function useEventPagination(
-  params?: requests.GetEventsParams,
+  params?: GetEventsParams,
 ) {
   const api = useApi();
-  return usePagination<models.Event, requests.EventsOrderBy>(
+  return usePagination<Event, EventsOrderBy>(
     (props) => api.getEvents({ ...props, ...(params ?? {}) }),
     {},
   );
-}
-
-export function useLiveApplicationEvents() {
-
 }

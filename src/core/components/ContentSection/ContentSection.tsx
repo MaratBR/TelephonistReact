@@ -6,12 +6,14 @@ import S from './ContentSection.module.scss';
 type ContentSectionProps = React.PropsWithChildren<{
   header?: React.ReactNode;
   padded?: boolean;
+  asideContent?: React.ReactNode;
 }>;
 
 export default function ContentSection({
   header,
   children,
   padded,
+  asideContent,
 }: ContentSectionProps) {
   return (
     <div className={S.section}>
@@ -23,6 +25,13 @@ export default function ContentSection({
       <div className={classNames(S.body, { [S.padded]: padded })}>
         {children}
       </div>
+      {
+        asideContent ? (
+          <aside className={S.aside}>
+            {asideContent}
+          </aside>
+        ) : undefined
+      }
     </div>
   );
 }

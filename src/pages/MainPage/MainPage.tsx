@@ -79,11 +79,11 @@ class MainPageInner extends React.Component<
               </NavItem>
               <NavGroup text={t('applications')}>
                 <NavItem to="/applications" iconSVG={mdiDotsGrid}>
-                  {t('all_applications')}
+                  {t('allApps')}
                 </NavItem>
 
                 <NavItem to="/applications/new" iconSVG={mdiPlus}>
-                  {t('create_new_application')}
+                  {t('createNewApp')}
                 </NavItem>
               </NavGroup>
             </NavItems>

@@ -1,13 +1,14 @@
 .root {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 3fr 7fr;
   gap: 0.8em;
   padding: var(--t-spacing-md) 0;
 }
 
 .head {
   .label {
-    font-weight: bold;
+    padding: 0 var(--t-spacing-sm);
+    font-weight: 500;
     font-size: 1em;
     font-family: var(--t-font-headers);
   }
@@ -19,4 +20,5 @@
 }
 
 .body {
+  display: block;
 }

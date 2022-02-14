@@ -1,6 +1,6 @@
 import useNextParam from "./useNextParam";
 import useLiveValue, { type LiveValue } from "./liveValue";
-import useAsyncValue, { type AsyncValue } from "./useAsyncValue";
+import { type AsyncValue, useRefreshableAsyncValue } from "./asyncValue";
 import useTrackedChanges, { type TrackedChanges } from "./useTrackedChanges";
 
 export * from "./validation";
@@ -9,7 +9,7 @@ export {
   useNextParam,
   useLiveValue,
   LiveValue,
-  useAsyncValue,
+  useRefreshableAsyncValue,
   AsyncValue,
   useTrackedChanges,
   TrackedChanges,

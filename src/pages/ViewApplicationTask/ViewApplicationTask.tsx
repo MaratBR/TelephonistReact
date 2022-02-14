@@ -1,8 +1,7 @@
 import { Breadcrumb } from '@cc/Breadcrumb';
-import { Stack } from '@cc/Stack';
 import { TextHeader } from '@cc/Text';
 import api from 'api';
-import { useAsyncValue } from 'core/hooks';
+import { useRefreshableAsyncValue } from 'core/hooks';
 import ContentLoader from 'react-content-loader';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useParams } from 'react-router-dom';
@@ -12,7 +11,9 @@ import TaskTriggers from './TaskTriggers';
 export default function ViewApplicationTask() {
   const { t } = useTranslation();
   const { appID, taskID, name } = useParams();
-  const { error, isLoading, value } = useAsyncValue(() => api.getApplicationTask(appID, taskID));
+  const { error, isLoading, value } = useRefreshableAsyncValue(
+    () => api.getApplicationTask(appID, taskID),
+  );
 
   if (isLoading) {
     return <ContentLoader />;
@@ -28,10 +29,8 @@ export default function ViewApplicationTask() {
         <span>{value.name}</span>
       </Breadcrumb>
       <TextHeader title={isLoading ? name ?? taskID : value.qualified_name} />
-      <Stack spacing="md">
-        <TaskGeneralInfo task={value} />
-        <TaskTriggers task={value} />
-      </Stack>
+      <TaskGeneralInfo task={value} />
+      <TaskTriggers task={value} />
     </>
   );
 }

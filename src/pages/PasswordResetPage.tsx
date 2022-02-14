@@ -22,13 +22,13 @@ export default function PasswordResetPage() {
   const [pwd2, setPwd2] = useState('');
 
   if (auth.passwordResetExpiresAt < Date.now()) {
-    toast.error(t('pwdreset.token_expired'));
+    toast.error(t('pwdreset.tokenExpired'));
     return (
       <Navigate
         to={{
           pathname: '/login',
           search:
-            `?from=pwdreset.token_expired${next ? `&next=${next}` : ''}`,
+            `?from=pwdreset.tokenExpired${next ? `&next=${next}` : ''}`,
         }}
       />
     );

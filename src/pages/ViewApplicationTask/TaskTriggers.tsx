@@ -1,18 +1,23 @@
+import { Breadcrumb } from '@cc/Breadcrumb';
 import { Button } from '@cc/Button';
 import ButtonGroup from '@cc/ButtonGroup';
-import { Card } from '@cc/Card';
 import ContentSection from '@cc/ContentSection';
 import { DataGrid } from '@cc/DataGrid';
-import { ModalDialog } from '@cc/Modal';
+import { Input, InputLayout } from '@cc/Input';
+import { Modal, ModalDialog } from '@cc/Modal';
 import { mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
-import { models } from 'api';
+import { TaskStandalone, TaskTrigger } from 'api/definition';
+
 import { MD5 } from 'object-hash';
-import { useState } from 'react';
+import { Shruggie } from 'pages/parts/misc';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import S from './TaskTriggers.module.scss';
+import TriggerPopupEditor from './TriggerPopupEditor';
 
-function renderTriggerBody(trigger: models.TaskTrigger) {
+function renderTriggerBody(trigger: TaskTrigger) {
   if (trigger.name === 'event') {
     return <NavLink to={`/events/${trigger.name}`}>{trigger.name}</NavLink>;
   }
@@ -20,24 +25,42 @@ function renderTriggerBody(trigger: models.TaskTrigger) {
 }
 
 type TaskTriggersProps = {
-  task: models.ApplicationTask;
+  task: TaskStandalone;
 };
 
 function TaskTriggers({ task }: TaskTriggersProps) {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState<models.TaskTrigger[]>([]);
+  const [selected, setSelected] = useState<TaskTrigger[]>([]);
+  const [selectedTrigger, setSelectedTrigger] = useState<TaskTrigger | undefined>();
+  const [modalOpen, toggleModal] = useState(false);
 
   const deleteTriggers = () => {};
+  const noItemsShruggie = (
+    <Shruggie>
+      <p>{t("noTaskTriggersDefined")}</p>
+    </Shruggie>
+  );
+
+  const addTrigger = useCallback(() => {
+    toggleModal(true);
+    setSelected(undefined);
+  }, []);
 
   return (
     <ContentSection padded header={t('triggers')}>
-      <ModalDialog header="Test header" open>
-        <Card>Hello!</Card>
-      </ModalDialog>
+      <Modal open={!!selectedTrigger}>
+        <TriggerPopupEditor
+          appID={task.app._id}
+          onClose={() => toggleModal(undefined)}
+          trigger={selectedTrigger}
+          taskID={task._id}
+          taskName={task.qualified_name}
+        />
+      </Modal>
 
       <ButtonGroup>
-        <Button left={<Icon size={0.7} path={mdiPlus} />}>
-          {t('add_trigger')}
+        <Button left={<Icon size={0.7} path={mdiPlus} />} onClick={addTrigger}>
+          {t('addTrigger')}
         </Button>
 
         <Button
@@ -49,11 +72,13 @@ function TaskTriggers({ task }: TaskTriggersProps) {
           {t('delete')}
         </Button>
       </ButtonGroup>
-      <DataGrid<models.TaskTrigger>
+
+      <DataGrid<TaskTrigger>
         selectable
         keyFactory={MD5}
         data={task.triggers}
         onSelect={setSelected}
+        noItemsRenderer={() => noItemsShruggie}
         columns={[
           {
             key: 'name',
@@ -61,7 +86,7 @@ function TaskTriggers({ task }: TaskTriggersProps) {
           },
           {
             key: '_body',
-            title: t('trigger_body'),
+            title: t('triggerBody'),
             custom: true,
             render: renderTriggerBody,
           },
@@ -69,7 +94,7 @@ function TaskTriggers({ task }: TaskTriggersProps) {
             key: '_action',
             custom: true,
             title: '',
-            render: (trigger) => <Button>{t('edit')}</Button>,
+            render: (trigger) => <Button onClick={() => setSelectedTrigger(trigger)}>{t('edit')}</Button>,
           },
         ]}
       />

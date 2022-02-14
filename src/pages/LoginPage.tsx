@@ -2,7 +2,7 @@ import { Alert } from '@cc/Alert';
 import { Logo } from '@cc/brand';
 import { Button } from '@cc/Button';
 import { ContentBox } from '@cc/ContentBox';
-import { Input } from '@cc/Input';
+import { Input, InputLayout } from '@cc/Input';
 import { SerenityLayout } from '@cc/Layout';
 import { Stack } from '@cc/Stack';
 import { useRequiredStringState, validateAnd } from 'core/hooks';
@@ -62,24 +62,27 @@ function LoginPage() {
     );
   } else {
     formBody = (
-      <>
-        <Input
-          isInvalid={loginVal.isError}
-          disabled={auth.isLoading}
-          value={loginVal.value}
-          variant="minimal"
-          onChange={(e) => loginVal.setValue(e.target.value)}
-          placeholder={t('username')}
-        />
-        <Input
-          isInvalid={passwordVal.isError}
-          type="password"
-          disabled={auth.isLoading}
-          value={passwordVal.value}
-          variant="minimal"
-          onChange={(e) => passwordVal.setValue(e.target.value)}
-          placeholder={t('password')}
-        />
+      <Stack alignItems="stretch">
+        <InputLayout variant="top" id="username" header={t("username")}>
+          <Input
+            id="username"
+            isInvalid={loginVal.isError}
+            disabled={auth.isLoading}
+            value={loginVal.value}
+            onChange={(e) => loginVal.setValue(e.target.value)}
+            placeholder={t('username')}
+          />
+        </InputLayout>
+        <InputLayout variant="top" id="password" header={t("password")}>
+          <Input
+            isInvalid={passwordVal.isError}
+            type="password"
+            disabled={auth.isLoading}
+            value={passwordVal.value}
+            onChange={(e) => passwordVal.setValue(e.target.value)}
+            placeholder={t('password')}
+          />
+        </InputLayout>
         <Button
           loading={auth.isLoading}
           color="primary"
@@ -87,7 +90,7 @@ function LoginPage() {
         >
           {t('login._')}
         </Button>
-      </>
+      </Stack>
     );
   }
 
@@ -95,7 +98,7 @@ function LoginPage() {
     <SerenityLayout>
       <Logo />
       <ContentBox>
-        <Stack spacing="md">{formBody}</Stack>
+        {formBody}
       </ContentBox>
     </SerenityLayout>
   );

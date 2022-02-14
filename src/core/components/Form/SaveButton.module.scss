@@ -1,0 +1,44 @@
+$height: 1.6em;
+$width: 7em;
+
+.container {
+  .save, .saving, .failed, .saved {
+    opacity: 0;
+    transition: opacity var(--t-transition-md);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    line-height: $height;
+  }
+
+  &.save > .save {
+    opacity: 1;
+  }
+  
+  &.failed > .failed {
+    opacity: 1;
+  }
+
+  &.saved > .saved {
+    opacity: 1;
+  }
+  
+  &.saving > .saving {
+    opacity: 1;
+  }
+}
+
+.text, .icon {
+  position: relative;
+}
+
+.text {
+  height: $height;
+  width: $width;
+}
+
+.icon {
+  height: $height;
+  width: $height;
+}

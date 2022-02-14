@@ -1,7 +1,7 @@
-import { models } from "api";
+import { Event } from "api/definition";
 
 type EventsViewerProps = {
-  events: models.Event[];
+  events: Event[];
 }
 
 function EventsViewer({ events }: EventsViewerProps) {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import deepEqual from "deep-equal";
 
 export interface TrackedChanges<T extends Record<string, any>> {
   changes: Partial<T>;
@@ -22,7 +23,7 @@ export default function useTrackedChanges<T extends Record<string, any>>(
     set: (values) => {
       for (const key of Object.keys(values)) {
         const newValue = { ...changes };
-        if (values[key] === original[key]) {
+        if (deepEqual(values[key], original[key])) {
           delete newValue[key];
         } else {
           newValue[key as keyof T] = values[key];

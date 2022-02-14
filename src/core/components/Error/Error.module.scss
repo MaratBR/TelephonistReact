@@ -1,0 +1,11 @@
+.error {
+  background-color: var(--t-danger-50);
+  padding: var(--t-spacing-md);
+  border: 1px solid var(--t-danger);
+  margin: var(--t-spacing-sm);
+
+  .header {
+    font-weight: bold;
+    color: var(--t-danger);
+  }
+}

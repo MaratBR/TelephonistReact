@@ -1,9 +1,10 @@
 import { Breadcrumb } from '@cc/Breadcrumb';
-import { Button } from '@cc/Button';
-import { Card } from '@cc/Card';
+import { ContentBox } from '@cc/ContentBox';
 import Error from '@cc/Error';
-import { Input, Select } from '@cc/Input';
-import { Textarea } from '@cc/Input/Input';
+import { Form, SaveButton } from '@cc/Form';
+import {
+  Input, InputLayout, Select, Textarea,
+} from '@cc/Input';
 import { Stack } from '@cc/Stack';
 import TagInput from '@cc/TagInput';
 import { Heading } from '@cc/Text';
@@ -14,6 +15,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function NewApplication() {
   const [name, setName] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState<'arbitrary' | 'agent' | 'custom'>('arbitrary');
@@ -22,9 +24,9 @@ export default function NewApplication() {
   const [error, setError] = useState<string>();
   const { t } = useTranslation();
   const APPLICATION_TYPES = {
-    arbitrary: t('application_type_description.arbitrary'),
-    host: t('application_type_description.host'),
-    custom: t('application_type_description.custom'),
+    arbitrary: t('appType_description.arbitrary'),
+    agent: t('appType_description.agent'),
+    custom: t('appType_description.custom'),
   };
   const newApplication = t('new_application');
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ export default function NewApplication() {
         description,
         tags,
         application_type: type === 'custom' ? customType : type,
+        display_name: displayName,
       });
       navigate(`/applications/${_id}`);
     } catch (exc) {
@@ -48,7 +51,7 @@ export default function NewApplication() {
   };
 
   return (
-    <Stack>
+    <>
       <Breadcrumb>
         <NavLink to="/applications">{t('applications')}</NavLink>
         <span>{name || newApplication}</span>
@@ -56,33 +59,45 @@ export default function NewApplication() {
 
       <Heading>{name || newApplication}</Heading>
 
-      <Card>
+      <ContentBox>
         <Error error={error} />
-        <form action="#" onSubmit={submit}>
+        <Form action="#" onSubmit={submit}>
           <Stack spacing="md">
-            <Input
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder={t('name')}
-              variant="flushed"
-            />
-            <Textarea
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder={t('description')}
-            />
-            <TagInput
-              disallowDuplicates
-              submitOnSpace
-              placeholder={t('tags')}
-              tags={tags}
-              onTags={setTags}
-            />
+            <InputLayout id="name" header={t("name")}>
+              <Input
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder={t('name')}
+              />
+            </InputLayout>
+            <InputLayout id="displayName" header={t("displayName")}>
+              <Input
+                onChange={(e) => setDisplayName(e.target.value)}
+                required
+                placeholder={t('display_name')}
+              />
+            </InputLayout>
+            <InputLayout id="description" header={t("description")}>
+              <Textarea
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder={t('description')}
+              />
+            </InputLayout>
+            <InputLayout id="tags" header={t("tags")}>
+              <TagInput
+                disallowDuplicates
+                submitOnSpace
+                placeholder={t('tags')}
+                tags={tags}
+                onTags={setTags}
+              />
+            </InputLayout>
             <Select value={type} onChange={(e) => setType(e.target.value as ("arbitrary" | "custom" | "agent"))}>
               <option value="arbitrary">
-                {t('application_type.arbitrary')}
+                {t('appType.arbitrary')}
               </option>
-              <option value="host">{t('application_type.host')}</option>
-              <option value="custom">{t('application_type.custom')}</option>
+              <option value="agent">{t('appType.agent')}</option>
+              <option value="custom">{t('appType.custom')}</option>
             </Select>
             <p>{APPLICATION_TYPES[type]}</p>
             {type === 'custom' ? (
@@ -90,20 +105,13 @@ export default function NewApplication() {
                 required
                 value={customType}
                 onChange={(e) => setCustomType(e.target.value)}
-                placeholder={t('custom_application_type')}
+                placeholder={t('CustomAppType')}
               />
             ) : null}
-            <Button
-              disabled={loading}
-              loading={loading}
-              type="submit"
-              variant="outline"
-            >
-              {t('save')}
-            </Button>
+            <SaveButton />
           </Stack>
-        </form>
-      </Card>
-    </Stack>
+        </Form>
+      </ContentBox>
+    </>
   );
 }

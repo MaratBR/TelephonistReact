@@ -1,11 +1,11 @@
-import { css, Interpolation } from '@emotion/react';
+import { Interpolation, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import classNames from 'classnames';
 import LoadingSpinner from 'core/components/LoadingSpinner';
 import { useColor } from 'core/components/theme';
 import React from 'react';
 import { NavLink, To } from 'react-router-dom';
-import { Instance } from 'tinycolor2';
+import tinycolor, { Instance } from 'tinycolor2';
 import S from './Button.module.scss';
 
 type ButtonVariant = 'ghost' | 'default' | 'outline' | 'link';
@@ -56,6 +56,7 @@ function _attrs(
         '--button-main-color': _style.baseColor.toString(),
         '--button-main-color-2': _style.baseColor.clone().darken().toString(),
         '--button-main-color-3': _style.baseColor.clone().lighten(7).toString(),
+        '--button-disabled-color': tinycolor({ ..._style.baseColor.clone().toHsl(), s: 30 }).lighten().toString(),
         '--button-fg-color': _style.baseColor.isLight() ? 'black' : 'white',
       }),
   };

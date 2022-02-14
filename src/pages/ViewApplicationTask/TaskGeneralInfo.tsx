@@ -1,6 +1,7 @@
 import ContentSection from '@cc/ContentSection';
 import { StringValue } from '@cc/Parameters';
-import { models } from 'api';
+import { Task } from 'api/definition';
+
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import S from './TaskGeneralInfo.module.scss';
@@ -19,7 +20,7 @@ function IsDisabled({ disabled }: IsDisabledProps) {
 }
 
 type Props = {
-  task: models.ApplicationTask
+  task: Task
 }
 
 export default function TaskGeneralInfo({ task }: Props) {

@@ -1,15 +1,19 @@
 .layout {
   width: 100%;
-  margin-bottom: var(--t-spacing-md);
+  padding-bottom: var(--t-spacing-md);
 }
 
 .label {
+  display: inline-flex;
+  align-items: center;
   font-weight: 500;
   color: var(--t-color-3);
   display: inline-block;
+  position: relative;
   padding: 2px;
   cursor: pointer;
   user-select: none;
+  border-radius: var(--t-radius-sm);
   &:active {
     background-color: var(--t-neutral-9);
   }
@@ -50,7 +54,6 @@
 
     .label {
       margin: var(--t-spacing-md) var(--t-spacing-md) var(--t-spacing-md) 0;
-      display: block;
     }
   
     .description {
@@ -65,6 +68,11 @@
   display: inline-flex;
 }
 
-.inlineBlock {
-
+.changedDot {
+  background-color: var(--t-primary);
+  height: .6em;
+  width: .6em;
+  margin: 0 .4em;
+  display: inline-block;
+  border-radius: 100px;
 }

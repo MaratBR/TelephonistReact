@@ -34,8 +34,9 @@ const COMPONENTS = {
   PasswordResetPage: lazy(() => import('pages/PasswordResetPage')),
   AllApplications: lazy(() => import('pages/AllApplications')),
   NewApplication: lazy(() => import('pages/NewApplication')),
-  ViewApplication: lazy(() => import('pages/ViewApplication/ViewApplication')),
+  ViewApplication: lazy(() => import('pages/ViewApplication')),
   ViewApplicationTask: lazy(() => import('pages/ViewApplicationTask')),
+  EditApplication: lazy(() => import('pages/EditApplication')),
 };
 
 function AppRouter() {
@@ -60,7 +61,7 @@ function AppRouter() {
             />
             <Route
               path="applications/:id/edit"
-              element={lazy(() => import('pages/EditApplication'))}
+              element={COMPONENTS.EditApplication}
             />
             <Route
               path="applications/:appID/tasks/:taskID"

@@ -54,9 +54,9 @@ export default function AllApplications() {
     <div>
       <Breadcrumb>
         <span>{t('applications')}</span>
-        <span>{t('all_applications')}</span>
+        <span>{t('allApps')}</span>
       </Breadcrumb>
-      <Heading>{t('all_applications')}</Heading>
+      <Heading>{t('allApps')}</Heading>
 
       <Card>
         <ButtonGroup>

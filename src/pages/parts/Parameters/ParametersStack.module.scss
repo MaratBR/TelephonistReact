@@ -1,0 +1,6 @@
+.parametersStack {
+  & > *:not(:last-child) {
+    border-bottom: 1px solid var(--t-neutral-9);
+    margin-bottom: var(--t-spacing-md);
+  }
+}

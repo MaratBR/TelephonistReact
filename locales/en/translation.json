@@ -1,16 +1,7 @@
 {
-  "event_key": "Event key",
-  "related_task": "Relate task",
-  "event_type": "Event type",
-  "event_info": "Event info",
-  "created_at": {
-    "event": "Occured at"
-  },
-  "publisher_ip": "Publisher IP-Address",
-  "sequence_id": "Sequence ID",
   "empty": "Empty",
   "disabled": "Disabled",
-  "all_applications": "All applications",
+  "allApps": "All applications",
   "save": "Save",
   "login": {
     "progress": "Logging you in...",
@@ -26,48 +17,57 @@
   "new_application": "New application",
   "edit": "Edit",
   "id": "ID",
-  "task_name": "Task name",
   "name": "Name",
   "description": "Description",
   "create_new": "Create new",
   "delete": "Delete",
   "tags": "Tags",
   "applications": "Applications",
-  "application_type_description": {
+  "appType_description": {
     "arbitrary": "Arbitrary application is a type of application that can do anything. This, however, means that application's configuration (if present) is dynamic, which means that you will not be able to edit other than in raw JSON.",
-    "host": "Host application doesn't do anything by itself. Rather, it serves as an \"adapter\" of sorts between third-party applications or scripts and Telephonist API.",
-    "custom": "Custom application is the same as arbitrary, the only difference is that you can set you own application type."
+    "custom": "Custom application is the same as arbitrary, the only difference is that you can set you own application type.",
+    "agent": ""
   },
-  "application_type": {
+  "appType": {
     "arbitrary": "Arbitrary",
-    "host": "Host",
-    "custom": "Custom"
+    "custom": "Custom",
+    "agent": ""
   },
-  "custom_application_type": "",
-  "host_application_alerts": "This application is of type \"host\". Use the settings below to configure the host's behaviour.",
+  "CustomAppType": "",
   "task": "Task",
-  "add_task": "Add task",
-  "new_task": "New task",
-  "command": "Command",
-  "cron_string": "CRON string",
   "information": "Information",
-  "settings": "Settings",
   "connections": "Connections",
   "events": "Events",
   "general_information": "General information",
-  "access_key": "Access key",
-  "hide_key": "Hide key",
-  "show_key": "Show key",
-  "no_connections_open": "No open connections found",
-  "create_new_application": "",
+  "accessKey": "Access key",
+  "hideKey": "Hide key",
+  "showKey": "Show key",
+  "noOpenConnections": "No open connections found",
+  "createNewApp": "Create new application",
   "pwdreset": {
     "header": "Password reset",
-    "description": "You need to reset the password for this account, please input the password below"
+    "description": "You need to reset the password for this account, please input the password below",
+    "tokenExpired": "",
+    "loading": "",
+    "success": "",
+    "remaining": ""
   },
   "new_password": "New password",
   "repeat_new_password": "Repeat new password",
   "set_new_password": "Set new password",
   "is_connected": "Connected",
   "client_name": "Client name",
-  "connected_at": "Connected at"
+  "connected_at": "Connected at",
+  "saving": "Saving...",
+  "saved": "Saved",
+  "failed": "Failed",
+  "displayName": "Display name",
+  "taskType": "Task type",
+  "task_body": "Task body",
+  "tasks": "Tasks",
+  "enabled": "Enabled",
+  "triggers": "Trigers",
+  "addTrigger": "Add trigger",
+  "triggerBody": "Trigger body",
+  "body": "Body"
 }

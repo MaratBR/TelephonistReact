@@ -25,13 +25,13 @@ export function Stack({
   return (
     <div
       {...props}
+      className={classNames(S.stack, className, {
+        [S.horizontal]: h ?? horizontal,
+      })}
       css={css({
         alignItems,
         justifyContent,
         "& > *:not(:last-child)": spacing ? { marginInlineEnd: maybeCSSVariable(spacing, "spacing") } : undefined,
-      })}
-      className={classNames(S.stack, className, {
-        [S.horizontal]: h ?? horizontal,
       })}
     />
   );

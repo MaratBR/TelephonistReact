@@ -1,5 +1,5 @@
 import { IconButton } from '@cc/Button';
-import { css, Interpolation } from '@emotion/react';
+import { Interpolation, css } from '@emotion/react';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -28,9 +28,7 @@ function Tag({
     <div className={S.tag} css={c} {...props}>
       {children}
       {closeable ? (
-        <IconButton onClick={() => props?.onClose()}>
-          <Icon path={mdiClose} size={0.8} />
-        </IconButton>
+        <IconButton onClick={() => props?.onClose()} size={0.5} path={mdiClose} />
       ) : undefined}
     </div>
   );

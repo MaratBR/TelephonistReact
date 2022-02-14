@@ -1,5 +1,4 @@
-import { Card } from '@cc/Card';
-import { ContentBox } from '@cc/ContentBox';
+import ContentSection from '@cc/ContentSection';
 import {
   DataGrid, dateRender, renderBoolean, renderObjectID,
 } from '@cc/DataGrid';
@@ -7,17 +6,19 @@ import ErrorView from '@cc/Error';
 import { Centered } from '@cc/Layout';
 import LoadingSpinner from '@cc/LoadingSpinner';
 import {
-  Tab, TabList, TabPanel, Tabs,
+  Tab, TabList, TabPanel, TabPanels, Tabs,
 } from '@cc/tabs';
 import { TextHeader } from '@cc/Text';
-import { models } from 'api';
+import { TaskStandalone } from 'api/definition';
+
 import { useApi, useEventPagination } from 'api/hooks';
 import { Breadcrumb } from 'core/components/Breadcrumb';
-import { Stack } from 'core/components/Stack';
-import { useAsyncValue } from 'core/hooks';
+import { useRefreshableAsyncValue } from 'core/hooks';
 import { observer } from 'mobx-react';
+import ConnectionsView from 'pages/parts/ConnectionsView';
 import EventsViewer from 'pages/parts/EventsViewer';
 import ApplicationTasks from 'pages/parts/TasksView/TasksView';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useParams } from 'react-router-dom';
 import ViewApplicationInfo from './ViewApplicationInfo';
@@ -31,75 +32,68 @@ const ApplicationEvents = observer(({ id }: ApplicationEventsProps) => {
   return <EventsViewer events={events.value?.result ?? []} />;
 });
 
-function ApplicationResponseView({
-  response,
-}: {
-  response: models.ApplicationResponse;
-}) {
-  const { id } = useParams();
-  const { t } = useTranslation();
-
-  return (
-    <Tabs tabsID="1">
-      <TabList>
-        <Tab>{t('information')}</Tab>
-        <Tab>{t('tasks')}</Tab>
-        <Tab>{t('connections')}</Tab>
-        <Tab>{t('events')}</Tab>
-      </TabList>
-
-      <TabPanel>
-        <ViewApplicationInfo app={response.app} />
-      </TabPanel>
-
-      <TabPanel>
-        <ApplicationTasks appID={id} />
-      </TabPanel>
-
-      <TabPanel>
-        {response.connections ? (
-          <DataGrid
-            keyFactory={(app) => app._id}
-            columns={[
-              {
-                title: t('id'),
-                key: '_id',
-                render: renderObjectID,
-              },
-              {
-                title: t('is_connected'),
-                key: 'is_connected',
-                render: renderBoolean,
-              },
-              {
-                title: t('client_name'),
-                key: 'client_name',
-              },
-              {
-                key: 'connected_at',
-                title: t('connected_at'),
-                render: dateRender,
-              },
-            ]}
-            data={response.connections}
-          />
-        ) : (
-          <Centered>{t('no_connections_open')}</Centered>
-        )}
-      </TabPanel>
-      <TabPanel>
-        <ApplicationEvents id={id} />
-      </TabPanel>
-    </Tabs>
-  );
-}
-
 function ViewApplication() {
   const { id } = useParams();
   const api = useApi();
-  const { value, isLoading, error } = useAsyncValue(() => api.getAppliction(id), [id]);
+  const {
+    value, isLoading, error, setValue,
+  } = useRefreshableAsyncValue(() => api.getAppliction(id), [id]);
   const name = isLoading ? id : value.app.display_name;
   const { t } = useTranslation();
+
+  const onTaskAdded = useCallback((task: TaskStandalone) => {
+    // do optimistic update for now
+    setValue({
+      ...value,
+      tasks: [
+        ...value.tasks,
+        {
+          ...task,
+          app_id: task.app._id,
+        },
+      ],
+    });
+  }, [value]);
+
+  let content: React.ReactNode;
+
+  if (isLoading) {
+    content = <LoadingSpinner size={2} />;
+  } else {
+    content = (
+      <ContentSection header={t("information")}>
+        <Tabs>
+          <TabList>
+            <Tab>{t('general')}</Tab>
+            <Tab>{t('tasks')}</Tab>
+            <Tab>{t('connections')}</Tab>
+            <Tab>{t('events')}</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <ViewApplicationInfo app={value.app} />
+            </TabPanel>
+
+            <TabPanel>
+              <ApplicationTasks
+                appID={id}
+                tasks={value.tasks}
+                onTaskAdded={onTaskAdded}
+              />
+            </TabPanel>
+
+            <TabPanel>
+              <ConnectionsView connections={value.connections} />
+            </TabPanel>
+            <TabPanel>
+              <ApplicationEvents id={id} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </ContentSection>
+    );
+  }
 
   return (
     <>
@@ -112,16 +106,10 @@ function ViewApplication() {
         title={name}
         subtitle={isLoading ? 0 : value.app.name}
       />
-      <ContentBox>
-        {
-          error ? <ErrorView error={error} /> : undefined
-        }
-        {
-          isLoading
-            ? <LoadingSpinner size={2} />
-            : <ApplicationResponseView response={value} />
-        }
-      </ContentBox>
+      {
+        error ? <ErrorView error={error} /> : undefined
+      }
+      {content}
     </>
   );
 }

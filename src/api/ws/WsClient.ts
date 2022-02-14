@@ -1,4 +1,4 @@
-import { ws } from "api";
+import { RegistryMessage } from "api/definition";
 import { Events, newEventHandler } from "api/events";
 import { Dispose, ListenerFunction } from "api/events/Events";
 import WSClientBase from "./WsClientBase";
@@ -17,7 +17,7 @@ export default class WSClient<
 
   protected onMessage(event: MessageEvent<any>): void | Promise<void> {
     if (typeof event.data === 'string') {
-      let message: ws.RegistryMessage<InEventsRegistry>;
+      let message: RegistryMessage<InEventsRegistry>;
       try {
         message = JSON.parse(event.data);
       } catch {
@@ -42,7 +42,7 @@ export default class WSClient<
   }
 
   send(
-    rawMessage: ws.RegistryMessage<OutEventsRegistry>,
+    rawMessage: RegistryMessage<OutEventsRegistry>,
     queue: boolean = true,
   ) {
     const raw = JSON.stringify(rawMessage);

@@ -1,38 +1,74 @@
+import { Button } from '@cc/Button';
+import ButtonGroup from '@cc/ButtonGroup';
+import { Modal } from '@cc/Modal';
 import { mdiExclamationThick } from '@mdi/js';
 import Icon from '@mdi/react';
-import api from 'api';
+import { Task, TaskStandalone } from 'api/definition';
+
 import { DataGrid, renderBoolean } from 'core/components/DataGrid';
-import ErrorView from 'core/components/Error';
-import LoadingSpinner from 'core/components/LoadingSpinner';
-import { useAsyncValue } from 'core/hooks';
+import Padded from 'pages/Padded';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import { Shruggie } from '../misc';
+import NewTaskModalDialog from '../NewTask/NewTaskModalDialog';
 import S from './TasksView.module.scss';
 
 type ApplicationTasksProps = {
+  tasks: Task[];
   appID: string;
+  onTaskDeleted?: (taskID: string) => void;
+  onTaskAdded?: (task: TaskStandalone) => void;
 };
 
-export default function ApplicationTasks({ appID }: ApplicationTasksProps) {
-  const {
-    isLoading, error, value,
-  } = useAsyncValue(
-    () => api.getApplicationTasks(appID),
-    [appID],
-  );
+export default function ApplicationTasks({
+  tasks,
+  appID,
+  onTaskAdded,
+  onTaskDeleted,
+}: ApplicationTasksProps) {
   const { t } = useTranslation();
 
-  let content;
+  const [modalOpen, toggleModal] = useState(false);
 
-  if (isLoading) {
-    content = <LoadingSpinner />;
-  } else if (error) {
-    content = <ErrorView error={error} />;
-  } else {
-    content = (
+  const renderNoItems = () => (
+    <Shruggie>
+      <p>{t("noTasksPreset")}</p>
+      <ButtonGroup>
+        <Button onClick={() => toggleModal(true)}>
+          {t("addTask")}
+        </Button>
+        <Button>
+          {t("viewDeletedTasks")}
+        </Button>
+      </ButtonGroup>
+    </Shruggie>
+  );
+
+  const actionButtons = tasks.length === 0 ? undefined : (
+    <Padded>
+      <ButtonGroup>
+        <Button onClick={() => toggleModal(true)}>
+          {t("addTask")}
+        </Button>
+      </ButtonGroup>
+    </Padded>
+  );
+
+  return (
+    <>
+      <Modal open={modalOpen}>
+        <NewTaskModalDialog
+          appID={appID}
+          onSaved={onTaskAdded}
+          onClose={() => toggleModal(false)}
+        />
+      </Modal>
+      {actionButtons}
       <DataGrid
         keyFactory={(v) => v._id}
-        data={value}
+        data={tasks}
+        noItemsRenderer={renderNoItems}
         columns={[
           {
             key: '__id',
@@ -42,7 +78,7 @@ export default function ApplicationTasks({ appID }: ApplicationTasksProps) {
               const [appName, taskName] = v.qualified_name.split('/');
               return (
                 <div className={S.name}>
-                  <NavLink to={`/applications/${appID}/tasks/${v._id}`}>
+                  <NavLink to={`/applications/${v.app_id}/tasks/${v._id}`}>
                     <h2>
                       <span>{appName}</span>
                       /
@@ -60,7 +96,7 @@ export default function ApplicationTasks({ appID }: ApplicationTasksProps) {
             render: renderBoolean,
           },
           {
-            title: t('task_type'),
+            title: t('taskType'),
             key: 'task_type',
           },
           {
@@ -76,8 +112,6 @@ export default function ApplicationTasks({ appID }: ApplicationTasksProps) {
           },
         ]}
       />
-    );
-  }
-
-  return <div>{content}</div>;
+    </>
+  );
 }

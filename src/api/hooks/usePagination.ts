@@ -1,14 +1,14 @@
-import { models, requests } from "api";
-import { AsyncValue, useAsyncValue } from "core/hooks";
+import { Pagination, PaginationParams } from "api/definition";
+import { AsyncValue, useRefreshableAsyncValue } from "core/hooks";
 import { useEffect, useState } from "react";
 
 export interface PaginationValue<
   T,
   TOrderBy extends string,
 >
-extends AsyncValue<models.Pagination<T>> {
+extends AsyncValue<Pagination<T>> {
   // eslint-disable-next-line no-unused-vars
-  setProps(props: Partial<requests.PaginationParams<TOrderBy>>): void;
+  setProps(props: Partial<PaginationParams<TOrderBy>>): void;
 }
 
 export default function usePagination<
@@ -16,11 +16,11 @@ export default function usePagination<
   TOrderBy extends string,
 >(
   // eslint-disable-next-line no-unused-vars
-  getter: (props: requests.PaginationParams<TOrderBy>) => Promise<models.Pagination<T, TOrderBy>>,
-  defaultProps: requests.PaginationParams<TOrderBy>,
+  getter: (props: PaginationParams<TOrderBy>) => Promise<Pagination<T, TOrderBy>>,
+  defaultProps: PaginationParams<TOrderBy>,
 ): PaginationValue<T, TOrderBy> {
-  const [props, setProps] = useState<requests.PaginationParams<TOrderBy>>(defaultProps);
-  const live = useAsyncValue(
+  const [props, setProps] = useState<PaginationParams<TOrderBy>>(defaultProps);
+  const live = useRefreshableAsyncValue(
     () => getter(props),
     [],
     false,

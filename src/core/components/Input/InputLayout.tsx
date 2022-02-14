@@ -10,6 +10,7 @@ interface InputLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   header?: React.ReactNode
   description?: React.ReactNode
   id: string;
+  isChanged?: boolean;
 }
 
 const variants: Record<InputLayoutVariant, string> = {
@@ -27,6 +28,7 @@ const InputLayout = forwardRef(
     header,
     description,
     variant,
+    isChanged,
     id,
     ...props
   }: InputLayoutProps) => (
@@ -44,6 +46,7 @@ const InputLayout = forwardRef(
       <div className={S.header}>
         <label htmlFor={id} className={S.label}>
           {header}
+          {isChanged && <div className={S.changedDot} />}
         </label>
         <span className={S.description}>{description}</span>
       </div>

@@ -1,6 +1,6 @@
 import { mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
-import { models } from 'api';
+
 import cn from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,11 +11,12 @@ import { Button } from '@cc/Button';
 import { Parameters } from '@cc/Parameters';
 import Tags from '@cc/Tags';
 
+import { Task } from 'api/definition';
 import S from './TaskView.module.scss';
 
 type TaskBodyProps = {
-  value: any
-  type: models.ApplicationTaskType
+  value: any;
+  type: string;
 }
 
 function TaskBodyView({ value, type }: TaskBodyProps) {
@@ -33,7 +34,7 @@ function TaskBodyView({ value, type }: TaskBodyProps) {
 }
 
 type TaskViewProps = {
-  task: models.ApplicationTask
+  task: Task;
   editable?: boolean
 }
 
@@ -61,7 +62,7 @@ export function TaskView({ task, editable }: TaskViewProps) {
               [t('id')]: <code>{task._id}</code>,
               [t('name')]: `${task.name} (${task.qualified_name})`,
               [t('description')]: task.description,
-              [t('task_type')]: <span>{task.task_type}</span>,
+              [t('taskType')]: <span>{task.task_type}</span>,
               [t('task_body')]: (
                 <TaskBodyView value={task.body} type={task.task_type} />
               ),

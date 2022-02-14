@@ -1,8 +1,8 @@
 import {
-  css,
+  ThemeProvider as EmotionThemeProvider,
   Global,
   Interpolation,
-  ThemeProvider as EmotionThemeProvider,
+  css,
   useTheme,
 } from '@emotion/react';
 import React from 'react';
@@ -82,8 +82,8 @@ export const defaultTheme: ThemeData = {
       '#a1a1a1',
       '#c0c0c0',
       '#d8d8d8',
-      '#e0e0e0',
-      '#f3f3f3',
+      '#eee',
+      '#fafafa',
       '#ffffff',
     ]),
     ...primaryColors({

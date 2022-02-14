@@ -15,9 +15,14 @@
   font-size: 0.85rem;
   font-weight: 500;
   padding: var(--t-spacing-md);
+  display: flex;
+  justify-content: center;
 
   &:disabled {
     cursor: not-allowed;
+    --button-main-color: var(--button-disabled-color);
+    --button-main-color-2: var(--button-disabled-color);
+    --button-main-color-3: var(--button-disabled-color);
   }
 
   & > :not(:first-child) {
@@ -26,6 +31,7 @@
 }
 
 .link {
+  display: inline-flex;
   color: var(--t-primary);
   &:hover {
     color: var(--t-color);
@@ -33,6 +39,10 @@
 
   &:active {
     outline: 1px solid var(--t-color);
+  }
+
+  &:disabled {
+    color: var(--t-neutral-4);
   }
 }
 
@@ -66,7 +76,7 @@
 }
 
 .default {
-  border: 1px solid var(--t-neutral-8);
+  border: 1px solid var(--t-neutral-6);
   background-color: var(--t-paper);
   transition: box-shadow var(--t-transition-sm);
 
@@ -99,7 +109,6 @@
   }
 
   &:disabled {
-    background-color: var(--t-neutral-6);
     color: var(--t-neutral-3);
   }
 }

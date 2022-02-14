@@ -5,19 +5,21 @@ import Tags from '@cc/Tags';
 import { Heading } from '@cc/Text';
 import { mdiEye, mdiEyeOff, mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
-import { models } from 'api';
+import { Application } from 'api/definition';
+
+import Padded from 'pages/Padded';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type ApplicationInfoProps = {
-  app: models.ApplicationView
+  app: Application
 }
 
 export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
   const [showKey, setShowKey] = useState(false);
   const { t } = useTranslation();
   return (
-    <>
+    <Padded>
       <Stack h>
         <Button
           to={`/applications/${app._id}/edit`}
@@ -32,23 +34,24 @@ export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
           [t('id')]: <code>{app._id}</code>,
           [t('name')]: <StringValue value={app.name} />,
           [t('description')]: <StringValue value={app.description} />,
-          [t('access_key')]: (
-            <Stack h spacing="md">
+          [t('accessKey')]: (
+            <>
               <code>
                 {showKey ? app.access_key : 'application.################'}
               </code>
+              <br />
               <Button
                 variant="link"
                 onClick={() => setShowKey(!showKey)}
                 left={<Icon size={0.8} path={showKey ? mdiEyeOff : mdiEye} />}
               >
-                {showKey ? t('hide_key') : t('show_key')}
+                {showKey ? t('hideKey') : t('showKey')}
               </Button>
-            </Stack>
+            </>
           ),
           [t('tags')]: <Tags tags={app.tags} />,
         }}
       />
-    </>
+    </Padded>
   );
 }
