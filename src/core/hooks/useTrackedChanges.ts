@@ -1,5 +1,5 @@
-import { useState } from "react";
-import deepEqual from "deep-equal";
+import deepEqual from 'deep-equal';
+import { useState } from 'react';
 
 export interface TrackedChanges<T extends Record<string, any>> {
   changes: Partial<T>;
@@ -12,7 +12,7 @@ export interface TrackedChanges<T extends Record<string, any>> {
 }
 
 export default function useTrackedChanges<T extends Record<string, any>>(
-  originalValue?: T,
+  originalValue?: T
 ): TrackedChanges<T> {
   const [original, setOriginal] = useState<T>(originalValue);
   const [changes, setChanges] = useState<Partial<T>>({});

@@ -1,9 +1,7 @@
 import { combineRefs } from '@cc/utils';
 import { mdiCheck, mdiMinus } from '@mdi/js';
 import Icon from '@mdi/react';
-import React, {
-  ForwardedRef, useEffect, useRef, useState,
-} from 'react';
+import React, { ForwardedRef, useEffect, useRef, useState } from 'react';
 import S from './Checkbox.module.scss';
 
 type ControlledCheckboxProps = Omit<
@@ -13,13 +11,8 @@ type ControlledCheckboxProps = Omit<
 
 const ControlledCheckbox = React.forwardRef(
   (
-    {
-      indeterminate,
-      checked,
-      onChange,
-      ...props
-    }: ControlledCheckboxProps,
-    ref: ForwardedRef<HTMLInputElement>,
+    { indeterminate, checked, onChange, ...props }: ControlledCheckboxProps,
+    ref: ForwardedRef<HTMLInputElement>
   ) => {
     const localRef = useRef<HTMLInputElement>();
 
@@ -60,7 +53,7 @@ const ControlledCheckbox = React.forwardRef(
         />
       </span>
     );
-  },
+  }
 );
 
 export default ControlledCheckbox;

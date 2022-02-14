@@ -1,13 +1,7 @@
-import Tabs from "./Tabs";
-import Tab from "./Tab";
-import TabPanel from "./TabPanel";
-import TabList from "./TabList";
-import TabPanels from "./TabPanels";
+import Tab from './Tab';
+import TabList from './TabList';
+import TabPanel from './TabPanel';
+import TabPanels from './TabPanels';
+import Tabs from './Tabs';
 
-export {
-  Tab,
-  Tabs,
-  TabPanel,
-  TabList,
-  TabPanels,
-};
+export { Tab, Tabs, TabPanel, TabList, TabPanels };

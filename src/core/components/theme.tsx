@@ -1,15 +1,12 @@
 import {
-  ThemeProvider as EmotionThemeProvider,
+  css,
   Global,
   Interpolation,
-  css,
+  ThemeProvider as EmotionThemeProvider,
   useTheme,
 } from '@emotion/react';
 import React from 'react';
-import tc, {
-  ColorInput,
-  Instance,
-} from 'tinycolor2';
+import tc, { ColorInput, Instance } from 'tinycolor2';
 
 export interface ThemeData {
   colors: Record<string, string>;
@@ -21,7 +18,7 @@ export interface ThemeData {
 
 export function enumerateColors(
   baseName: string,
-  colors: string[],
+  colors: string[]
 ): Record<string, string> {
   const colorsRecord: Record<string, string> = {};
   for (let i = 0; i < colors.length; i += 1) {
@@ -32,7 +29,7 @@ export function enumerateColors(
 
 export function enumerateLightness(
   baseName: string,
-  color: string,
+  color: string
 ): Record<string, string> {
   const colorsRecord: Record<string, string> = { [baseName]: color };
   const { h, s } = tc(color).toHsl();
@@ -48,7 +45,7 @@ export function enumerateLightness(
 
 export function enumerateLightnessAndTransparency(
   baseName: string,
-  color: string,
+  color: string
 ): Record<string, string> {
   const colorsRecord = enumerateLightness(baseName, color);
   const c = tc(color);
@@ -192,7 +189,10 @@ export function useThemePath<T>(path: string): T {
   return result as T;
 }
 
-export function useNamedColor(name: string, defaultValue?: ColorInput): Instance | undefined {
+export function useNamedColor(
+  name: string,
+  defaultValue?: ColorInput
+): Instance | undefined {
   const value = useThemePath<ColorInput>(`colors.${name}`);
   if (value) return tc(value);
   if (defaultValue) return tc(defaultValue);
@@ -210,7 +210,7 @@ export type VariantFunction<Props> = (props: Props) => Interpolation<ThemeData>;
 
 export function useVariant<Props>(
   component: string,
-  variant: string,
+  variant: string
 ): VariantFunction<Props> | undefined {
   return useThemePath(`components.${component}.${variant}`);
 }

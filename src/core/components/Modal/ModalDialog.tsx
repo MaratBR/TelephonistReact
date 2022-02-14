@@ -9,12 +9,7 @@ interface ModalDialogProps {
   footer?: React.ReactNode;
 }
 
-function ModalDialog({
-  header,
-  children,
-  onClose,
-  footer,
-}: ModalDialogProps) {
+function ModalDialog({ header, children, onClose, footer }: ModalDialogProps) {
   return (
     <div className={S.modal}>
       <div className={S.header}>
@@ -29,9 +24,7 @@ function ModalDialog({
       </div>
 
       <div className={S.body}>{children}</div>
-      {
-        footer ? <div className={S.footer}>{footer}</div> : undefined
-      }
+      {footer ? <div className={S.footer}>{footer}</div> : undefined}
     </div>
   );
 }

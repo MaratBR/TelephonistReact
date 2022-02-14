@@ -7,10 +7,8 @@ interface TabsProps extends tabs.TabsProps {
 }
 
 function Tabs(
-  {
-    onSelect, tabsID, children, ...props
-  }: TabsProps,
-  ref: React.ForwardedRef<tabs.Tabs>,
+  { onSelect, tabsID, children, ...props }: TabsProps,
+  ref: React.ForwardedRef<tabs.Tabs>
 ) {
   let onSelectCallback: typeof onSelect = onSelect;
   if (tabsID) {
@@ -35,9 +33,7 @@ function Tabs(
 
 const TabsComponent = React.forwardRef(Tabs);
 
-export {
-  TabsComponent as Tabs,
-};
+export { TabsComponent as Tabs };
 export const { TabPanel } = tabs;
 export const { Tab } = tabs;
 export const { TabList } = tabs;

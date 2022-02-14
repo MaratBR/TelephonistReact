@@ -1,8 +1,4 @@
-import { Events } from "./Events";
-import { type EventHandler, newEventHandler } from "./EventHandler";
+import { newEventHandler, type EventHandler } from './EventHandler';
+import { Events } from './Events';
 
-export {
-  EventHandler,
-  newEventHandler,
-  Events,
-};
+export { EventHandler, newEventHandler, Events };

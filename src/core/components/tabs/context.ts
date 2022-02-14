@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 export interface TabsContext {
   selected: string | number;
   disabled: boolean;
-  keepAlive?: boolean | "lazy";
+  keepAlive?: boolean | 'lazy';
   select(id: string | number): void;
 }
 

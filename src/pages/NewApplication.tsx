@@ -2,9 +2,7 @@ import { Breadcrumb } from '@cc/Breadcrumb';
 import { ContentBox } from '@cc/ContentBox';
 import Error from '@cc/Error';
 import { Form, SaveButton } from '@cc/Form';
-import {
-  Input, InputLayout, Select, Textarea,
-} from '@cc/Input';
+import { Input, InputLayout, Select, Textarea } from '@cc/Input';
 import { Stack } from '@cc/Stack';
 import TagInput from '@cc/TagInput';
 import { Heading } from '@cc/Text';
@@ -18,7 +16,9 @@ export default function NewApplication() {
   const [displayName, setDisplayName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState<'arbitrary' | 'agent' | 'custom'>('arbitrary');
+  const [type, setType] = useState<'arbitrary' | 'agent' | 'custom'>(
+    'arbitrary'
+  );
   const [customType, setCustomType] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [error, setError] = useState<string>();
@@ -63,27 +63,27 @@ export default function NewApplication() {
         <Error error={error} />
         <Form action="#" onSubmit={submit}>
           <Stack spacing="md">
-            <InputLayout id="name" header={t("name")}>
+            <InputLayout id="name" header={t('name')}>
               <Input
                 onChange={(e) => setName(e.target.value)}
                 required
                 placeholder={t('name')}
               />
             </InputLayout>
-            <InputLayout id="displayName" header={t("displayName")}>
+            <InputLayout id="displayName" header={t('displayName')}>
               <Input
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
                 placeholder={t('display_name')}
               />
             </InputLayout>
-            <InputLayout id="description" header={t("description")}>
+            <InputLayout id="description" header={t('description')}>
               <Textarea
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder={t('description')}
               />
             </InputLayout>
-            <InputLayout id="tags" header={t("tags")}>
+            <InputLayout id="tags" header={t('tags')}>
               <TagInput
                 disallowDuplicates
                 submitOnSpace
@@ -92,10 +92,13 @@ export default function NewApplication() {
                 onTags={setTags}
               />
             </InputLayout>
-            <Select value={type} onChange={(e) => setType(e.target.value as ("arbitrary" | "custom" | "agent"))}>
-              <option value="arbitrary">
-                {t('appType.arbitrary')}
-              </option>
+            <Select
+              value={type}
+              onChange={(e) =>
+                setType(e.target.value as 'arbitrary' | 'custom' | 'agent')
+              }
+            >
+              <option value="arbitrary">{t('appType.arbitrary')}</option>
               <option value="agent">{t('appType.agent')}</option>
               <option value="custom">{t('appType.custom')}</option>
             </Select>

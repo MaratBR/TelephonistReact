@@ -7,7 +7,7 @@ export interface LoginResponse {
   access_token: string | null;
   exp: string;
   // refresh_token // ignore it since we're not gonna use it anyway
-  token_type: "bearer";
+  token_type: 'bearer';
   password_reset_required: boolean;
   password_reset_token: string | null;
 }

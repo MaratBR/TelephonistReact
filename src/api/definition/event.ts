@@ -1,4 +1,4 @@
-import { PaginationParams } from "./pagination";
+import { PaginationParams } from './pagination';
 
 export interface Event {
   event_key: string;

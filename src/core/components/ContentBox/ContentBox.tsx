@@ -3,12 +3,10 @@ import { HTMLAttributes } from 'react';
 import S from './ContentBox.module.scss';
 
 type ContentBoxProps = HTMLAttributes<HTMLDivElement> & {
-  padded?: boolean
-}
+  padded?: boolean;
+};
 
-function ContentBox(
-  { className, padded, ...props }: ContentBoxProps,
-) {
+function ContentBox({ className, padded, ...props }: ContentBoxProps) {
   return (
     <div
       className={classNames(S.contentBox, className, { [S.padded]: padded })}

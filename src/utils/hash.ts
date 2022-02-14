@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 let hashQueryValue: Record<string, any> = {};
 
 const eventTarget = new Comment(
-  'This comment is a an event target for location.hash changes !!!DO NOT REMOVE!!!',
+  'This comment is a an event target for location.hash changes !!!DO NOT REMOVE!!!'
 );
 window.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(eventTarget);
@@ -26,7 +26,9 @@ export function setHashQuery(value: Record<string, any>) {
     ...value,
   };
   window.location.hash = getHashString(newValue);
-  Object.keys(value).forEach((key) => eventTarget.dispatchEvent(new CustomEvent(`hash_change:${key}`)));
+  Object.keys(value).forEach((key) =>
+    eventTarget.dispatchEvent(new CustomEvent(`hash_change:${key}`))
+  );
   hashQueryValue = newValue;
 }
 
@@ -37,14 +39,15 @@ export function getHashValue(key: string) {
 export function useHashValueChange<T>(
   key: string,
   defaultValue: T,
-  listener: (value: T) => void,
+  listener: (value: T) => void
 ) {
   useEffect(() => {
     const listener_ = () => {
       listener(hashQueryValue[key] ?? defaultValue);
     };
     eventTarget.addEventListener(`hash_change:${key}`, listener_);
-    return () => eventTarget.removeEventListener(`hash_change:${key}`, listener_);
+    return () =>
+      eventTarget.removeEventListener(`hash_change:${key}`, listener_);
   }, []);
 }
 

@@ -1,29 +1,35 @@
-import { Form, FormError, SaveButton } from "@cc/Form";
-import { Input, InputLayout, Select } from "@cc/Input";
-import LoadingSpinner from "@cc/LoadingSpinner";
+import { Form, FormError, SaveButton } from '@cc/Form';
+import { Input, InputLayout, Select } from '@cc/Input';
 import {
-  DEFAULT_TASK_BODY, TASK_ARBITRARY, TASK_EXEC, TASK_SCRIPT, TaskStandalone, TaskTrigger,
-} from "api/definition";
-
-import { useApi } from "api/hooks";
-import { useStateWithValidation } from "core/hooks";
-import { TFunction } from "i18next";
-import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { ParametersStack } from "../Parameters";
+  DEFAULT_TASK_BODY,
+  TaskStandalone,
+  TaskTrigger,
+  TASK_ARBITRARY,
+  TASK_EXEC,
+  TASK_SCRIPT,
+} from 'api/definition';
+import { useApi } from 'api/hooks';
+import { useStateWithValidation } from 'core/hooks';
+import { TFunction } from 'i18next';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ParametersStack } from '../Parameters';
 import S from './TaskForm.module.scss';
 
 type TaskFormProps = {
   task?: TaskStandalone;
   appID?: string;
   onSaved?: (task: TaskStandalone) => void;
-}
+};
 
 function validateTaskName(taskName: string, t: TFunction) {
-  if (taskName.length === 0) throw new Error(t("errEmptyString", { subject: t("taskName") }));
+  if (taskName.length === 0)
+    throw new Error(t('errEmptyString', { subject: t('taskName') }));
   if (!/^\w+$/.test(taskName)) {
     throw new Error(
-      t("errInvalidFormat", { details: t("invalidIdentifier", { subject: t("taskName") }) }),
+      t('errInvalidFormat', {
+        details: t('invalidIdentifier', { subject: t('taskName') }),
+      })
     );
   }
 }
@@ -60,7 +66,7 @@ export default function TaskForm({ task, appID, onSaved }: TaskFormProps) {
 
   const onSubmit = useCallback(async () => {
     if (isNew) {
-      if (!appID) throw new Error("appID is not set, cannot save new task");
+      if (!appID) throw new Error('appID is not set, cannot save new task');
       const newTask = await api.defineNewApplicationTask(appID, {
         name,
         display_name: displayName,
@@ -86,32 +92,32 @@ export default function TaskForm({ task, appID, onSaved }: TaskFormProps) {
     <Form onSubmit={onSubmit} className={S.taskForm}>
       <FormError />
       <ParametersStack>
-        <InputLayout id="name" header={t("name")}>
+        <InputLayout id="name" header={t('name')}>
           <Input
             value={name}
-            placeholder={t("name")}
+            placeholder={t('name')}
             onChange={(e) => setName(e.target.value)}
           />
         </InputLayout>
-        <InputLayout id="displayName" header={t("displayName")}>
+        <InputLayout id="displayName" header={t('displayName')}>
           <Input
             value={displayName}
-            placeholder={t("displayName")}
+            placeholder={t('displayName')}
             onChange={(e) => setDisplayName(e.target.value)}
           />
         </InputLayout>
-        <InputLayout id="taskType" header={t("taskType")}>
+        <InputLayout id="taskType" header={t('taskType')}>
           <Select
             value={taskType}
-            placeholder={t("taskType")}
+            placeholder={t('taskType')}
             onChange={(e) => setTaskType(e.target.value)}
           >
-            <option value={TASK_ARBITRARY}>{t("taskType.arbitrary")}</option>
-            <option value={TASK_EXEC}>{t("taskType.exec")}</option>
-            <option value={TASK_SCRIPT}>{t("taskType.script")}</option>
+            <option value={TASK_ARBITRARY}>{t('taskType.arbitrary')}</option>
+            <option value={TASK_EXEC}>{t('taskType.exec')}</option>
+            <option value={TASK_SCRIPT}>{t('taskType.script')}</option>
           </Select>
         </InputLayout>
-        <InputLayout id="body" header={t("taskBody")}>
+        <InputLayout id="body" header={t('taskBody')}>
           123
         </InputLayout>
       </ParametersStack>

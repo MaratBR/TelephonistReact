@@ -6,9 +6,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import state from 'state';
 
-function AppInitializationWrapper({
-  children,
-}: React.PropsWithChildren<{}>) {
+function AppInitializationWrapper({ children }: React.PropsWithChildren<{}>) {
   if (!state.auth.isInitialized) {
     return (
       <Screen>

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useRef } from "react";
-import { Context } from "./context";
-import { isReactElement } from "./helpers";
+import { useContext, useEffect, useRef } from 'react';
+import { Context } from './context';
+import { isReactElement } from './helpers';
 
 interface TabPanelProps {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ interface TabPanelProps {
 
 function TabPanel({ children, tabID }: TabPanelProps) {
   const ctx = useContext(Context);
-  if (ctx === null) throw new Error("TabsContext is missing");
+  if (ctx === null) throw new Error('TabsContext is missing');
 
   const beenRendered = useRef(false);
   const isSelected = tabID === ctx.selected;
@@ -21,14 +21,13 @@ function TabPanel({ children, tabID }: TabPanelProps) {
   }, [ctx.selected]);
 
   if (
-    (ctx.keepAlive === false && !isSelected)
-    || (ctx.keepAlive === "lazy" && !beenRendered.current)
-  ) return null;
+    (ctx.keepAlive === false && !isSelected) ||
+    (ctx.keepAlive === 'lazy' && !beenRendered.current)
+  )
+    return null;
 
   return (
-    <div style={{ display: isSelected ? undefined : "none" }}>
-      {children}
-    </div>
+    <div style={{ display: isSelected ? undefined : 'none' }}>{children}</div>
   );
 }
 

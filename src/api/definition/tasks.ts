@@ -3,9 +3,9 @@ export interface TaskTrigger {
   body: any;
 }
 
-export const TRIGGER_FSNOTIFY = "fsnotify";
-export const TRIGGER_EVENT = "event";
-export const TRIGGER_CRON = "cron";
+export const TRIGGER_FSNOTIFY = 'fsnotify';
+export const TRIGGER_EVENT = 'event';
+export const TRIGGER_CRON = 'cron';
 
 export const DEFAULT_TRIGGER_BODY: Record<string, () => any> = {
   [TRIGGER_FSNOTIFY]: () => '',
@@ -35,12 +35,12 @@ export interface Task {
   app_id: string;
 }
 
-export interface TaskStandalone extends Omit<Task, "app_id"> {
+export interface TaskStandalone extends Omit<Task, 'app_id'> {
   app: {
     _id: string;
     name: string;
     display_name: string;
-  }
+  };
 }
 
 export const TASK_SCRIPT = 'script';
@@ -64,4 +64,4 @@ export interface DefineTask {
   triggers: TaskTrigger[];
 }
 
-export type UpdateTask = Partial<Omit<DefineTask, "_id">>;
+export type UpdateTask = Partial<Omit<DefineTask, '_id'>>;

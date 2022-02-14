@@ -15,7 +15,7 @@ if (!(window as any).__APP_INITIALIZED) {
     <React.StrictMode>
       <App />
     </React.StrictMode>,
-    document.getElementById('app'),
+    document.getElementById('app')
   );
   (window as any).__APP_INITIALIZED = true;
 }

@@ -1,9 +1,9 @@
-import { Checkbox } from "@cc/Input";
-import { Stack } from "@cc/Stack";
-import { mdiCalendar, mdiCheckCircle, mdiCloseCircle } from "@mdi/js";
-import Icon from "@mdi/react";
-import Table from "core/components/Table";
-import React from "react";
+import { Checkbox } from '@cc/Input';
+import { Stack } from '@cc/Stack';
+import { mdiCalendar, mdiCheckCircle, mdiCloseCircle } from '@mdi/js';
+import Icon from '@mdi/react';
+import Table from 'core/components/Table';
+import React from 'react';
 
 type StrKeyOf<T> = keyof T & string;
 type DataGridColumnObjectField<T, K extends StrKeyOf<T>> = {
@@ -24,7 +24,7 @@ type GenericDataGridColumnObject<T> = {
 };
 
 function isCustom<T, K extends StrKeyOf<T>>(
-  o: DataGridColumnObject<T, K>,
+  o: DataGridColumnObject<T, K>
 ): o is GenericDataGridColumnObject<T> {
   return o.custom;
 }
@@ -32,7 +32,7 @@ function isCustom<T, K extends StrKeyOf<T>>(
 export type DataGridColumn<T> = StrKeyOf<T> | DataGridColumnObject<T>;
 
 function defaultRender(o: any): React.ReactNode {
-  if (o === null || typeof o === "undefined") return o;
+  if (o === null || typeof o === 'undefined') return o;
   return o.toString();
 }
 
@@ -67,7 +67,9 @@ function DataRow<T>({
       ) : undefined}
       {columns.map((c) => (
         <td>
-          {isCustom(c) ? c.render(item) : (c.render ?? defaultRender)(item[c.key])}
+          {isCustom(c)
+            ? c.render(item)
+            : (c.render ?? defaultRender)(item[c.key])}
         </td>
       ))}
     </tr>
@@ -136,11 +138,9 @@ export class DataGrid<T> extends React.Component<
         },
         () => {
           if (onSelect) {
-            onSelect(
-              data.filter((_, idx) => selected[idx]),
-            );
+            onSelect(data.filter((_, idx) => selected[idx]));
           }
-        },
+        }
       );
     }
   }
@@ -159,22 +159,19 @@ export class DataGrid<T> extends React.Component<
             />
           </th>
         ) : undefined}
-        {columns.map((c) => (typeof c === "string" ? (
-          <th key={c}>{c}</th>
-        ) : (
-          <th key={c.key}>{c.title}</th>
-        )))}
+        {columns.map((c) =>
+          typeof c === 'string' ? (
+            <th key={c}>{c}</th>
+          ) : (
+            <th key={c.key}>{c.title}</th>
+          )
+        )}
       </tr>
     );
   }
 
   private _renderBody(columns: DataGridColumnObject<T>[]) {
-    const {
-      data,
-      noItemsRenderer,
-      selectable,
-      keyFactory,
-    } = this.props;
+    const { data, noItemsRenderer, selectable, keyFactory } = this.props;
     const { selected } = this.state;
 
     if (this._length > 0) {
@@ -188,11 +185,10 @@ export class DataGrid<T> extends React.Component<
           item={value}
         />
       ));
-    } if (noItemsRenderer) {
+    }
+    if (noItemsRenderer) {
       return (
-        <td colSpan={columns ? columns.length + 1 : 1}>
-          {noItemsRenderer()}
-        </td>
+        <td colSpan={columns ? columns.length + 1 : 1}>{noItemsRenderer()}</td>
       );
     }
     return null;
@@ -201,7 +197,9 @@ export class DataGrid<T> extends React.Component<
   render() {
     const header = this._renderHeader();
     const { columns } = this.props;
-    const objectColumns = columns.map((c) => (typeof c === "object" ? c : { key: c, title: c }));
+    const objectColumns = columns.map((c) =>
+      typeof c === 'object' ? c : { key: c, title: c }
+    );
 
     return (
       <Table>

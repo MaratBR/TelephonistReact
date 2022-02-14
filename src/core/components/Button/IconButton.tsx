@@ -5,9 +5,9 @@ import { ButtonHTMLAttributes } from 'react';
 import S from './IconButton.module.scss';
 
 type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  size?: number
-  path?: string
-}
+  size?: number;
+  path?: string;
+};
 
 export default function IconButton({
   className,

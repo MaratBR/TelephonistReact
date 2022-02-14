@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-export default function useOnClickOutside(ref: React.RefObject<HTMLElement>, handler) {
+export default function useOnClickOutside(
+  ref: React.RefObject<HTMLElement>,
+  handler
+) {
   useEffect(
     () => {
       const listener = (event) => {
@@ -23,6 +26,6 @@ export default function useOnClickOutside(ref: React.RefObject<HTMLElement>, han
     // ... callback/cleanup to run every render. It's not a big deal ...
     // ... but to optimize you can wrap handler in useCallback before ...
     // ... passing it into this hook.
-    [ref, handler],
+    [ref, handler]
   );
 }

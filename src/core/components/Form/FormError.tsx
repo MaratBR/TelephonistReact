@@ -1,6 +1,6 @@
-import Error from "@cc/Error";
-import { useContext } from "react";
-import { FormStatusContext } from "./context";
+import Error from '@cc/Error';
+import { useContext } from 'react';
+import { FormStatusContext } from './context';
 
 export default function FormError() {
   const ctx = useContext(FormStatusContext);

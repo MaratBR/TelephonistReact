@@ -1,4 +1,4 @@
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 export interface NextParamController {
   nextIfPresent(): void;
@@ -44,11 +44,10 @@ class Next implements NextParamController {
 
   redirectWithNext(path: string): void {
     this._navigate(
-      path + (
-        path.indexOf('?') === -1
+      path +
+        (path.indexOf('?') === -1
           ? `?next=${encodeURIComponent(this.next)}`
-          : `&next=${encodeURIComponent(this.next)}`
-      ),
+          : `&next=${encodeURIComponent(this.next)}`)
     );
   }
 }

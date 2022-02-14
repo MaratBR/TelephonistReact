@@ -1,14 +1,13 @@
 import ContentSection from '@cc/ContentSection';
 import { StringValue } from '@cc/Parameters';
 import { Task } from 'api/definition';
-
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import S from './TaskGeneralInfo.module.scss';
 
 type IsDisabledProps = {
-  disabled: boolean
-}
+  disabled: boolean;
+};
 
 function IsDisabled({ disabled }: IsDisabledProps) {
   const { t } = useTranslation();
@@ -20,8 +19,8 @@ function IsDisabled({ disabled }: IsDisabledProps) {
 }
 
 type Props = {
-  task: Task
-}
+  task: Task;
+};
 
 export default function TaskGeneralInfo({ task }: Props) {
   const { t } = useTranslation();

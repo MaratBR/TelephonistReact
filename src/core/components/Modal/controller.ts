@@ -28,29 +28,31 @@ export interface ModalListener {
 }
 
 class ModalControllerImpl implements ModalController {
-    private _listener: ModalListener | null
+  private _listener: ModalListener | null;
 
-    setCallback(callback: ModalListener | null) {
-      this._listener = callback;
-    }
+  setCallback(callback: ModalListener | null) {
+    this._listener = callback;
+  }
 
-    open(options: ModalOptions): Modal {
-      const id = options.id
-      ?? `${Math.random().toString(36).substring(2)
-      }_${
-        Math.floor(Date.now() / 1000)}`;
+  open(options: ModalOptions): Modal {
+    const id =
+      options.id ??
+      `${Math.random().toString(36).substring(2)}_${Math.floor(
+        Date.now() / 1000
+      )}`;
 
-      this._listener.onModalOpen(options);
+    this._listener.onModalOpen(options);
 
-      return {
-        id,
-        close: () => this.close(id),
-      };
-    }
+    return {
+      id,
+      close: () => this.close(id),
+    };
+  }
 
-    close(id: string) {
-      this._listener.onModalClosed(id);
-    }
+  close(id: string) {
+    this._listener.onModalClosed(id);
+  }
 }
 
-export const ModalControllerContext = React.createContext<ModalController | null>(null);
+export const ModalControllerContext =
+  React.createContext<ModalController | null>(null);

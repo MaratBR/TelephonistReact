@@ -1,7 +1,5 @@
 import { Alert } from '@cc/Alert';
-import {
-  Nav, NavGroup, NavItem, NavItems,
-} from '@cc/Nav';
+import { Nav, NavGroup, NavItem, NavItems } from '@cc/Nav';
 import { Stack } from '@cc/Stack';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -32,8 +30,8 @@ const rootCSS = css`
 `;
 
 interface MainPageInnerState {
-  error?: Error
-  errorInfo?: ErrorInfo
+  error?: Error;
+  errorInfo?: ErrorInfo;
 }
 
 const Main = styled.main`
@@ -43,8 +41,8 @@ const Main = styled.main`
 const Top = styled.header``;
 
 type MainPageInnerProps = {
-  t: TFunction
-}
+  t: TFunction;
+};
 
 class MainPageInner extends React.Component<
   MainPageInnerProps,

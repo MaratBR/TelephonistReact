@@ -1,4 +1,4 @@
-import { Interpolation, css } from '@emotion/react';
+import { css, Interpolation } from '@emotion/react';
 import styled from '@emotion/styled';
 import classNames from 'classnames';
 import LoadingSpinner from 'core/components/LoadingSpinner';
@@ -30,7 +30,7 @@ type ButtonComputedAttributes = {
 
 function _attrs(
   className: string,
-  _style: ButtonStyle,
+  _style: ButtonStyle
 ): ButtonComputedAttributes {
   const arr = [className, S.button];
 
@@ -51,12 +51,17 @@ function _attrs(
   return {
     className: arr.join(' '),
     css:
-      _style.baseColor
-      && css({
+      _style.baseColor &&
+      css({
         '--button-main-color': _style.baseColor.toString(),
         '--button-main-color-2': _style.baseColor.clone().darken().toString(),
         '--button-main-color-3': _style.baseColor.clone().lighten(7).toString(),
-        '--button-disabled-color': tinycolor({ ..._style.baseColor.clone().toHsl(), s: 30 }).lighten().toString(),
+        '--button-disabled-color': tinycolor({
+          ..._style.baseColor.clone().toHsl(),
+          s: 30,
+        })
+          .lighten()
+          .toString(),
         '--button-fg-color': _style.baseColor.isLight() ? 'black' : 'white',
       }),
   };
@@ -65,26 +70,21 @@ function _attrs(
 const StyledButton = React.forwardRef(
   (
     { _style, className, ...props }: StyledButtonProps,
-    ref: React.ForwardedRef<HTMLButtonElement>,
-  ) => <button type="button" {..._attrs(className, _style)} {...props} ref={ref} />,
+    ref: React.ForwardedRef<HTMLButtonElement>
+  ) => (
+    <button type="button" {..._attrs(className, _style)} {...props} ref={ref} />
+  )
 );
 
 const ButtonLikeNavLink = React.forwardRef(
   (
-    {
-      _style, children, className, ...props
-    }: ButtonLikeNavLinkProps,
-    ref: React.ForwardedRef<HTMLAnchorElement>,
+    { _style, children, className, ...props }: ButtonLikeNavLinkProps,
+    ref: React.ForwardedRef<HTMLAnchorElement>
   ) => (
-    <NavLink
-      {..._attrs(className, _style)}
-      role="button"
-      {...props}
-      ref={ref}
-    >
+    <NavLink {..._attrs(className, _style)} role="button" {...props} ref={ref}>
       {children ?? ''}
     </NavLink>
-  ),
+  )
 );
 
 type ButtonOnlyProps = {
@@ -137,7 +137,7 @@ const Button = React.forwardRef(
       right,
       ...props
     }: ButtonProps,
-    ref?: React.ForwardedRef<HTMLAnchorElement & HTMLButtonElement>,
+    ref?: React.ForwardedRef<HTMLAnchorElement & HTMLButtonElement>
   ) => {
     const inner = (
       <>
@@ -179,7 +179,7 @@ const Button = React.forwardRef(
         {inner}
       </StyledButton>
     );
-  },
+  }
 );
 
 export default React.memo(Button);

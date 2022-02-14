@@ -1,3 +1,3 @@
-import ConnectionsView from "./ConnectionsView";
+import ConnectionsView from './ConnectionsView';
 
 export default ConnectionsView;

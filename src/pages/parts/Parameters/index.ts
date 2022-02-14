@@ -1,5 +1,3 @@
-import ParametersStack from "./ParametersStack";
+import ParametersStack from './ParametersStack';
 
-export {
-  ParametersStack,
-};
+export { ParametersStack };

@@ -1,21 +1,21 @@
-import classNames from "classnames";
-import { forwardRef } from "react";
+import classNames from 'classnames';
+import { forwardRef } from 'react';
 import S from './InputLayout.module.scss';
 
 type InputLayoutVariant = 'inline' | 'top' | 'aside' | 'aside-right';
 
 interface InputLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: InputLayoutVariant
-  inlineBlock?: boolean
-  header?: React.ReactNode
-  description?: React.ReactNode
+  variant?: InputLayoutVariant;
+  inlineBlock?: boolean;
+  header?: React.ReactNode;
+  description?: React.ReactNode;
   id: string;
   isChanged?: boolean;
 }
 
 const variants: Record<InputLayoutVariant, string> = {
   inline: S.inline,
-  "aside-right": `${S.aside} ${S.right}`,
+  'aside-right': `${S.aside} ${S.right}`,
   aside: S.aside,
   top: S.top,
 };
@@ -33,14 +33,9 @@ const InputLayout = forwardRef(
     ...props
   }: InputLayoutProps) => (
     <div
-      className={classNames(
-        S.layout,
-        className,
-        variants[variant ?? "aside"],
-        {
-          [S.inlineBlock]: inlineBlock,
-        },
-      )}
+      className={classNames(S.layout, className, variants[variant ?? 'aside'], {
+        [S.inlineBlock]: inlineBlock,
+      })}
       {...props}
     >
       <div className={S.header}>
@@ -50,11 +45,9 @@ const InputLayout = forwardRef(
         </label>
         <span className={S.description}>{description}</span>
       </div>
-      <div className={S.body}>
-        {children}
-      </div>
+      <div className={S.body}>{children}</div>
     </div>
-  ),
+  )
 );
 
 export default InputLayout;

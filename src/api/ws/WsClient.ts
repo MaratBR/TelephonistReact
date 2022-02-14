@@ -1,7 +1,7 @@
-import { RegistryMessage } from "api/definition";
-import { Events, newEventHandler } from "api/events";
-import { Dispose, ListenerFunction } from "api/events/Events";
-import WSClientBase from "./WsClientBase";
+import { RegistryMessage } from 'api/definition';
+import { Events, newEventHandler } from 'api/events';
+import { Dispose, ListenerFunction } from 'api/events/Events';
+import WSClientBase from './WsClientBase';
 
 export default class WSClient<
   InEventsRegistry extends object,
@@ -29,22 +29,19 @@ export default class WSClient<
 
   on<K extends keyof InEventsRegistry>(
     event: K,
-    listener: ListenerFunction<InEventsRegistry[K]>,
+    listener: ListenerFunction<InEventsRegistry[K]>
   ): Dispose {
     return this._events.addEventListener(event, listener);
   }
 
   off<K extends keyof InEventsRegistry>(
     event: K,
-    listener: ListenerFunction<InEventsRegistry[K]>,
+    listener: ListenerFunction<InEventsRegistry[K]>
   ) {
     this._events.removeEventListener(event, listener);
   }
 
-  send(
-    rawMessage: RegistryMessage<OutEventsRegistry>,
-    queue: boolean = true,
-  ) {
+  send(rawMessage: RegistryMessage<OutEventsRegistry>, queue: boolean = true) {
     const raw = JSON.stringify(rawMessage);
     if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
       if (queue || this.websocket?.readyState === WebSocket.CONNECTING) {

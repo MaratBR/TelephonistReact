@@ -6,14 +6,13 @@ import { Heading } from '@cc/Text';
 import { mdiEye, mdiEyeOff, mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Application } from 'api/definition';
-
 import Padded from 'pages/Padded';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type ApplicationInfoProps = {
-  app: Application
-}
+  app: Application;
+};
 
 export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
   const [showKey, setShowKey] = useState(false);

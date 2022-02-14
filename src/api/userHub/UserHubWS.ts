@@ -1,12 +1,21 @@
-import api from "api";
-import { WS_URL } from "api/client";
+import api from 'api';
+import { WS_URL } from 'api/client';
 import {
-  AppUpdateMessage, ConnectionInfo, Event, SequenceMetaMessage, UserHubIncomingMessages, UserHubOutgoingMessages,
-} from "api/definition";
-import { WSClient } from "api/ws";
-import { Observable, Subject } from "rxjs";
+  AppUpdateMessage,
+  ConnectionInfo,
+  Event,
+  SequenceMetaMessage,
+  Task,
+  UserHubIncomingMessages,
+  UserHubOutgoingMessages,
+} from 'api/definition';
+import { WSClient } from 'api/ws';
+import { Observable, Subject } from 'rxjs';
 
-export default class UserHubWS extends WSClient<UserHubIncomingMessages, UserHubOutgoingMessages> {
+export default class UserHubWS extends WSClient<
+  UserHubIncomingMessages,
+  UserHubOutgoingMessages
+> {
   private _eventsSubject: Subject<Event> = new Subject();
 
   constructor() {
@@ -38,19 +47,11 @@ export default class UserHubWS extends WSClient<UserHubIncomingMessages, UserHub
     this._eventsSubject.next(event);
   }
 
-  private _onTask(task: Task) {
+  private _onTask(task: Task) {}
 
-  }
+  private _onApp(app: AppUpdateMessage) {}
 
-  private _onApp(app: AppUpdateMessage) {
+  private _onSequenceMeta(message: SequenceMetaMessage) {}
 
-  }
-
-  private _onSequenceMeta(message: SequenceMetaMessage) {
-
-  }
-
-  private _onConnection(connection: ConnectionInfo) {
-
-  }
+  private _onConnection(connection: ConnectionInfo) {}
 }

@@ -1,3 +1,3 @@
-import TasksView from "./TasksView";
+import TasksView from './TasksView';
 
 export default TasksView;

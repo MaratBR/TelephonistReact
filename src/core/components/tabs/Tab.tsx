@@ -1,7 +1,7 @@
-import { combineListeners } from "@cc/utils";
-import classNames from "classnames";
-import React from "react";
-import { isReactElement } from "./helpers";
+import { combineListeners } from '@cc/utils';
+import classNames from 'classnames';
+import React from 'react';
+import { isReactElement } from './helpers';
 import S from './Tab.module.scss';
 
 interface TabProps extends React.LiHTMLAttributes<HTMLLIElement> {
@@ -12,14 +12,25 @@ interface TabProps extends React.LiHTMLAttributes<HTMLLIElement> {
 }
 
 export default function Tab({
-  id, onSelect, onClick, disabled, selected, className, ...props
+  id,
+  onSelect,
+  onClick,
+  disabled,
+  selected,
+  className,
+  ...props
 }: TabProps) {
   return (
     <li
       role="tab"
-      onClick={combineListeners(() => { if (!disabled && onSelect) onSelect(); }, onClick)}
+      onClick={combineListeners(() => {
+        if (!disabled && onSelect) onSelect();
+      }, onClick)}
       id={id}
-      className={classNames(className, S.tab, { [S.disabled]: disabled, [S.selected]: selected })}
+      className={classNames(className, S.tab, {
+        [S.disabled]: disabled,
+        [S.selected]: selected,
+      })}
       {...props}
     />
   );

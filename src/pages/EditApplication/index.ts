@@ -1,3 +1,3 @@
-import EditApplicationPage from "./EditApplicationPage";
+import EditApplicationPage from './EditApplicationPage';
 
 export default EditApplicationPage;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 type ValidateCallback = (valid: boolean) => void;
 type VoidCallback = () => void;
@@ -82,11 +82,7 @@ class FormEnvironmentImpl implements FormEnvironment {
 function FormEnvironmentProvider({ children }: React.PropsWithChildren<{}>) {
   const [context] = useState(() => new FormEnvironmentImpl());
 
-  return (
-    <Context.Provider value={context}>
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={context}>{children}</Context.Provider>;
 }
 
 export interface FormStatus {
@@ -94,7 +90,9 @@ export interface FormStatus {
   error?: any;
 }
 
-const FormStatusContext = React.createContext<FormStatus>({ isSubmitting: false });
+const FormStatusContext = React.createContext<FormStatus>({
+  isSubmitting: false,
+});
 
 export {
   FormEnvironmentProvider,

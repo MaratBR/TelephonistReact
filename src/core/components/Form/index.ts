@@ -1,9 +1,5 @@
-import Form from "./Form";
-import SaveButton from "./SaveButton";
-import FormError from "./FormError";
+import Form from './Form';
+import FormError from './FormError';
+import SaveButton from './SaveButton';
 
-export {
-  Form,
-  SaveButton,
-  FormError,
-};
+export { Form, SaveButton, FormError };

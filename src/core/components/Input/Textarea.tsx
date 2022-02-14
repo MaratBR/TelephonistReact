@@ -5,7 +5,7 @@ import InputBox, { InputBoxVariant } from './InputBox';
 import S from './Textarea.module.scss';
 
 type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  variant?: InputBoxVariant
+  variant?: InputBoxVariant;
   isInvalid?: boolean;
 };
 
@@ -18,10 +18,7 @@ export default function Textarea({
 }: TextareaProps) {
   const [focused, setFocused] = useState(false);
   return (
-    <InputBox
-      variant={variant}
-      focused={focused}
-    >
+    <InputBox variant={variant} focused={focused}>
       <textarea
         onFocus={combineListeners(onFocus, () => setFocused(true))}
         onBlur={combineListeners(onBlur, () => setFocused(false))}

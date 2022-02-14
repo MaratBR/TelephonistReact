@@ -19,7 +19,7 @@ export type WithContainerParams = { diContainer: Container | null };
 export function withContainer<P, S>(
   Component:
     | React.FC<P & { diContainer: Container | null }>
-    | React.ComponentClass<P & WithContainerParams>,
+    | React.ComponentClass<P & WithContainerParams>
 ): React.FC<P> {
   const container = useContainer();
   return function (props) {

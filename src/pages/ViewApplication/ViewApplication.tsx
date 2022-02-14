@@ -1,16 +1,9 @@
 import ContentSection from '@cc/ContentSection';
-import {
-  DataGrid, dateRender, renderBoolean, renderObjectID,
-} from '@cc/DataGrid';
 import ErrorView from '@cc/Error';
-import { Centered } from '@cc/Layout';
 import LoadingSpinner from '@cc/LoadingSpinner';
-import {
-  Tab, TabList, TabPanel, TabPanels, Tabs,
-} from '@cc/tabs';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@cc/tabs';
 import { TextHeader } from '@cc/Text';
 import { TaskStandalone } from 'api/definition';
-
 import { useApi, useEventPagination } from 'api/hooks';
 import { Breadcrumb } from 'core/components/Breadcrumb';
 import { useRefreshableAsyncValue } from 'core/hooks';
@@ -35,25 +28,29 @@ const ApplicationEvents = observer(({ id }: ApplicationEventsProps) => {
 function ViewApplication() {
   const { id } = useParams();
   const api = useApi();
-  const {
-    value, isLoading, error, setValue,
-  } = useRefreshableAsyncValue(() => api.getAppliction(id), [id]);
+  const { value, isLoading, error, setValue } = useRefreshableAsyncValue(
+    () => api.getAppliction(id),
+    [id]
+  );
   const name = isLoading ? id : value.app.display_name;
   const { t } = useTranslation();
 
-  const onTaskAdded = useCallback((task: TaskStandalone) => {
-    // do optimistic update for now
-    setValue({
-      ...value,
-      tasks: [
-        ...value.tasks,
-        {
-          ...task,
-          app_id: task.app._id,
-        },
-      ],
-    });
-  }, [value]);
+  const onTaskAdded = useCallback(
+    (task: TaskStandalone) => {
+      // do optimistic update for now
+      setValue({
+        ...value,
+        tasks: [
+          ...value.tasks,
+          {
+            ...task,
+            app_id: task.app._id,
+          },
+        ],
+      });
+    },
+    [value]
+  );
 
   let content: React.ReactNode;
 
@@ -61,7 +58,7 @@ function ViewApplication() {
     content = <LoadingSpinner size={2} />;
   } else {
     content = (
-      <ContentSection header={t("information")}>
+      <ContentSection header={t('information')}>
         <Tabs>
           <TabList>
             <Tab>{t('general')}</Tab>
@@ -102,13 +99,8 @@ function ViewApplication() {
         <span>{name}</span>
       </Breadcrumb>
 
-      <TextHeader
-        title={name}
-        subtitle={isLoading ? 0 : value.app.name}
-      />
-      {
-        error ? <ErrorView error={error} /> : undefined
-      }
+      <TextHeader title={name} subtitle={isLoading ? 0 : value.app.name} />
+      {error ? <ErrorView error={error} /> : undefined}
       {content}
     </>
   );

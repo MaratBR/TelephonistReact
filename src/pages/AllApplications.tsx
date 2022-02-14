@@ -17,7 +17,8 @@ import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 export default function AllApplications() {
-  const [pagination, setPagination] = useState<models.Pagination<models.ApplicationView>>();
+  const [pagination, setPagination] =
+    useState<models.Pagination<models.ApplicationView>>();
 
   useEffect(() => {
     api.getApplictions({}).then(setPagination);

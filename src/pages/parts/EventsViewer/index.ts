@@ -1,3 +1,3 @@
-import EventsViewer from "./EventsViewer";
+import EventsViewer from './EventsViewer';
 
 export default EventsViewer;

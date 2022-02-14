@@ -12,9 +12,7 @@ export default function Field({ name, children, description }: FieldProps) {
         <span className={S.label}>{name}</span>
         <span>{description}</span>
       </div>
-      <div className={S.body}>
-        {children}
-      </div>
+      <div className={S.body}>{children}</div>
     </div>
   );
 }

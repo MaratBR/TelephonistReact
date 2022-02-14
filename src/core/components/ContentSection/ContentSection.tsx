@@ -25,13 +25,9 @@ export default function ContentSection({
       <div className={classNames(S.body, { [S.padded]: padded })}>
         {children}
       </div>
-      {
-        asideContent ? (
-          <aside className={S.aside}>
-            {asideContent}
-          </aside>
-        ) : undefined
-      }
+      {asideContent ? (
+        <aside className={S.aside}>{asideContent}</aside>
+      ) : undefined}
     </div>
   );
 }

@@ -1,9 +1,6 @@
-import { asPromise } from "core/utils/async";
-import {
-  makeObservable, observable, runInAction,
-} from "mobx";
-import { useLocalObservable } from "mobx-react";
-import { useEffect } from "react";
+import { makeObservable, observable, runInAction } from 'mobx';
+import { useLocalObservable } from 'mobx-react';
+import { useEffect } from 'react';
 
 export interface LiveValue<T> {
   value: T | undefined;
@@ -21,7 +18,11 @@ class LiveValueImpl<T> implements LiveValue<T> {
 
   private readonly _getter: () => Promise<T>;
 
-  constructor(getter: () => Promise<T>, loading: boolean = false, defaultValue: T = undefined) {
+  constructor(
+    getter: () => Promise<T>,
+    loading: boolean = false,
+    defaultValue: T = undefined
+  ) {
     this.loading = loading;
     this.value = defaultValue;
     this._getter = getter;
@@ -35,9 +36,9 @@ class LiveValueImpl<T> implements LiveValue<T> {
   }
 
   update(live: Partial<LiveValue<T>>) {
-    if ("error" in live) this.error = live.error;
-    if ("loading" in live) this.loading = live.loading;
-    if ("value" in live) this.value = live.value;
+    if ('error' in live) this.error = live.error;
+    if ('loading' in live) this.loading = live.loading;
+    if ('value' in live) this.value = live.value;
   }
 
   refresh(): Promise<void> {
@@ -50,7 +51,7 @@ class LiveValueImpl<T> implements LiveValue<T> {
 type NonCallable = object | null | string | number | symbol;
 
 interface LiveValueContext<T extends NonCallable> {
-  set(value: T | Function & ((oldValue: T) => T)): void;
+  set(value: T | (Function & ((oldValue: T) => T))): void;
 }
 
 type LiveRefreshFunction = () => void;
@@ -58,10 +59,10 @@ type LiveRefreshFunction = () => void;
 export default function useLiveValue<T extends NonCallable>(
   defaultValue: T,
   refreshValue: () => Promise<T>,
-  effect: (context: LiveValueContext<T>) => () => void,
+  effect: (context: LiveValueContext<T>) => () => void
 ): LiveValue<T> {
   const live = useLocalObservable(
-    () => new LiveValueImpl<T>(refreshValue, true),
+    () => new LiveValueImpl<T>(refreshValue, true)
   );
 
   useEffect(() => {
@@ -70,7 +71,8 @@ export default function useLiveValue<T extends NonCallable>(
     live.refresh().then(() => {
       unsubscribe = effect({
         set(value) {
-          const newValue = typeof value === "function" ? value(live.value) : value;
+          const newValue =
+            typeof value === 'function' ? value(live.value) : value;
           runInAction(() => {
             live.value = newValue;
           });

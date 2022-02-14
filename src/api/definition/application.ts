@@ -1,5 +1,5 @@
-import { ConnectionInfo } from "./connection";
-import { Task } from "./tasks";
+import { ConnectionInfo } from './connection';
+import { Task } from './tasks';
 
 export interface Application {
   _id: string;

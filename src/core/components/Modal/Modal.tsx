@@ -1,7 +1,7 @@
-import classNames from "classnames";
-import React from "react";
-import ReactDOM from "react-dom";
-import S from "./Modal.module.scss";
+import classNames from 'classnames';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import S from './Modal.module.scss';
 
 interface ModalContext {}
 
@@ -22,7 +22,7 @@ class Modal extends React.Component<ModalProps> {
     return (
       <div className={classNames(S.root)}>
         <div className={S.body}>
-          {typeof children === "function" ? children({}) : children}
+          {typeof children === 'function' ? children({}) : children}
         </div>
       </div>
     );

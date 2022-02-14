@@ -1,3 +1,3 @@
-import UserHubWS from "./UserHubWS";
+import UserHubWS from './UserHubWS';
 
 export default UserHubWS;

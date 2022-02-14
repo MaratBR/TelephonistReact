@@ -27,8 +27,7 @@ export default function PasswordResetPage() {
       <Navigate
         to={{
           pathname: '/login',
-          search:
-            `?from=pwdreset.tokenExpired${next ? `&next=${next}` : ''}`,
+          search: `?from=pwdreset.tokenExpired${next ? `&next=${next}` : ''}`,
         }}
       />
     );

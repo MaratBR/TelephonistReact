@@ -1,8 +1,7 @@
 type ReconnectStrategy = (attempt: number) => number;
 
-const defaultReconnectStrategy: ReconnectStrategy = (attempt) => (
-  1000 * ([1, 5, 5, 10, 10, 10, 20, 20, 30, 30][attempt - 1] ?? 30)
-);
+const defaultReconnectStrategy: ReconnectStrategy = (attempt) =>
+  1000 * ([1, 5, 5, 10, 10, 10, 20, 20, 30, 30][attempt - 1] ?? 30);
 
 export type WSOptions = {
   reconnectStrategy?: (attempt: number) => number;
@@ -38,7 +37,9 @@ export default abstract class WSClientBase {
       : Promise.resolve(null);
   }
 
-  protected async modifyQuery(query: Record<string, string>): Promise<Record<string, string>> {
+  protected async modifyQuery(
+    query: Record<string, string>
+  ): Promise<Record<string, string>> {
     return {
       ...query,
       ticket: await this.getTicket(),
@@ -51,11 +52,9 @@ export default abstract class WSClientBase {
 
     const query = await this.modifyQuery({});
     this.websocket = new WebSocket(
-      `${this.options.path
-      }?${
-        Object.entries(query)
-          .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-          .join('&')}`,
+      `${this.options.path}?${Object.entries(query)
+        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+        .join('&')}`
     );
 
     this.websocket.addEventListener('close', this._onClose);
@@ -73,7 +72,8 @@ export default abstract class WSClientBase {
 
   protected abstract onMessage(event: MessageEvent): void | Promise<void>;
 
-  protected onError() { // eslint-disable-line class-methods-use-this
+  protected onError() {
+    // eslint-disable-line class-methods-use-this
     /* no-op */
   }
 

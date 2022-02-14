@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export interface StateWithError<T, TError = any> {
   readonly error: TError | undefined;
@@ -18,7 +18,7 @@ export interface StateWithValidation<T, TError = any>
     Validated {}
 
 export function useStateWithError<T, TError = any>(
-  defaultValue: T,
+  defaultValue: T
 ): StateWithError<T, TError> {
   const [state, set] = useState<{ value: T; error: TError | undefined }>({
     value: defaultValue,
@@ -35,7 +35,7 @@ export function useStateWithError<T, TError = any>(
 
 export function useStateWithValidation<T>(
   defaultValue: T,
-  validation: (value: T) => void,
+  validation: (value: T) => void
 ): StateWithValidation<T, any> {
   const state = {
     ...useStateWithError<T, any>(defaultValue),
@@ -65,7 +65,7 @@ export function useStateWithValidation<T>(
 
 export function useRequiredStringState(
   defaultValue?: string,
-  errorMessage?: string,
+  errorMessage?: string
 ): StateWithValidation<string> {
   return useStateWithValidation(defaultValue ?? '', (v) => {
     if (!v) throw new Error(errorMessage ?? 'Value is required');
@@ -78,7 +78,7 @@ export function useRequiredStringState(
 export function validateAnd(
   validateables: Validated[],
   onValidAction: () => any,
-  onInvalidAction?: () => any,
+  onInvalidAction?: () => any
 ) {
   return () => {
     let valid = true;

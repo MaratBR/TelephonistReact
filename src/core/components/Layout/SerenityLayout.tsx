@@ -21,7 +21,9 @@ const css_ = css`
   }
 `;
 
-export default function SerenityLayout({ children }: React.PropsWithChildren<unknown>) {
+export default function SerenityLayout({
+  children,
+}: React.PropsWithChildren<unknown>) {
   return (
     <div css={css_}>
       <aside />

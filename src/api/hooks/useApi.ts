@@ -1,4 +1,4 @@
-import apiInstance from "api/apiImplementation";
+import apiInstance from 'api/apiImplementation';
 
 export default function useApi() {
   return apiInstance;

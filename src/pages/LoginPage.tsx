@@ -63,7 +63,7 @@ function LoginPage() {
   } else {
     formBody = (
       <Stack alignItems="stretch">
-        <InputLayout variant="top" id="username" header={t("username")}>
+        <InputLayout variant="top" id="username" header={t('username')}>
           <Input
             id="username"
             isInvalid={loginVal.isError}
@@ -73,7 +73,7 @@ function LoginPage() {
             placeholder={t('username')}
           />
         </InputLayout>
-        <InputLayout variant="top" id="password" header={t("password")}>
+        <InputLayout variant="top" id="password" header={t('password')}>
           <Input
             isInvalid={passwordVal.isError}
             type="password"
@@ -97,9 +97,7 @@ function LoginPage() {
   return (
     <SerenityLayout>
       <Logo />
-      <ContentBox>
-        {formBody}
-      </ContentBox>
+      <ContentBox>{formBody}</ContentBox>
     </SerenityLayout>
   );
 }

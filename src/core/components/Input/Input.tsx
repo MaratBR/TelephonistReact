@@ -1,7 +1,7 @@
 import { combineListeners } from '@cc/utils';
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import S from "./Input.module.scss";
+import S from './Input.module.scss';
 import InputBox, { InputBoxVariant } from './InputBox';
 
 type AnyInputProps = {
@@ -19,14 +19,8 @@ const variants = {
 
 const Input = React.forwardRef(
   (
-    {
-      variant,
-      isInvalid,
-      onFocus,
-      onBlur,
-      ...props
-    }: InputProps,
-    ref: React.ForwardedRef<HTMLInputElement>,
+    { variant, isInvalid, onFocus, onBlur, ...props }: InputProps,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [focus, setFocus] = useState(false);
     return (
@@ -34,18 +28,15 @@ const Input = React.forwardRef(
         <input
           onFocus={combineListeners(onFocus, () => setFocus(true))}
           onBlur={combineListeners(onBlur, () => setFocus(false))}
-          className={classNames(
-            S.input,
-            {
-              [S.invalid]: isInvalid,
-            },
-          )}
+          className={classNames(S.input, {
+            [S.invalid]: isInvalid,
+          })}
           ref={ref}
           {...props}
         />
       </InputBox>
     );
-  },
+  }
 );
 
 export default Input;

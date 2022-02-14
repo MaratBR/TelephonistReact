@@ -1,20 +1,22 @@
 import {
-  DataGrid, dateRender, renderBoolean, renderObjectID,
-} from "@cc/DataGrid";
-import { ConnectionInfo } from "api/definition";
-
-import { useTranslation } from "react-i18next";
-import { Shruggie } from "../misc";
+  DataGrid,
+  dateRender,
+  renderBoolean,
+  renderObjectID,
+} from '@cc/DataGrid';
+import { ConnectionInfo } from 'api/definition';
+import { useTranslation } from 'react-i18next';
+import { Shruggie } from '../misc';
 
 type ConnectionsViewProps = {
   connections: ConnectionInfo[];
-}
+};
 
 function ConnectionsView({ connections }: ConnectionsViewProps) {
   const { t } = useTranslation();
   const noItemsShruggie = (
     <Shruggie>
-      <p>{t("noOpenConnections")}</p>
+      <p>{t('noOpenConnections')}</p>
     </Shruggie>
   );
   return (

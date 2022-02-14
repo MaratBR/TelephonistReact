@@ -43,11 +43,7 @@ export default function TimeCountdown({ to }: TimeCountdownProps) {
 
   return (
     <span css={_css}>
-      <span>{display.h}</span>
-      :
-      <span>{display.m}</span>
-      :
-      <span>{display.s}</span>
+      <span>{display.h}</span>:<span>{display.m}</span>:<span>{display.s}</span>
     </span>
   );
 }

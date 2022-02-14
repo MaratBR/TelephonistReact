@@ -4,7 +4,6 @@ import { Modal } from '@cc/Modal';
 import { mdiExclamationThick } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Task, TaskStandalone } from 'api/definition';
-
 import { DataGrid, renderBoolean } from 'core/components/DataGrid';
 import Padded from 'pages/Padded';
 import { useState } from 'react';
@@ -33,27 +32,22 @@ export default function ApplicationTasks({
 
   const renderNoItems = () => (
     <Shruggie>
-      <p>{t("noTasksPreset")}</p>
+      <p>{t('noTasksPreset')}</p>
       <ButtonGroup>
-        <Button onClick={() => toggleModal(true)}>
-          {t("addTask")}
-        </Button>
-        <Button>
-          {t("viewDeletedTasks")}
-        </Button>
+        <Button onClick={() => toggleModal(true)}>{t('addTask')}</Button>
+        <Button>{t('viewDeletedTasks')}</Button>
       </ButtonGroup>
     </Shruggie>
   );
 
-  const actionButtons = tasks.length === 0 ? undefined : (
-    <Padded>
-      <ButtonGroup>
-        <Button onClick={() => toggleModal(true)}>
-          {t("addTask")}
-        </Button>
-      </ButtonGroup>
-    </Padded>
-  );
+  const actionButtons =
+    tasks.length === 0 ? undefined : (
+      <Padded>
+        <ButtonGroup>
+          <Button onClick={() => toggleModal(true)}>{t('addTask')}</Button>
+        </ButtonGroup>
+      </Padded>
+    );
 
   return (
     <>
@@ -80,9 +74,7 @@ export default function ApplicationTasks({
                 <div className={S.name}>
                   <NavLink to={`/applications/${v.app_id}/tasks/${v._id}`}>
                     <h2>
-                      <span>{appName}</span>
-                      /
-                      <span>{taskName}</span>
+                      <span>{appName}</span>/<span>{taskName}</span>
                     </h2>
                   </NavLink>
                   <code>{v._id}</code>

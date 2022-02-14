@@ -7,12 +7,7 @@ interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
   hasFooter?: boolean;
 }
 
-function Table({
-  className,
-  minimal,
-  hasFooter,
-  ...props
-}: TableProps) {
+function Table({ className, minimal, hasFooter, ...props }: TableProps) {
   return (
     <table
       className={classNames(className, S.table, {

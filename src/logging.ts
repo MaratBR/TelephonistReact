@@ -18,10 +18,12 @@ declare global {
 }
 
 // eslint-disable-next-line no-unused-vars
-const wrap = (fn: (...args: any[]) => void): LoggingFunction => (...args) => {
-  fn(...args);
-  return window.logging;
-};
+const wrap =
+  (fn: (...args: any[]) => void): LoggingFunction =>
+  (...args) => {
+    fn(...args);
+    return window.logging;
+  };
 
 if (process.env.NODE_ENV === 'development') {
   // TODO: make separate eslint environments for prod and dev

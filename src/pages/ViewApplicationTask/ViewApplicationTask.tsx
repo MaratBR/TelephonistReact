@@ -11,8 +11,8 @@ import TaskTriggers from './TaskTriggers';
 export default function ViewApplicationTask() {
   const { t } = useTranslation();
   const { appID, taskID, name } = useParams();
-  const { error, isLoading, value } = useRefreshableAsyncValue(
-    () => api.getApplicationTask(appID, taskID),
+  const { error, isLoading, value } = useRefreshableAsyncValue(() =>
+    api.getApplicationTask(appID, taskID)
   );
 
   if (isLoading) {

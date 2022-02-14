@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { HTMLAttributes, forwardRef } from 'react';
+import { forwardRef, HTMLAttributes } from 'react';
 import S from './InputBox.module.scss';
 
-export type InputBoxVariant = 'flushed' | 'none' | 'default'
+export type InputBoxVariant = 'flushed' | 'none' | 'default';
 
 const variants: Record<InputBoxVariant, string | undefined> = {
   flushed: S.flushed,
@@ -11,18 +11,16 @@ const variants: Record<InputBoxVariant, string | undefined> = {
 };
 
 type InputBoxProps = {
-  variant?: InputBoxVariant
-  focused?: boolean
-  isInvalid?: boolean
-} & HTMLAttributes<HTMLDivElement>
+  variant?: InputBoxVariant;
+  focused?: boolean;
+  isInvalid?: boolean;
+} & HTMLAttributes<HTMLDivElement>;
 
-const InputBox = forwardRef(({
-  variant,
-  focused,
-  ...props
-}: InputBoxProps) => (
+const InputBox = forwardRef(({ variant, focused, ...props }: InputBoxProps) => (
   <div
-    className={classNames(S.box, variants[variant ?? 'default'], { [S.focused]: focused })}
+    className={classNames(S.box, variants[variant ?? 'default'], {
+      [S.focused]: focused,
+    })}
     {...props}
   />
 ));

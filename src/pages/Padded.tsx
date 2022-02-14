@@ -1,12 +1,12 @@
-import { maybeCSSVariable } from "@cc/utils";
-import styled from "@emotion/styled";
+import { maybeCSSVariable } from '@cc/utils';
+import styled from '@emotion/styled';
 
 type PaddedProps = {
   thickness?: string;
-}
+};
 
 const Padded = styled.div<PaddedProps>`
-  padding: ${({ thickness }) => maybeCSSVariable(thickness ?? "lg", "spacing")};
+  padding: ${({ thickness }) => maybeCSSVariable(thickness ?? 'lg', 'spacing')};
 `;
 
 export default Padded;

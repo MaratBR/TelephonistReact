@@ -1,7 +1,6 @@
 import { IconButton } from '@cc/Button';
-import { Interpolation, css } from '@emotion/react';
+import { css, Interpolation } from '@emotion/react';
 import { mdiClose } from '@mdi/js';
-import Icon from '@mdi/react';
 import React from 'react';
 import tinycolor from 'tinycolor2';
 import S from './Tag.module.scss';
@@ -12,9 +11,7 @@ interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   onClose?: () => void;
 }
 
-function Tag({
-  color, children, closeable, ...props
-}: TagProps) {
+function Tag({ color, children, closeable, ...props }: TagProps) {
   let c: Interpolation<any>;
   if (color) {
     const tc = tinycolor(color);
@@ -28,7 +25,11 @@ function Tag({
     <div className={S.tag} css={c} {...props}>
       {children}
       {closeable ? (
-        <IconButton onClick={() => props?.onClose()} size={0.5} path={mdiClose} />
+        <IconButton
+          onClick={() => props?.onClose()}
+          size={0.5}
+          path={mdiClose}
+        />
       ) : undefined}
     </div>
   );

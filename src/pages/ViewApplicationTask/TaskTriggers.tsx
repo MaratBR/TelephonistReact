@@ -1,20 +1,16 @@
-import { Breadcrumb } from '@cc/Breadcrumb';
 import { Button } from '@cc/Button';
 import ButtonGroup from '@cc/ButtonGroup';
 import ContentSection from '@cc/ContentSection';
 import { DataGrid } from '@cc/DataGrid';
-import { Input, InputLayout } from '@cc/Input';
-import { Modal, ModalDialog } from '@cc/Modal';
+import { Modal } from '@cc/Modal';
 import { mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { TaskStandalone, TaskTrigger } from 'api/definition';
-
 import { MD5 } from 'object-hash';
 import { Shruggie } from 'pages/parts/misc';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import S from './TaskTriggers.module.scss';
 import TriggerPopupEditor from './TriggerPopupEditor';
 
 function renderTriggerBody(trigger: TaskTrigger) {
@@ -31,13 +27,15 @@ type TaskTriggersProps = {
 function TaskTriggers({ task }: TaskTriggersProps) {
   const { t } = useTranslation();
   const [selected, setSelected] = useState<TaskTrigger[]>([]);
-  const [selectedTrigger, setSelectedTrigger] = useState<TaskTrigger | undefined>();
+  const [selectedTrigger, setSelectedTrigger] = useState<
+    TaskTrigger | undefined
+  >();
   const [modalOpen, toggleModal] = useState(false);
 
   const deleteTriggers = () => {};
   const noItemsShruggie = (
     <Shruggie>
-      <p>{t("noTaskTriggersDefined")}</p>
+      <p>{t('noTaskTriggersDefined')}</p>
     </Shruggie>
   );
 
@@ -94,7 +92,11 @@ function TaskTriggers({ task }: TaskTriggersProps) {
             key: '_action',
             custom: true,
             title: '',
-            render: (trigger) => <Button onClick={() => setSelectedTrigger(trigger)}>{t('edit')}</Button>,
+            render: (trigger) => (
+              <Button onClick={() => setSelectedTrigger(trigger)}>
+                {t('edit')}
+              </Button>
+            ),
           },
         ]}
       />

@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
   console.info(
     `%c API URL: %c${API_URL}`,
     'font-weight: bold; font-size: 15px;',
-    'font-size: 30px;',
+    'font-size: 30px;'
   );
 }
 

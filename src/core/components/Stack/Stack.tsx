@@ -1,15 +1,15 @@
-import { css } from "@emotion/react";
-import classNames from "classnames";
-import { maybeCSSVariable } from "core/components/utils";
-import React from "react";
-import S from "./Stack.module.scss";
+import { css } from '@emotion/react';
+import classNames from 'classnames';
+import { maybeCSSVariable } from 'core/components/utils';
+import React from 'react';
+import S from './Stack.module.scss';
 
 type StackProps = {
   horizontal?: boolean;
   spacing?: string;
   h?: boolean;
   wrap?: boolean;
-} & Pick<React.CSSProperties, "alignItems" | "justifyContent"> &
+} & Pick<React.CSSProperties, 'alignItems' | 'justifyContent'> &
   React.HTMLAttributes<HTMLDivElement>;
 
 export function Stack({
@@ -31,7 +31,9 @@ export function Stack({
       css={css({
         alignItems,
         justifyContent,
-        "& > *:not(:last-child)": spacing ? { marginInlineEnd: maybeCSSVariable(spacing, "spacing") } : undefined,
+        '& > *:not(:last-child)': spacing
+          ? { marginInlineEnd: maybeCSSVariable(spacing, 'spacing') }
+          : undefined,
       })}
     />
   );

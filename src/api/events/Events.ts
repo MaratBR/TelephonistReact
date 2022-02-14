@@ -22,7 +22,7 @@ export class Events<Registry extends StringsOnly> {
 
   addEventListener<K extends keyof Registry>(
     key: K,
-    listener: ListenerFunction<Registry[K]>,
+    listener: ListenerFunction<Registry[K]>
   ): Dispose {
     this._node.addEventListener(key as string, listener);
     return this.removeEventListener.bind(this, key, listener);
@@ -30,14 +30,14 @@ export class Events<Registry extends StringsOnly> {
 
   removeEventListener<K extends keyof Registry>(
     key: K,
-    listener: ListenerFunction<Registry[K]>,
+    listener: ListenerFunction<Registry[K]>
   ) {
     this._node.removeEventListener(key as string, listener);
   }
 
   once<K extends keyof Registry>(
     key: K,
-    listener: ListenerFunction<Registry[K]>,
+    listener: ListenerFunction<Registry[K]>
   ) {
     this._node.addEventListener(key as string, listener, { once: true });
   }

@@ -48,13 +48,15 @@ export default class AuthState {
     }).then(
       action(() => {
         this.initialize();
-      }),
+      })
     );
   }
 
   async login(r: requests.Login) {
     try {
-      runInAction(() => { this.isLoading = true; });
+      runInAction(() => {
+        this.isLoading = true;
+      });
       const data = await api.authorize(r);
       runInAction(() => this._loginState(data));
     } catch (e) {
@@ -63,7 +65,9 @@ export default class AuthState {
       });
       throw e;
     } finally {
-      runInAction(() => { this.isLoading = false; });
+      runInAction(() => {
+        this.isLoading = false;
+      });
     }
   }
 
@@ -148,12 +152,12 @@ export default class AuthState {
   async resetPassword(newPassword: string) {
     if (!this.isPasswordResetRequired) {
       throw new Error(
-        'invalid operation: cannot reset pasword since isPasswordResetRequired set to false',
+        'invalid operation: cannot reset pasword since isPasswordResetRequired set to false'
       );
     }
     if (this.isLoading) {
       throw new Error(
-        "another process is already happenning (i.e. logging in), can't do much for now",
+        "another process is already happenning (i.e. logging in), can't do much for now"
       );
     }
     this.isLoading = true;

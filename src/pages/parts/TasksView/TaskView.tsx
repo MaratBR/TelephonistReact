@@ -1,42 +1,39 @@
+import { Button } from '@cc/Button';
+import { Input, Textarea } from '@cc/Input';
+import { Parameters } from '@cc/Parameters';
+import Tags from '@cc/Tags';
 import { mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
-
+import { Task } from 'api/definition';
 import cn from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactJson from 'react-json-view';
-
-import { Input, Textarea } from '@cc/Input';
-import { Button } from '@cc/Button';
-import { Parameters } from '@cc/Parameters';
-import Tags from '@cc/Tags';
-
-import { Task } from 'api/definition';
 import S from './TaskView.module.scss';
 
 type TaskBodyProps = {
   value: any;
   type: string;
-}
+};
 
 function TaskBodyView({ value, type }: TaskBodyProps) {
   if (type === 'arbitrary') {
     return <ReactJson src={value} />;
-  } if (type === 'exec') {
+  }
+  if (type === 'exec') {
     return <Input value={value} readOnly />;
-  } if (type === 'script') {
+  }
+  if (type === 'script') {
     return <Textarea value={value} readOnly />;
   }
 
-  return (
-    <span>invalid task type</span>
-  );
+  return <span>invalid task type</span>;
 }
 
 type TaskViewProps = {
   task: Task;
-  editable?: boolean
-}
+  editable?: boolean;
+};
 
 export function TaskView({ task, editable }: TaskViewProps) {
   const [appName, taskName] = task.qualified_name.split('/');
@@ -83,10 +80,7 @@ export function TaskView({ task, editable }: TaskViewProps) {
         onClick={() => setCollapsed(!collapsed)}
       >
         <h3>
-          <span className={S.appName}>
-            {appName}
-            /
-          </span>
+          <span className={S.appName}>{appName}/</span>
           <span>{taskName}</span>
         </h3>
         <span className={S.id}>{task._id}</span>

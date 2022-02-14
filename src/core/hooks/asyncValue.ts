@@ -1,5 +1,4 @@
-import { asPromise } from "core/utils/async";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 export interface AsyncValue<T> {
   isLoading: boolean;
@@ -18,7 +17,7 @@ export interface RefreshableAsyncValue<T> extends MutableAsyncValue<T> {
 export function useRefreshableAsyncValue<T>(
   getter: () => Promise<T>,
   deps?: any[],
-  prefetch: boolean = true,
+  prefetch: boolean = true
 ): RefreshableAsyncValue<T> {
   const [error, setError] = useState<any>();
   const [value, setValue] = useState<T>(undefined);
@@ -57,7 +56,7 @@ export interface SwappableAsyncValue<T> extends MutableAsyncValue<T> {
 export function useSwappableAsyncValue<T>(
   defaultValue?: T,
   defaultPromise?: Promise<T> | (() => Promise<T>),
-  startLoading?: boolean,
+  startLoading?: boolean
 ) {
   const [isLoading, setLoading] = useState(!!defaultPromise || !!startLoading);
   const [value, setValue] = useState(defaultValue);

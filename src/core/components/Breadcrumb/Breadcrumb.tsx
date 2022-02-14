@@ -2,7 +2,7 @@ import { mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import classNames from 'classnames';
 import React from 'react';
-import S from "./Breadcrumb.module.scss";
+import S from './Breadcrumb.module.scss';
 
 interface BreadcrumbProps extends React.HTMLAttributes<HTMLDivElement> {
   separator?: React.ReactNode;
@@ -17,7 +17,10 @@ function Separator() {
 }
 
 function Breadcrumb({
-  separator, className, children, ...props
+  separator,
+  className,
+  children,
+  ...props
 }: BreadcrumbProps) {
   const separatorInstance = separator ?? <Separator />;
   const modifiedChildren = React.Children.map(children, (child) => (

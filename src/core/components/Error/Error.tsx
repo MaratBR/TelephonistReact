@@ -11,30 +11,28 @@ export default function Error({ error }: ErrorProps) {
   let body: React.ReactNode;
 
   switch (typeof error) {
-    case "object":
+    case 'object':
       if (error === null) {
-        header = t("unknownError");
-        body = t("invalidError");
+        header = t('unknownError');
+        body = t('invalidError');
       } else {
-        if (error.contructor && typeof error.constructor === "function") {
-          header = error.contructor.name ?? t("unknownError");
+        if (error.contructor && typeof error.constructor === 'function') {
+          header = error.contructor.name ?? t('unknownError');
         }
         body = error.toString();
       }
       break;
-    case "string":
-      header = t("genericError");
+    case 'string':
+      header = t('genericError');
       body = error.toString();
       break;
     default:
-      header = t("unknownError");
+      header = t('unknownError');
       break;
   }
   return (
     <div className={S.error}>
-      <span className={S.header}>
-        {header}
-      </span>
+      <span className={S.header}>{header}</span>
       {body}
     </div>
   );

@@ -1,9 +1,7 @@
-import Input from './Input';
-import Textarea from './Textarea';
 import Checkbox from './Checkbox';
-import Select from './Select';
+import Input from './Input';
 import InputLayout from './InputLayout';
+import Select from './Select';
+import Textarea from './Textarea';
 
-export {
-  Textarea, Input, Checkbox, Select, InputLayout,
-};
+export { Textarea, Input, Checkbox, Select, InputLayout };

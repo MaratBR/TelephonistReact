@@ -1,4 +1,4 @@
-import { Dispose, ListenerFunction } from "./Events";
+import { Dispose, ListenerFunction } from './Events';
 
 export interface EventHandler<T> {
   dispatch(value: T): void;

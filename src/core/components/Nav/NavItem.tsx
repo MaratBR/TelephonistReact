@@ -35,7 +35,7 @@ const navItemCSS = css`
 
   &.active {
     &::after {
-      content: " ";
+      content: ' ';
       position: absolute;
       display: block;
       height: 100%;
@@ -48,7 +48,11 @@ const navItemCSS = css`
   }
 `;
 
-function NavItem({ to, iconSVG, children }: React.PropsWithChildren<NavItemProps>) {
+function NavItem({
+  to,
+  iconSVG,
+  children,
+}: React.PropsWithChildren<NavItemProps>) {
   return (
     <NavLink end to={to} css={navItemCSS}>
       <Stack h>

@@ -1,11 +1,11 @@
-import { Application } from "../application";
-import { ConnectionInfo } from "../connection";
-import { Event, Sequence } from "../event";
-import { Task } from "../tasks";
+import { Application } from '../application';
+import { ConnectionInfo } from '../connection';
+import { Event, Sequence } from '../event';
+import { Task } from '../tasks';
 
 export interface AppUpdateMessage {
   id: string;
-  update: Partial<Omit<Application, "_id">>;
+  update: Partial<Omit<Application, '_id'>>;
 }
 
 export interface TaskDeletedMessage {
@@ -20,7 +20,7 @@ export interface SequenceMetaMessage {
 
 export interface SequencesMessage {
   sequences: string[];
-  update: Partial<Omit<Sequence, "_id">>
+  update: Partial<Omit<Sequence, '_id'>>;
 }
 
 export interface UserHubIncomingMessages {
