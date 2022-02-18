@@ -28,17 +28,11 @@ export class Events<Registry extends StringsOnly> {
     return this.removeEventListener.bind(this, key, listener);
   }
 
-  removeEventListener<K extends keyof Registry>(
-    key: K,
-    listener: ListenerFunction<Registry[K]>
-  ) {
+  removeEventListener<K extends keyof Registry>(key: K, listener: ListenerFunction<Registry[K]>) {
     this._node.removeEventListener(key as string, listener);
   }
 
-  once<K extends keyof Registry>(
-    key: K,
-    listener: ListenerFunction<Registry[K]>
-  ) {
+  once<K extends keyof Registry>(key: K, listener: ListenerFunction<Registry[K]>) {
     this._node.addEventListener(key as string, listener, { once: true });
   }
 }

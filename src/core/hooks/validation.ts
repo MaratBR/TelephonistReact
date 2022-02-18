@@ -17,9 +17,7 @@ export interface StateWithValidation<T, TError = any>
   extends StateWithError<T, TError>,
     Validated {}
 
-export function useStateWithError<T, TError = any>(
-  defaultValue: T
-): StateWithError<T, TError> {
+export function useStateWithError<T, TError = any>(defaultValue: T): StateWithError<T, TError> {
   const [state, set] = useState<{ value: T; error: TError | undefined }>({
     value: defaultValue,
     error: undefined,

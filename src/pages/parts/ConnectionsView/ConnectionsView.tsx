@@ -1,9 +1,4 @@
-import {
-  DataGrid,
-  dateRender,
-  renderBoolean,
-  renderObjectID,
-} from '@ui/DataGrid';
+import { DataGrid, dateRender, renderBoolean, renderObjectID } from '@ui/DataGrid';
 import { Shruggie } from '../misc';
 import { ConnectionInfo } from 'api/definition';
 import { useTranslation } from 'react-i18next';
@@ -30,17 +25,17 @@ function ConnectionsView({ connections }: ConnectionsViewProps) {
           render: renderObjectID,
         },
         {
-          title: t('is_connected'),
+          title: t('isConnected'),
           key: 'is_connected',
           render: renderBoolean,
         },
         {
-          title: t('client_name'),
+          title: t('clientName'),
           key: 'client_name',
         },
         {
           key: 'connected_at',
-          title: t('connected_at'),
+          title: t('connectedAt'),
           render: dateRender,
         },
       ]}

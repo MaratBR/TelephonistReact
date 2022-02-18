@@ -22,12 +22,8 @@ export default function ContentSection({
           <Heading as="h3">{header}</Heading>
         </div>
       ) : undefined}
-      <div className={classNames(S.body, { [S.padded]: padded })}>
-        {children}
-      </div>
-      {asideContent ? (
-        <aside className={S.aside}>{asideContent}</aside>
-      ) : undefined}
+      <div className={classNames(S.body, { [S.padded]: padded })}>{children}</div>
+      {asideContent ? <aside className={S.aside}>{asideContent}</aside> : undefined}
     </div>
   );
 }

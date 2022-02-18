@@ -3,7 +3,7 @@ import { Stack } from 'core/components/Stack';
 
 function ButtonGroup({ children }: React.PropsWithChildren<{}>) {
   return (
-    <Stack h spacing="sm">
+    <Stack h spacing="sm" alignItems="center">
       {children}
     </Stack>
   );

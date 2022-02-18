@@ -9,13 +9,7 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   isInvalid?: boolean;
 };
 
-export default function Textarea({
-  className,
-  variant,
-  onBlur,
-  onFocus,
-  ...props
-}: TextareaProps) {
+export default function Textarea({ className, variant, onBlur, onFocus, ...props }: TextareaProps) {
   const [focused, setFocused] = useState(false);
   return (
     <InputBox variant={variant} focused={focused}>

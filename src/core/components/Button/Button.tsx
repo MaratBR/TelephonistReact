@@ -28,10 +28,7 @@ type ButtonComputedAttributes = {
   className: string;
 };
 
-function _attrs(
-  className: string,
-  _style: ButtonStyle
-): ButtonComputedAttributes {
+function _attrs(className: string, _style: ButtonStyle): ButtonComputedAttributes {
   const arr = [className, S.button];
 
   if (_style.variant === 'link') {
@@ -71,9 +68,7 @@ const StyledButton = React.forwardRef(
   (
     { _style, className, ...props }: StyledButtonProps,
     ref: React.ForwardedRef<HTMLButtonElement>
-  ) => (
-    <button type="button" {..._attrs(className, _style)} {...props} ref={ref} />
-  )
+  ) => <button type="button" {..._attrs(className, _style)} {...props} ref={ref} />
 );
 
 const ButtonLikeNavLink = React.forwardRef(
@@ -106,37 +101,13 @@ type NormalButtonProps = ButtonOnlyProps & {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 export type ButtonProps = NormalButtonProps | NavLinkButtonProps;
 
-const loadingCSS = css`
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  animation: spin linear 1s infinite;
-  position: absolute;
-  margin: auto;
-  inset: 0;
-`;
-
 const ButtonContent = styled.div<{ visible: boolean }>`
   opacity: ${(props) => (props.visible ? 1 : 0)};
 `;
 
 const Button = React.forwardRef(
   (
-    {
-      variant,
-      to,
-      color,
-      loading,
-      children,
-      left,
-      right,
-      ...props
-    }: ButtonProps,
+    { variant, to, color, loading, children, left, right, ...props }: ButtonProps,
     ref?: React.ForwardedRef<HTMLAnchorElement & HTMLButtonElement>
   ) => {
     const inner = (

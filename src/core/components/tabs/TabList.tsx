@@ -8,11 +8,7 @@ type ControlledTabListProps = React.HTMLAttributes<HTMLUListElement> & {
   onTabSelected: (id: string | number) => void;
 };
 
-export function ControlledTabList({
-  children,
-  selected,
-  onTabSelected,
-}: ControlledTabListProps) {
+export function ControlledTabList({ children, selected, onTabSelected }: ControlledTabListProps) {
   let counter = 0;
 
   const mappedChildren = React.Children.map(children, (child) => {

@@ -70,11 +70,7 @@ function TagInput({
       newTags.splice(index, 1);
       if (onRawTags) onRawTags(newTags);
       if (onTags) {
-        onTags(
-          newTags.map((newTag) =>
-            typeof newTag === 'string' ? newTag : newTag.key
-          )
-        );
+        onTags(newTags.map((newTag) => (typeof newTag === 'string' ? newTag : newTag.key)));
       }
       if (onTagRemoved) onTagRemoved(tags[index], index);
     };
@@ -87,12 +83,7 @@ function TagInput({
       );
     }
     return (
-      <Tag
-        closeable
-        onClose={onClose}
-        key={tagValue.key}
-        color={tagValue.color}
-      >
+      <Tag closeable onClose={onClose} key={tagValue.key} color={tagValue.color}>
         {tagValue.render ? tagValue.render() : tagValue.key}
       </Tag>
     );
@@ -106,9 +97,7 @@ function TagInput({
       if (value === '') return;
       if (
         disallowDuplicates &&
-        tags.some((t) =>
-          typeof t === 'string' ? t === value : t.key === value
-        )
+        tags.some((t) => (typeof t === 'string' ? t === value : t.key === value))
       ) {
         target.value = '';
         return;

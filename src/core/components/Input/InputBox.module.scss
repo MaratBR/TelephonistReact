@@ -1,8 +1,8 @@
 .box {
   display: flex;
   position: relative;
-  overflow: hidden;
   --input-color: var(--t-primary);
+  --input-color-t: var(--t-primary-t40);
 
   &.invalid {
     --input-color: var(--t-primary);
@@ -13,7 +13,7 @@
     border-radius: var(--t-radius-sm) var(--t-radius-sm) 0 0;
 
     &::after {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       left: 0;
@@ -37,10 +37,12 @@
   &.default {
     transition: border-color var(--t-transition-sm);
     border-radius: var(--t-radius-sm);
-    border: 2px solid var(--t-neutral-8);
+    border: 1px solid var(--t-neutral-5);
 
-    &.invalid, &.focused {
+    &.invalid,
+    &.focused {
       border-color: var(--input-color);
+      box-shadow: 0 0 0 2px var(--input-color-t);
     }
   }
 }

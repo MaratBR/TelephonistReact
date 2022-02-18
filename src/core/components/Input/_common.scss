@@ -1,11 +1,9 @@
-
-
 // clear, styleless input
 @mixin defaultInput {
   width: 100%;
   border: none;
   background: none;
-  padding: var(--t-spacing-lg);
+  padding: var(--t-spacing-md);
   font-size: 1em;
   outline: none;
   border: none;

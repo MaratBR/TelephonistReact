@@ -17,9 +17,7 @@ export function combineRefs<T>(...refs: MutableRef<T>[]): React.Ref<T> {
 
 type Listener<T> = (value: T) => any;
 
-export function combineListeners<T>(
-  ...listeners: (Listener<T> | undefined)[]
-): Listener<T> {
+export function combineListeners<T>(...listeners: (Listener<T> | undefined)[]): Listener<T> {
   const validListeners = listeners.filter(Boolean);
   return (value) => {
     for (const listner of validListeners) listner(value);

@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import {
-  FormEnvironmentProvider,
-  FormStatus,
-  FormStatusContext,
-} from './context';
+import { FormEnvironmentProvider, FormStatus, FormStatusContext } from './context';
 import { asPromise } from 'core/utils/async';
 
 type FormProps = React.FormHTMLAttributes<HTMLFormElement> & {

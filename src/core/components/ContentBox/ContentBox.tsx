@@ -7,12 +7,7 @@ type ContentBoxProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 function ContentBox({ className, padded, ...props }: ContentBoxProps) {
-  return (
-    <div
-      className={classNames(S.contentBox, className, { [S.padded]: padded })}
-      {...props}
-    />
-  );
+  return <div className={classNames(S.contentBox, className, { [S.padded]: padded })} {...props} />;
 }
 
 export default ContentBox;

@@ -36,18 +36,13 @@ export function getHashValue(key: string) {
   return hashQueryValue[key];
 }
 
-export function useHashValueChange<T>(
-  key: string,
-  defaultValue: T,
-  listener: (value: T) => void
-) {
+export function useHashValueChange<T>(key: string, defaultValue: T, listener: (value: T) => void) {
   useEffect(() => {
     const listener_ = () => {
       listener(hashQueryValue[key] ?? defaultValue);
     };
     eventTarget.addEventListener(`hash_change:${key}`, listener_);
-    return () =>
-      eventTarget.removeEventListener(`hash_change:${key}`, listener_);
+    return () => eventTarget.removeEventListener(`hash_change:${key}`, listener_);
   }, []);
 }
 

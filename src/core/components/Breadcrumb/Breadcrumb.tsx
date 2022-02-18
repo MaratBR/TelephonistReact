@@ -16,12 +16,7 @@ function Separator() {
   );
 }
 
-function Breadcrumb({
-  separator,
-  className,
-  children,
-  ...props
-}: BreadcrumbProps) {
+function Breadcrumb({ separator, className, children, ...props }: BreadcrumbProps) {
   const separatorInstance = separator ?? <Separator />;
   const modifiedChildren = React.Children.map(children, (child) => (
     <div className={S.item}>

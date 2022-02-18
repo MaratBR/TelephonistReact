@@ -9,13 +9,7 @@ type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   path?: string;
 };
 
-export default function IconButton({
-  className,
-  size,
-  children,
-  path,
-  ...props
-}: IconButtonProps) {
+export default function IconButton({ className, size, children, path, ...props }: IconButtonProps) {
   const sizeWithUnit = Number.isNaN(+size) ? size : `${size * 3.3}em`;
   return (
     <button

@@ -8,7 +8,7 @@ type TagsProps = {
 export default function Tags({ tags }: TagsProps) {
   return (
     <div className={S.tags}>
-      {(tags ?? []).map((tag, index) => (
+      {(tags ?? []).map((tag) => (
         <Tag key={tag}>{tag}</Tag>
       ))}
     </div>

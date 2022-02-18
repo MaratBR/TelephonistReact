@@ -1,5 +1,89 @@
-@import "_common";
+@import '_common';
 
 .select {
-  @include defaultInput();
+  display: flex;
+  width: 100%;
+  position: relative;
+  overflow: initial;
+
+  .selectedItem {
+    @include defaultInput();
+    flex-grow: 1;
+  }
+
+  .chevron {
+    transition: var(--t-transition-sm) transform;
+    width: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5em 0.1em;
+    border-left: 1px solid var(--t-neutral-8);
+    color: var(--t-neutral-4);
+  }
+
+  .items {
+    transition: opacity var(--t-transition-sm);
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1000;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    transform: translateY(-2px);
+    background-color: var(--t-paper);
+    border: 1px solid var(--t-neutral-5);
+    border-top: 1px solid var(--t-neutral-7);
+    border-radius: 0 0 var(--t-radius-sm) var(--t-radius-sm);
+    max-height: 300px;
+
+    .option {
+      padding: var(--t-spacing-md);
+
+      &:focus {
+        outline: 1px solid var(--t-color);
+        z-index: 20;
+      }
+
+      &:hover {
+        border-color: transparent;
+        background-color: var(--t-neutral-8);
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--t-neutral-9);
+      }
+
+      &.selected {
+        color: var(--t-on-primary);
+        border-color: var(--t-primary);
+        background-color: var(--t-primary);
+
+        &:hover {
+          border-color: var(--t-primary-900);
+          background-color: var(--t-primary-800);
+        }
+      }
+    }
+  }
+
+  &.expanded {
+    .items {
+      opacity: 1;
+      user-select: initial;
+      pointer-events: all;
+    }
+
+    .chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover {
+    .chevron {
+      color: var(--t-neutral-1);
+    }
+  }
 }

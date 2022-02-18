@@ -64,7 +64,10 @@ export function useSwappableAsyncValue<T>(
   const swap = useCallback((promise: Promise<T>) => {
     setLoading(true);
     promise
-      .then(setValue)
+      .then((v) => {
+        setValue(v);
+        if (error) setError(undefined);
+      })
       .catch(setError)
       .finally(() => setLoading(false));
   }, []);

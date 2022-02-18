@@ -36,10 +36,7 @@ class ModalControllerImpl implements ModalController {
 
   open(options: ModalOptions): Modal {
     const id =
-      options.id ??
-      `${Math.random().toString(36).substring(2)}_${Math.floor(
-        Date.now() / 1000
-      )}`;
+      options.id ?? `${Math.random().toString(36).substring(2)}_${Math.floor(Date.now() / 1000)}`;
 
     this._listener.onModalOpen(options);
 
@@ -54,5 +51,4 @@ class ModalControllerImpl implements ModalController {
   }
 }
 
-export const ModalControllerContext =
-  React.createContext<ModalController | null>(null);
+export const ModalControllerContext = React.createContext<ModalController | null>(null);

@@ -18,8 +18,7 @@ const iconCSS = css`
 `;
 
 const navItemCSS = css`
-  padding: var(--t-spacing-md) var(--t-spacing-md) var(--t-spacing-md)
-    var(--t-spacing-xl);
+  padding: var(--t-spacing-md) var(--t-spacing-md) var(--t-spacing-md) var(--t-spacing-xl);
   color: inherit;
   display: block;
   line-height: 1.6em;
@@ -48,11 +47,7 @@ const navItemCSS = css`
   }
 `;
 
-function NavItem({
-  to,
-  iconSVG,
-  children,
-}: React.PropsWithChildren<NavItemProps>) {
+function NavItem({ to, iconSVG, children }: React.PropsWithChildren<NavItemProps>) {
   return (
     <NavLink end to={to} css={navItemCSS}>
       <Stack h>

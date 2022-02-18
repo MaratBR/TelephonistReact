@@ -5,34 +5,28 @@ import ContentSection from '@ui/ContentSection';
 import { Form, SaveButton } from '@ui/Form';
 import { Input, InputLayout, Textarea } from '@ui/Input';
 import TagInput from '@ui/TagInput';
-import api, { models, requests } from 'api';
+import { Application, UpdateApplication } from 'api/definition';
+import { useApi } from 'api/hooks';
 import { useTrackedChanges } from 'core/hooks';
 import { ParametersStack } from 'pages/parts/Parameters';
 import { useTranslation } from 'react-i18next';
 
 type EditApplicationProps = {
-  app: models.ApplicationView;
-  onUpdated?: (newApplication: models.ApplicationView) => void;
+  app: Application;
+  onUpdated?: (newApplication: Application) => void;
 };
 
-export default function EditApplication({
-  app,
-  onUpdated,
-}: EditApplicationProps) {
+export default function EditApplication({ app, onUpdated }: EditApplicationProps) {
   const [error, setError] = useState<any>();
-  const track = useTrackedChanges<requests.UpdateApplication>({
+  const track = useTrackedChanges<UpdateApplication>({
     display_name: app.display_name,
     disabled: app.disabled,
     description: app.description,
     tags: app.tags,
   });
+  const api = useApi();
 
-  const _setOriginal = ({
-    display_name,
-    disabled,
-    description,
-    tags,
-  }: models.ApplicationView) =>
+  const _setOriginal = ({ display_name, disabled, description, tags }: Application) =>
     track.setOriginal({
       display_name,
       disabled,
@@ -63,11 +57,7 @@ export default function EditApplication({
     <ContentSection padded header={t('information')}>
       <Form onSubmit={submit}>
         <ParametersStack>
-          <InputLayout
-            id="name"
-            header={t('name')}
-            isChanged={track.isChanged('displayName')}
-          >
+          <InputLayout id="name" header={t('name')} isChanged={track.isChanged('display_name')}>
             <Input
               id="name"
               placeholder={t('name')}
@@ -87,11 +77,7 @@ export default function EditApplication({
               onChange={(e) => track.set({ description: e.target.value })}
             />
           </InputLayout>
-          <InputLayout
-            id="tags"
-            header={t('tags')}
-            isChanged={track.isChanged('tags')}
-          >
+          <InputLayout id="tags" header={t('tags')} isChanged={track.isChanged('tags')}>
             <TagInput
               placeholder={t('tags')}
               tags={track.value('tags')}

@@ -94,8 +94,4 @@ const FormStatusContext = React.createContext<FormStatus>({
   isSubmitting: false,
 });
 
-export {
-  FormEnvironmentProvider,
-  Context as FormEnvironmentContext,
-  FormStatusContext,
-};
+export { FormEnvironmentProvider, Context as FormEnvironmentContext, FormStatusContext };

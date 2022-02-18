@@ -6,6 +6,7 @@ import state from './state';
 import './styles/index.scss';
 import { App } from 'App';
 import ReactDOM from 'react-dom';
+import 'reflect-metadata';
 
 configureAxiosInterceptors(state);
 initI18N();

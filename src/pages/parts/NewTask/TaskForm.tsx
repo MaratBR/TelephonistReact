@@ -23,12 +23,11 @@ type TaskFormProps = {
 };
 
 function validateTaskName(taskName: string, t: TFunction) {
-  if (taskName.length === 0)
-    throw new Error(t('errEmptyString', { subject: t('taskName') }));
+  if (taskName.length === 0) throw new Error(t('errEmptyString', { subject: t('taskName') }));
   if (!/^\w+$/.test(taskName)) {
     throw new Error(
       t('errInvalidFormat', {
-        details: t('invalidIdentifier', { subject: t('taskName') }),
+        details: t('invalidIdentifier', { subject: `"${taskName}"` }),
       })
     );
   }
@@ -93,11 +92,7 @@ export default function TaskForm({ task, appID, onSaved }: TaskFormProps) {
       <FormError />
       <ParametersStack>
         <InputLayout id="name" header={t('name')}>
-          <Input
-            value={name}
-            placeholder={t('name')}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <Input value={name} placeholder={t('name')} onChange={(e) => setName(e.target.value)} />
         </InputLayout>
         <InputLayout id="displayName" header={t('displayName')}>
           <Input
@@ -112,9 +107,9 @@ export default function TaskForm({ task, appID, onSaved }: TaskFormProps) {
             placeholder={t('taskType')}
             onChange={(e) => setTaskType(e.target.value)}
           >
-            <option value={TASK_ARBITRARY}>{t('taskType.arbitrary')}</option>
-            <option value={TASK_EXEC}>{t('taskType.exec')}</option>
-            <option value={TASK_SCRIPT}>{t('taskType.script')}</option>
+            <option value={TASK_ARBITRARY}>{t('taskTypeX.arbitrary')}</option>
+            <option value={TASK_EXEC}>{t('taskTypeX.exec')}</option>
+            <option value={TASK_SCRIPT}>{t('taskTypeX.script')}</option>
           </Select>
         </InputLayout>
         <InputLayout id="body" header={t('taskBody')}>

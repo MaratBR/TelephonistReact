@@ -31,4 +31,6 @@ export function getAxiosInstance() {
   return axios;
 }
 
-export { API_URL, WS_URL };
+const CLIENT_DI_KEY = Symbol.for('axios client');
+
+export { API_URL, WS_URL, CLIENT_DI_KEY };

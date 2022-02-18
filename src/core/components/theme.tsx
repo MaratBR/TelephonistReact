@@ -16,10 +16,7 @@ export interface ThemeData {
   borderRadius: Record<string, string>;
 }
 
-export function enumerateColors(
-  baseName: string,
-  colors: string[]
-): Record<string, string> {
+export function enumerateColors(baseName: string, colors: string[]): Record<string, string> {
   const colorsRecord: Record<string, string> = {};
   for (let i = 0; i < colors.length; i += 1) {
     colorsRecord[`${baseName}-${i + 1}`] = colors[i];
@@ -27,10 +24,7 @@ export function enumerateColors(
   return colorsRecord;
 }
 
-export function enumerateLightness(
-  baseName: string,
-  color: string
-): Record<string, string> {
+export function enumerateLightness(baseName: string, color: string): Record<string, string> {
   const colorsRecord: Record<string, string> = { [baseName]: color };
   const { h, s } = tc(color).toHsl();
   [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].forEach((pt) => {
@@ -189,17 +183,15 @@ export function useThemePath<T>(path: string): T {
   return result as T;
 }
 
-export function useNamedColor(
-  name: string,
-  defaultValue?: ColorInput
-): Instance | undefined {
+export function useNamedColor(name: string, defaultValue?: ColorInput): Instance | undefined {
   const value = useThemePath<ColorInput>(`colors.${name}`);
   if (value) return tc(value);
   if (defaultValue) return tc(defaultValue);
   return undefined;
 }
 
-export function useColor(color: ColorInput): Instance {
+export function useColor(color: ColorInput | undefined): Instance | undefined {
+  if (typeof color === 'undefined') return undefined;
   if (typeof color === 'string') {
     return useNamedColor(color, color);
   }

@@ -20,14 +20,11 @@ export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
   return (
     <Padded>
       <Stack h>
-        <Button
-          to={`/applications/${app._id}/edit`}
-          left={<Icon size={1} path={mdiPencil} />}
-        >
+        <Button to={`/applications/${app._id}/edit`} left={<Icon size={1} path={mdiPencil} />}>
           {t('edit')}
         </Button>
       </Stack>
-      <Heading as="h3">{t('general_information')}</Heading>
+      <Heading as="h3">{t('generalInformation')}</Heading>
       <Parameters
         parameters={{
           [t('id')]: <code>{app._id}</code>,
@@ -35,9 +32,7 @@ export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
           [t('description')]: <StringValue value={app.description} />,
           [t('accessKey')]: (
             <>
-              <code>
-                {showKey ? app.access_key : 'application.################'}
-              </code>
+              <code>{showKey ? app.access_key : 'application.################'}</code>
               <br />
               <Button
                 variant="link"

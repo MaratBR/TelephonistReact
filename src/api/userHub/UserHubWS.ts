@@ -1,4 +1,4 @@
-import api from 'api';
+import { Api } from 'api/apiImplementation';
 import { WS_URL } from 'api/client';
 import {
   AppUpdateMessage,
@@ -12,13 +12,10 @@ import {
 import { WSClient } from 'api/ws';
 import { Observable, Subject } from 'rxjs';
 
-export default class UserHubWS extends WSClient<
-  UserHubIncomingMessages,
-  UserHubOutgoingMessages
-> {
+export default class UserHubWS extends WSClient<UserHubIncomingMessages, UserHubOutgoingMessages> {
   private _eventsSubject: Subject<Event> = new Subject();
 
-  constructor() {
+  constructor(api: Api) {
     super({
       path: `${WS_URL}user/ws`,
       wsTicketFactory: () => api.issueWSTicket(),

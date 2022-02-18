@@ -4,7 +4,6 @@
   position: relative;
   cursor: pointer;
   border-radius: var(--t-radius-sm);
-  outline: none !important;
   background: none;
   border: none;
   box-sizing: border-box;
@@ -17,6 +16,10 @@
   padding: var(--t-spacing-md);
   display: flex;
   justify-content: center;
+
+  &:active {
+    outline: none;
+  }
 
   &:disabled {
     cursor: not-allowed;
@@ -37,8 +40,8 @@
     color: var(--t-color);
   }
 
-  &:active {
-    outline: 1px solid var(--t-color);
+  &:focus {
+    outline: 1px solid var(--t-neutral-6);
   }
 
   &:disabled {

@@ -6,8 +6,7 @@ import { initReactI18next } from 'react-i18next';
 const ruI18N = () => import('@locales/ru/translation.json');
 const enI18N = () => import('@locales/en/translation.json');
 
-interface TranslationObject
-  extends Record<string, string | TranslationObject> {}
+interface TranslationObject extends Record<string, string | TranslationObject> {}
 
 const languages = {
   en: enI18N,
@@ -18,8 +17,7 @@ function loadTranslations(language: string, namespace: string) {
   if (namespace !== 'translation')
     throw new Error('Only the default namespace is supported at the moment');
   let normalizedLang: string;
-  if (/^\w+-\w+$/.test(language))
-    normalizedLang = language.split('-')[0].toLowerCase();
+  if (/^\w+-\w+$/.test(language)) normalizedLang = language.split('-')[0].toLowerCase();
   else normalizedLang = language.toLowerCase();
 
   const promise: () => Promise<TranslationObject> = languages[normalizedLang];

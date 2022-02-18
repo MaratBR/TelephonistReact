@@ -13,14 +13,30 @@
   color: var(--t-color-2);
 
   @keyframes rainbow {
-    0% { background-color: red; }
-    14.2857143% { background-color: orange; }
-    28.5714286% { background-color: yellow; }
-    42.8571429% { background-color: #0f0; }
-    57.1428572% { background-color: cyan; }
-    71.4285715% { background-color: blue; }
-    85.7142858% { background-color: violet; }
-    100% { background-color: red; }
+    0% {
+      background-color: red;
+    }
+    14.2857143% {
+      background-color: orange;
+    }
+    28.5714286% {
+      background-color: yellow;
+    }
+    42.8571429% {
+      background-color: #0f0;
+    }
+    57.1428572% {
+      background-color: cyan;
+    }
+    71.4285715% {
+      background-color: blue;
+    }
+    85.7142858% {
+      background-color: violet;
+    }
+    100% {
+      background-color: red;
+    }
   }
 
   &:hover {

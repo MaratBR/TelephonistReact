@@ -18,11 +18,7 @@ class LiveValueImpl<T> implements LiveValue<T> {
 
   private readonly _getter: () => Promise<T>;
 
-  constructor(
-    getter: () => Promise<T>,
-    loading: boolean = false,
-    defaultValue: T = undefined
-  ) {
+  constructor(getter: () => Promise<T>, loading: boolean = false, defaultValue: T = undefined) {
     this.loading = loading;
     this.value = defaultValue;
     this._getter = getter;
@@ -61,9 +57,7 @@ export default function useLiveValue<T extends NonCallable>(
   refreshValue: () => Promise<T>,
   effect: (context: LiveValueContext<T>) => () => void
 ): LiveValue<T> {
-  const live = useLocalObservable(
-    () => new LiveValueImpl<T>(refreshValue, true)
-  );
+  const live = useLocalObservable(() => new LiveValueImpl<T>(refreshValue, true));
 
   useEffect(() => {
     let unsubscribe: (() => void) | null = null;
@@ -71,8 +65,7 @@ export default function useLiveValue<T extends NonCallable>(
     live.refresh().then(() => {
       unsubscribe = effect({
         set(value) {
-          const newValue =
-            typeof value === 'function' ? value(live.value) : value;
+          const newValue = typeof value === 'function' ? value(live.value) : value;
           runInAction(() => {
             live.value = newValue;
           });

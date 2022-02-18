@@ -1,7 +1,7 @@
 import ContentSection from '@ui/ContentSection';
 import { StringValue } from '@ui/Parameters';
 import S from './TaskGeneralInfo.module.scss';
-import { Task } from 'api/definition';
+import { TaskStandalone } from 'api/definition';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -18,11 +18,11 @@ function IsDisabled({ disabled }: IsDisabledProps) {
   );
 }
 
-type Props = {
-  task: Task;
+type TaskGeneralInfoProps = {
+  task: TaskStandalone;
 };
 
-export default function TaskGeneralInfo({ task }: Props) {
+export default function TaskGeneralInfo({ task }: TaskGeneralInfoProps) {
   const { t } = useTranslation();
   return (
     <ContentSection padded header={t('description')}>

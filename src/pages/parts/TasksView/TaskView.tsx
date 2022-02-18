@@ -50,9 +50,7 @@ export function TaskView({ task, editable }: TaskViewProps) {
       body = (
         <>
           <div className={S.buttons}>
-            <Button left={<Icon path={mdiPencil} size={1} />}>
-              {t('edit')}
-            </Button>
+            <Button left={<Icon path={mdiPencil} size={1} />}>{t('edit')}</Button>
           </div>
           <Parameters
             parameters={{
@@ -60,9 +58,7 @@ export function TaskView({ task, editable }: TaskViewProps) {
               [t('name')]: `${task.name} (${task.qualified_name})`,
               [t('description')]: task.description,
               [t('taskType')]: <span>{task.task_type}</span>,
-              [t('task_body')]: (
-                <TaskBodyView value={task.body} type={task.task_type} />
-              ),
+              [t('taskBody')]: <TaskBodyView value={task.body} type={task.task_type} />,
               [t('tags')]: <Tags tags={task.tags} />,
             }}
           />

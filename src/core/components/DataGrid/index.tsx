@@ -46,31 +46,19 @@ interface DataRowProps<T> {
   item: T;
 }
 
-function DataRow<T>({
-  selectable,
-  selected,
-  onSelected,
-  columns,
-  item,
-}: DataRowProps<T>) {
+function DataRow<T>({ selectable, selected, onSelected, columns, item }: DataRowProps<T>) {
   return (
     <tr>
       {selectable ? (
         <td>
           <Checkbox
             checked={selected}
-            onChange={
-              onSelected ? (e) => onSelected!(e.target.checked) : undefined
-            }
+            onChange={onSelected ? (e) => onSelected!(e.target.checked) : undefined}
           />
         </td>
       ) : undefined}
       {columns.map((c) => (
-        <td>
-          {isCustom(c)
-            ? c.render(item)
-            : (c.render ?? defaultRender)(item[c.key])}
-        </td>
+        <td>{isCustom(c) ? c.render(item) : (c.render ?? defaultRender)(item[c.key])}</td>
       ))}
     </tr>
   );
@@ -90,10 +78,7 @@ export type DataGridProps<T> = {
   onSelect?: (selected: T[]) => void;
 };
 
-export class DataGrid<T> extends React.Component<
-  DataGridProps<T>,
-  DataGridState
-> {
+export class DataGrid<T> extends React.Component<DataGridProps<T>, DataGridState> {
   constructor(props: Readonly<DataGridProps<T>>) {
     super(props);
     this.state = {
@@ -160,11 +145,7 @@ export class DataGrid<T> extends React.Component<
           </th>
         ) : undefined}
         {columns.map((c) =>
-          typeof c === 'string' ? (
-            <th key={c}>{c}</th>
-          ) : (
-            <th key={c.key}>{c.title}</th>
-          )
+          typeof c === 'string' ? <th key={c}>{c}</th> : <th key={c.key}>{c.title}</th>
         )}
       </tr>
     );
@@ -187,9 +168,7 @@ export class DataGrid<T> extends React.Component<
       ));
     }
     if (noItemsRenderer) {
-      return (
-        <td colSpan={columns ? columns.length + 1 : 1}>{noItemsRenderer()}</td>
-      );
+      return <td colSpan={columns ? columns.length + 1 : 1}>{noItemsRenderer()}</td>;
     }
     return null;
   }
@@ -197,9 +176,7 @@ export class DataGrid<T> extends React.Component<
   render() {
     const header = this._renderHeader();
     const { columns } = this.props;
-    const objectColumns = columns.map((c) =>
-      typeof c === 'object' ? c : { key: c, title: c }
-    );
+    const objectColumns = columns.map((c) => (typeof c === 'object' ? c : { key: c, title: c }));
 
     return (
       <Table>

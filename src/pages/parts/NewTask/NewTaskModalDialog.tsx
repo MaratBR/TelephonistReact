@@ -9,11 +9,7 @@ type NewTaskModalDialogProps = {
   onSaved?: (task: TaskStandalone) => void;
 };
 
-export default function NewTaskModalDialog({
-  onClose,
-  appID,
-  onSaved,
-}: NewTaskModalDialogProps) {
+export default function NewTaskModalDialog({ onClose, appID, onSaved }: NewTaskModalDialogProps) {
   const { t } = useTranslation();
   return (
     <ModalDialog onClose={onClose} header={t('newTask')}>

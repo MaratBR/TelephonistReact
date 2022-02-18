@@ -3,11 +3,11 @@ import { Breadcrumb } from '@ui/Breadcrumb';
 import { ContentBox } from '@ui/ContentBox';
 import Error from '@ui/Error';
 import { Form, SaveButton } from '@ui/Form';
-import { Input, InputLayout, Select, Textarea } from '@ui/Input';
+import { Input, InputLayout, Textarea } from '@ui/Input';
 import { Stack } from '@ui/Stack';
 import TagInput from '@ui/TagInput';
 import { Heading } from '@ui/Text';
-import api from 'api';
+import { useApi } from 'api/hooks';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -16,20 +16,12 @@ export default function NewApplication() {
   const [displayName, setDisplayName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState<'arbitrary' | 'agent' | 'custom'>(
-    'arbitrary'
-  );
-  const [customType, setCustomType] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [error, setError] = useState<string>();
   const { t } = useTranslation();
-  const APPLICATION_TYPES = {
-    arbitrary: t('appType_description.arbitrary'),
-    agent: t('appType_description.agent'),
-    custom: t('appType_description.custom'),
-  };
-  const newApplication = t('new_application');
+  const newApplication = t('newApplication');
   const navigate = useNavigate();
+  const api = useApi();
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -39,7 +31,6 @@ export default function NewApplication() {
         name,
         description,
         tags,
-        application_type: type === 'custom' ? customType : type,
         display_name: displayName,
       });
       navigate(`/applications/${_id}`);
@@ -64,17 +55,13 @@ export default function NewApplication() {
         <Form action="#" onSubmit={submit}>
           <Stack spacing="md">
             <InputLayout id="name" header={t('name')}>
-              <Input
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder={t('name')}
-              />
+              <Input onChange={(e) => setName(e.target.value)} required placeholder={t('name')} />
             </InputLayout>
             <InputLayout id="displayName" header={t('displayName')}>
               <Input
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
-                placeholder={t('display_name')}
+                placeholder={t('displayName')}
               />
             </InputLayout>
             <InputLayout id="description" header={t('description')}>
@@ -92,25 +79,6 @@ export default function NewApplication() {
                 onTags={setTags}
               />
             </InputLayout>
-            <Select
-              value={type}
-              onChange={(e) =>
-                setType(e.target.value as 'arbitrary' | 'custom' | 'agent')
-              }
-            >
-              <option value="arbitrary">{t('appType.arbitrary')}</option>
-              <option value="agent">{t('appType.agent')}</option>
-              <option value="custom">{t('appType.custom')}</option>
-            </Select>
-            <p>{APPLICATION_TYPES[type]}</p>
-            {type === 'custom' ? (
-              <Input
-                required
-                value={customType}
-                onChange={(e) => setCustomType(e.target.value)}
-                placeholder={t('CustomAppType')}
-              />
-            ) : null}
             <SaveButton />
           </Stack>
         </Form>

@@ -26,9 +26,7 @@ function TabPanel({ children, tabID }: TabPanelProps) {
   )
     return null;
 
-  return (
-    <div style={{ display: isSelected ? undefined : 'none' }}>{children}</div>
-  );
+  return <div style={{ display: isSelected ? undefined : 'none' }}>{children}</div>;
 }
 
 export function isTabPanel(o: any): o is React.ReactElement<TabPanelProps> {

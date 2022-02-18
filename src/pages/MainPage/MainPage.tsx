@@ -44,17 +44,10 @@ type MainPageInnerProps = {
   t: TFunction;
 };
 
-class MainPageInner extends React.Component<
-  MainPageInnerProps,
-  MainPageInnerState
-> {
+class MainPageInner extends React.Component<MainPageInnerProps, MainPageInnerState> {
   constructor(props: Readonly<MainPageInnerProps>) {
     super(props);
     this.state = {};
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.setState({ error, errorInfo });
   }
 
   render() {
@@ -64,10 +57,9 @@ class MainPageInner extends React.Component<
     return (
       <div css={rootCSS}>
         <Top>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas, a.
-          Consequuntur impedit accusantium illo autem recusandae rerum! Ratione
-          porro reprehenderit a saepe, vero voluptates natus dignissimos quia,
-          numquam sint ab.
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas, a. Consequuntur impedit
+          accusantium illo autem recusandae rerum! Ratione porro reprehenderit a saepe, vero
+          voluptates natus dignissimos quia, numquam sint ab.
         </Top>
         <Stack>
           <Nav>

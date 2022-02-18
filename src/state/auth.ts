@@ -1,5 +1,7 @@
-import api, { models, requests } from 'api';
+import { AUTH_API_DI_KEY, IAuthApi } from 'api/apis/auth';
+import { LoginRequest, LoginResponse, User } from 'api/definition';
 import axios from 'axios';
+import { inject } from 'inversify';
 import { action, makeAutoObservable, runInAction } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 
@@ -8,7 +10,7 @@ export default class AuthState {
 
   isAuthorized: boolean = false;
 
-  user: models.UserView | null = null;
+  user: User | null = null;
 
   lastUsername: string | null = null;
 
@@ -29,6 +31,9 @@ export default class AuthState {
   tokenExpiresAt: number = -1;
 
   resetPasswordError: any = null;
+
+  @inject(AUTH_API_DI_KEY)
+  private readonly _api: IAuthApi;
 
   constructor() {
     makeAutoObservable(this);
@@ -52,13 +57,13 @@ export default class AuthState {
     );
   }
 
-  async login(r: requests.Login) {
+  async login(r: LoginRequest) {
     try {
       runInAction(() => {
         this.isLoading = true;
       });
-      const data = await api.authorize(r);
-      runInAction(() => this._loginState(data));
+      const data = await this._api.authorize(r);
+      runInAction(() => this.handleLoginResponse(data));
     } catch (e) {
       runInAction(() => {
         this.loginError = e.toString();
@@ -71,7 +76,7 @@ export default class AuthState {
     }
   }
 
-  private _loginState(data: models.LoginResponse) {
+  private handleLoginResponse(data: LoginResponse) {
     this.tokenExpiresAt = +new Date(data.exp);
     this.accessToken = data.access_token;
     this.isPasswordResetRequired = data.password_reset_required;
@@ -82,7 +87,7 @@ export default class AuthState {
 
   async fetchUser() {
     try {
-      const user = await api.getUser();
+      const user = await this._api.getUser();
       runInAction(() => {
         this.user = user;
       });
@@ -94,10 +99,10 @@ export default class AuthState {
   }
 
   async logout() {
-    runInAction(() => this._logoutState());
+    runInAction(() => this.handleLogout());
   }
 
-  private _logoutState() {
+  private handleLogout() {
     this.accessToken = null;
     this.lastUsername = this.user?.username || null;
     this.isAuthorized = false;
@@ -110,11 +115,11 @@ export default class AuthState {
 
   async refreshToken() {
     try {
-      const response = await api.refreshToken();
-      runInAction(() => this._loginState(response));
+      const response = await this._api.refreshToken();
+      runInAction(() => this.handleLoginResponse(response));
     } catch (e) {
       if (axios.isAxiosError(e) && e.response.status === 401) {
-        runInAction(() => this._logoutState());
+        runInAction(() => this.handleLogout());
       }
       throw e;
     }
@@ -126,7 +131,7 @@ export default class AuthState {
         try {
           await this.refreshToken();
         } catch {
-          runInAction(() => this._logoutState());
+          runInAction(() => this.handleLogout());
         }
       } else {
         await this.fetchUser();
@@ -162,7 +167,7 @@ export default class AuthState {
     }
     this.isLoading = true;
     try {
-      await api.resetPassword({
+      await this._api.resetPassword({
         password_reset_token: this.passwordResetToken,
         new_password: newPassword,
       });

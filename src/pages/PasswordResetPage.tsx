@@ -67,21 +67,21 @@ export default function PasswordResetPage() {
               <Input
                 variant="flushed"
                 type="password"
-                placeholder={t('new_password')}
+                placeholder={t('newPwd')}
                 value={pwd.value}
                 onChange={(e) => pwd.setValue(e.target.value)}
               />
               <Input
                 variant="flushed"
                 type="password"
-                placeholder={t('repeat_new_password')}
+                placeholder={t('repeatNewPwd')}
                 value={pwd2}
                 onChange={(e) => setPwd2(e.target.value)}
               />
               {pwd2 !== pwd.value ? (
                 <Alert color="danger">Passwords do not match!</Alert>
               ) : undefined}
-              <Button>{t('set_new_password')}</Button>
+              <Button>{t('setNewPwd')}</Button>
             </Stack>
           </form>
         </Card>

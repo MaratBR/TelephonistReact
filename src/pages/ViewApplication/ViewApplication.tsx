@@ -73,11 +73,7 @@ function ViewApplication() {
             </TabPanel>
 
             <TabPanel>
-              <ApplicationTasks
-                appID={id}
-                tasks={value.tasks}
-                onTaskAdded={onTaskAdded}
-              />
+              <ApplicationTasks appID={id} tasks={value.tasks} onTaskAdded={onTaskAdded} />
             </TabPanel>
 
             <TabPanel>

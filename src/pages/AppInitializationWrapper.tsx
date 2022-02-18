@@ -2,12 +2,16 @@ import React from 'react';
 import { Centered } from '@ui/Layout';
 import LoadingSpinner from '@ui/LoadingSpinner';
 import Screen from '@ui/Screen';
+import { useApi } from 'api/hooks';
 import { observer } from 'mobx-react';
 import { Navigate } from 'react-router-dom';
-import state from 'state';
+import { useGlobalState } from 'state/hooks';
 
 function AppInitializationWrapper({ children }: React.PropsWithChildren<{}>) {
-  if (!state.auth.isInitialized) {
+  const { auth } = useGlobalState();
+  const api = useApi();
+
+  if (!auth.isInitialized) {
     return (
       <Screen>
         <Centered>
@@ -17,12 +21,8 @@ function AppInitializationWrapper({ children }: React.PropsWithChildren<{}>) {
     );
   }
 
-  if (!state.auth.isAuthorized) {
-    return (
-      <Navigate
-        to={{ pathname: '/login', search: `next=${window.location.pathname}` }}
-      />
-    );
+  if (!auth.isAuthorized) {
+    return <Navigate to={{ pathname: '/login', search: `next=${window.location.pathname}` }} />;
   }
 
   return (

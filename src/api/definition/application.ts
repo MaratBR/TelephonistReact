@@ -29,6 +29,6 @@ export interface CreateApplication {
 export interface UpdateApplication {
   display_name?: string;
   description?: string;
-  disabled?: string;
-  tags?: string;
+  disabled?: boolean;
+  tags?: string[];
 }

@@ -21,9 +21,7 @@ class Modal extends React.Component<ModalProps> {
 
     return (
       <div className={classNames(S.root)}>
-        <div className={S.body}>
-          {typeof children === 'function' ? children({}) : children}
-        </div>
+        <div className={S.body}>{typeof children === 'function' ? children({}) : children}</div>
       </div>
     );
   }

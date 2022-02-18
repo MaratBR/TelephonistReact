@@ -32,14 +32,10 @@ export default abstract class WSClientBase {
   }
 
   protected getTicket(): Promise<string | null> {
-    return this.options.wsTicketFactory
-      ? this.options.wsTicketFactory()
-      : Promise.resolve(null);
+    return this.options.wsTicketFactory ? this.options.wsTicketFactory() : Promise.resolve(null);
   }
 
-  protected async modifyQuery(
-    query: Record<string, string>
-  ): Promise<Record<string, string>> {
+  protected async modifyQuery(query: Record<string, string>): Promise<Record<string, string>> {
     return {
       ...query,
       ticket: await this.getTicket(),
@@ -86,9 +82,9 @@ export default abstract class WSClientBase {
     this.isConnected = false;
     if (this.options.reconnect ?? true) {
       this._reconnectionAttempt += 1;
-      const timeout = (
-        this.options.reconnectStrategy ?? defaultReconnectStrategy
-      )(this._reconnectionAttempt);
+      const timeout = (this.options.reconnectStrategy ?? defaultReconnectStrategy)(
+        this._reconnectionAttempt
+      );
       setTimeout(() => this.connect(), timeout);
     }
   }

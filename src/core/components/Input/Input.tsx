@@ -7,15 +7,10 @@ import classNames from 'classnames';
 type AnyInputProps = {
   variant?: InputBoxVariant;
   isInvalid?: boolean;
+  value?: string;
 };
 
-type InputProps = AnyInputProps & JSX.IntrinsicElements['input'];
-
-const variants = {
-  flushed: S.flushed,
-  minimal: S.minimal,
-  standard: undefined,
-};
+export type InputProps = AnyInputProps & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value'>;
 
 const Input = React.forwardRef(
   (

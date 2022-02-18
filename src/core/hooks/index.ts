@@ -1,7 +1,11 @@
-import { AsyncValue, useRefreshableAsyncValue } from './asyncValue';
-import useLiveValue, { LiveValue } from './liveValue';
+import { useRefreshableAsyncValue } from './asyncValue';
+import type { AsyncValue } from './asyncValue';
+import useLiveValue from './liveValue';
+import type { LiveValue } from './liveValue';
 import useNextParam from './useNextParam';
-import useTrackedChanges, { TrackedChanges } from './useTrackedChanges';
+import useSelectableItems from './useSelectableItems';
+import useTrackedChanges from './useTrackedChanges';
+import type { TrackedChanges } from './useTrackedChanges';
 
 export * from './validation';
 export {
@@ -12,4 +16,5 @@ export {
   AsyncValue,
   useTrackedChanges,
   TrackedChanges,
+  useSelectableItems,
 };

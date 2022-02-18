@@ -5,3 +5,4 @@ export * from './misc';
 export * from './pagination';
 export * from './tasks';
 export * from './websocket';
+export * from './auth';

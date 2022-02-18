@@ -1,5 +1,5 @@
-import apiInstance from 'api/apiImplementation';
+import { useGlobalState } from 'state/hooks';
 
 export default function useApi() {
-  return apiInstance;
+  return useGlobalState().api;
 }

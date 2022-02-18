@@ -9,11 +9,7 @@ type DeleteTaskModalProps = {
   onClose: () => void;
 };
 
-export default function DeleteTaskModal({
-  taskName,
-  onDelete,
-  onClose,
-}: DeleteTaskModalProps) {
+export default function DeleteTaskModal({ taskName, onDelete, onClose }: DeleteTaskModalProps) {
   const { t } = useTranslation();
 
   return (
@@ -31,7 +27,7 @@ export default function DeleteTaskModal({
       header={t('attention')}
     >
       <p>{t('deleteAppTaskWarn', { taskName })}</p>
-      <span>{t('ActionCanBeUndone')}</span>
+      <span>{t('actionCanBeUndone')}</span>
     </ModalDialog>
   );
 }

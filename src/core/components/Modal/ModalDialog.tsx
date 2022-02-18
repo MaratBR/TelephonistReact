@@ -15,12 +15,7 @@ function ModalDialog({ header, children, onClose, footer }: ModalDialogProps) {
       <div className={S.header}>
         <h4>{header}</h4>
 
-        <IconButton
-          className={S.close}
-          size={0.9}
-          path={mdiClose}
-          onClick={onClose}
-        />
+        <IconButton className={S.close} size={0.9} path={mdiClose} onClick={onClose} />
       </div>
 
       <div className={S.body}>{children}</div>

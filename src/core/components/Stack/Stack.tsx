@@ -27,13 +27,12 @@ export function Stack({
       {...props}
       className={classNames(S.stack, className, {
         [S.horizontal]: h ?? horizontal,
+        [S.wrap]: wrap,
       })}
       css={css({
         alignItems,
         justifyContent,
-        '& > *:not(:last-child)': spacing
-          ? { marginInlineEnd: maybeCSSVariable(spacing, 'spacing') }
-          : undefined,
+        gap: spacing ? maybeCSSVariable(spacing, 'spacing') : undefined,
       })}
     />
   );

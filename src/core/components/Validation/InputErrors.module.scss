@@ -1,0 +1,13 @@
+.errors {
+  color: var(--t-danger);
+  font-weight: bold;
+  font-size: 0.8em;
+  display: display;
+  gap: 0.3em;
+
+  .tag {
+    background-color: var(--t-danger);
+    border-radius: 100px;
+    padding: 2px;
+  }
+}

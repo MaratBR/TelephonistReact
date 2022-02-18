@@ -1,30 +1,24 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "experimentalDecorators": true,
-        "jsxImportSource": "@emotion/react",
-        "jsx": "react-jsx",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noEmit": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "useDefineForClassFields": true,
-        "emitDecoratorMetadata": true,
-        "resolveJsonModule": true,
-        "baseUrl": "./src",
-        "strictBindCallApply": true,
-        "paths": {
-            "@ui/*": ["./core/components/*"],
-            "@locales/*": ["../locales/*"]
-        }
-    },
-    "include": [
-        "src"
-    ]
+  "compilerOptions": {
+    "target": "es5",
+    "experimentalDecorators": true,
+    "jsxImportSource": "@emotion/react",
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "strictBindCallApply": true,
+    "paths": {
+      "@ui/*": ["./core/components/*"],
+      "@locales/*": ["../locales/*"]
+    }
+  },
+  "include": ["src"]
 }

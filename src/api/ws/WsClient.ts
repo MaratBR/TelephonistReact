@@ -34,10 +34,7 @@ export default class WSClient<
     return this._events.addEventListener(event, listener);
   }
 
-  off<K extends keyof InEventsRegistry>(
-    event: K,
-    listener: ListenerFunction<InEventsRegistry[K]>
-  ) {
+  off<K extends keyof InEventsRegistry>(event: K, listener: ListenerFunction<InEventsRegistry[K]>) {
     this._events.removeEventListener(event, listener);
   }
 

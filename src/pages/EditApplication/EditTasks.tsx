@@ -35,7 +35,7 @@ export default function EditTasks({ tasks, onTaskDeleted }: EditTasksProps) {
 
   const sruggie = (
     <Shruggie>
-      <p>{t('NoApplicationTasks')}</p>
+      <p>{t('noApplicationTasks')}</p>
     </Shruggie>
   );
 
@@ -44,9 +44,7 @@ export default function EditTasks({ tasks, onTaskDeleted }: EditTasksProps) {
       <ContentSection header={t('tasks')}>
         <Padded>
           <ButtonGroup>
-            <Button left={<Icon path={mdiPlus} size={0.9} />}>
-              {t('add_task')}
-            </Button>
+            <Button left={<Icon path={mdiPlus} size={0.9} />}>{t('addTask')}</Button>
           </ButtonGroup>
         </Padded>
         <DataGrid
@@ -69,7 +67,7 @@ export default function EditTasks({ tasks, onTaskDeleted }: EditTasksProps) {
             },
             {
               key: 'last_updated',
-              title: t('last_updated'),
+              title: t('lastUpdated'),
             },
             {
               key: '_actions',

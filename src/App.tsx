@@ -45,24 +45,12 @@ function AppRouter() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={COMPONENTS.LoginPage} />
-          <Route
-            path="/login/password-reset"
-            element={COMPONENTS.PasswordResetPage}
-          />
+          <Route path="/login/password-reset" element={COMPONENTS.PasswordResetPage} />
           <Route path="/" element={lazy(() => import('pages/MainPage'))}>
             <Route path="applications" element={COMPONENTS.AllApplications} />
-            <Route
-              path="applications/new"
-              element={COMPONENTS.NewApplication}
-            />
-            <Route
-              path="applications/:id"
-              element={COMPONENTS.ViewApplication}
-            />
-            <Route
-              path="applications/:id/edit"
-              element={COMPONENTS.EditApplication}
-            />
+            <Route path="applications/new" element={COMPONENTS.NewApplication} />
+            <Route path="applications/:id" element={COMPONENTS.ViewApplication} />
+            <Route path="applications/:id/edit" element={COMPONENTS.EditApplication} />
             <Route
               path="applications/:appID/tasks/:taskID"
               element={COMPONENTS.ViewApplicationTask}
