@@ -13,6 +13,14 @@
   "plugins": [
     "@emotion/babel-plugin",
     "@babel/transform-runtime",
-    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+    [
+      "prismjs",
+      {
+        "languages": ["shell", "json"],
+        "plugins": ["line-numbers"],
+        "theme": "okaidia",
+        "css": true
+      }
+    ]
   ]
 }

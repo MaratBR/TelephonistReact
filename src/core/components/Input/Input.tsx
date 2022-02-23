@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { combineListeners } from '@ui/utils';
+import { combineListeners } from '@coreui/utils';
 import S from './Input.module.scss';
 import InputBox, { InputBoxVariant } from './InputBox';
 import classNames from 'classnames';
@@ -34,4 +34,4 @@ const Input = React.forwardRef(
   }
 );
 
-export default Input;
+export default React.memo(Input);

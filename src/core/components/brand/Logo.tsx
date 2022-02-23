@@ -1,7 +1,7 @@
 import LogoSVG from 'assets/logo.svg';
 
-function Logo({ size }: { size?: string }) {
-  return <LogoSVG scale={0.4} />;
+function Logo({ scale }: { scale?: number }) {
+  return <LogoSVG scale={scale ?? 0.1} />;
 }
 
 export default Logo;

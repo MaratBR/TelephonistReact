@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, InputProps } from '@ui/Input';
+import { Input, InputProps } from '@coreui/Input';
 import InputErrors from './InputErrors';
 import { Validation, Validator } from './Validation';
 

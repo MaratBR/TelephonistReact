@@ -33,9 +33,10 @@ export interface Task {
   task_type: string;
   body: any;
   app_id: string;
+  app_name: string;
 }
 
-export interface TaskStandalone extends Omit<Task, 'app_id'> {
+export interface TaskStandalone extends Omit<Task, 'app_id' | 'app_name'> {
   app: {
     _id: string;
     name: string;
@@ -62,6 +63,7 @@ export interface DefineTask {
   env: Record<string, string>;
   tags: string[];
   triggers: TaskTrigger[];
+  display_name: string;
 }
 
 export type UpdateTask = Partial<Omit<DefineTask, '_id'>>;

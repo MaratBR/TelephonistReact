@@ -1,5 +1,5 @@
 import React, { ForwardedRef, useEffect, useRef, useState } from 'react';
-import { combineRefs } from '@ui/utils';
+import { combineRefs } from '@coreui/utils';
 import S from './Checkbox.module.scss';
 import { mdiCheck, mdiMinus } from '@mdi/js';
 import Icon from '@mdi/react';

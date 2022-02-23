@@ -4,11 +4,15 @@
   display: flex;
   width: 100%;
   position: relative;
-  overflow: initial;
 
   .selectedItem {
     @include defaultInput();
     flex-grow: 1;
+    border-radius: var(--t-radius-sm);
+
+    &:hover {
+      background-color: var(--t-neutral-9);
+    }
   }
 
   .chevron {
@@ -23,6 +27,7 @@
   }
 
   .items {
+    overflow: hidden;
     transition: opacity var(--t-transition-sm);
     opacity: 0;
     user-select: none;

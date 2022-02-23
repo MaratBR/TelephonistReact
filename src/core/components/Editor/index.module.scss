@@ -1,0 +1,28 @@
+.viewer {
+  color: white;
+  background-color: #333;
+  padding: var(--t-spacing-md);
+  border-radius: var(--t-radius-sm);
+  font-family: 'Jetbrains Mono', monospace;
+  font-size: 0.8em;
+
+  pre,
+  code {
+    background-color: transparent;
+  }
+
+  pre {
+    margin: 0;
+  }
+}
+
+.editor {
+  min-height: 150px;
+  max-height: 600px;
+  resize: vertical;
+  border: 2px solid #333;
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--t-primary-t70);
+  }
+}

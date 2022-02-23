@@ -1,4 +1,4 @@
-import { maybeCSSVariable } from '@ui/utils';
+import { maybeCSSVariable } from '@coreui/utils';
 import styled from '@emotion/styled';
 
 type PaddedProps = {

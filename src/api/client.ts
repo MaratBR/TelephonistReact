@@ -1,7 +1,11 @@
 import axios from 'axios';
-import { RootState } from 'state';
 
-const API_URL = process.env.API_URL || 'https://localhost:5789/';
+function normalize(url: string) {
+  if (!url.endsWith('/')) return `${url}/`;
+  return url;
+}
+
+const API_URL = normalize(process.env.API_URL || 'https://localhost:5789/');
 const WS_URL = API_URL.replace(/http(s?):\/\//, 'ws$1://');
 
 if (process.env.NODE_ENV === 'development') {
@@ -13,24 +17,8 @@ if (process.env.NODE_ENV === 'development') {
   );
 }
 
-export function configureAxiosInterceptors(rootState: RootState) {
-  axios.interceptors.request.use((config) => ({
-    ...config,
-    headers: {
-      ...config.headers,
-      Authorization: `Bearer ${rootState.auth.accessToken}`,
-    },
-  }));
-}
-
 axios.defaults.baseURL = API_URL + (API_URL.endsWith('/') ? '' : '/');
 axios.defaults.timeout = 15000;
 axios.defaults.withCredentials = true;
 
-export function getAxiosInstance() {
-  return axios;
-}
-
-const CLIENT_DI_KEY = Symbol.for('axios client');
-
-export { API_URL, WS_URL, CLIENT_DI_KEY };
+export { API_URL, WS_URL };

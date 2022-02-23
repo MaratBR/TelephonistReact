@@ -1,11 +1,13 @@
 import React from 'react';
-import { InputBoxVariant } from '@ui/Input/InputBox';
-import { Stack } from '@ui/Stack';
+import { InputBoxVariant } from '@coreui/Input/InputBox';
+import { Stack } from '@coreui/Stack';
 import { css } from '@emotion/react';
 import Input from 'core/components/Input/Input';
 import Tag from 'core/components/Tag';
+import { useTranslation } from 'react-i18next';
 
-interface TagsInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface TagsInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'dafaultValue' | 'type'> {
   tags: TagDescriptor[];
   // eslint-disable-next-line no-unused-vars
   onRawTags?: (tags: TagDescriptor[]) => void;
@@ -16,7 +18,6 @@ interface TagsInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   // eslint-disable-next-line no-unused-vars
   onTagAdded?: (tag: TagDescriptor, newIndex: number) => void;
   variant?: InputBoxVariant;
-  inline?: boolean;
   submitOnSpace?: boolean;
   disallowDuplicates?: boolean;
 }
@@ -54,7 +55,6 @@ export function TagDisplay({ tags }: TagDisplayProps) {
 
 function TagInput({
   variant,
-  inline,
   disallowDuplicates,
   submitOnSpace,
   tags,
@@ -64,6 +64,7 @@ function TagInput({
   onTagRemoved,
   ...props
 }: TagsInputProps) {
+  const { t } = useTranslation();
   const tagsChildren = tags.map((tag, index) => {
     const onClose = () => {
       const newTags = [...tags];
@@ -116,6 +117,7 @@ function TagInput({
   return (
     <div css={_css}>
       <Input variant={variant} {...props} onKeyDown={onSubmit} />
+      <span>{t('tagInputHint')}</span>
       <Stack h spacing="xs" alignItems="center" wrap>
         {tagsChildren}
       </Stack>

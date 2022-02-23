@@ -20,9 +20,9 @@
 }
 
 .description {
-  font-weight: 300;
-  font-size: .85em;
-  color: var(--t-color);
+  font-size: 0.85em;
+  color: var(--t-color-2);
+  padding: var(--t-spacing-sm);
 }
 
 .aside {
@@ -55,7 +55,7 @@
     .label {
       margin: var(--t-spacing-md) var(--t-spacing-md) var(--t-spacing-md) 0;
     }
-  
+
     .description {
       display: block;
       margin: var(--t-spacing-md) 0;
@@ -70,9 +70,9 @@
 
 .changedDot {
   background-color: var(--t-primary);
-  height: .6em;
-  width: .6em;
-  margin: 0 .4em;
+  height: 0.6em;
+  width: 0.6em;
+  margin: 0 0.4em;
   display: inline-block;
   border-radius: 100px;
 }

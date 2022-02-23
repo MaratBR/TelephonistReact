@@ -1,33 +1,31 @@
-import ApiBase from "api/ApiBase";
-import { DefineTask, Task, TaskStandalone, UpdateTask } from "api/definition";
-import { injectable } from "inversify";
-import { ITasksApi } from "./definition";
+import { ITasksApi } from './definition';
+import ApiBase from 'api/ApiBase';
+import { DefineTask, Task, TaskStandalone, UpdateTask } from 'api/definition';
 
-@injectable()
 export default class TasksApi extends ApiBase implements ITasksApi {
-  getApplicationTask(taskID: string): Promise<TaskStandalone> {
-    return this._client
-      .get(`user-api/tasks/${taskID}`)
-      .then((r) => r.data);
+  get(taskID: string): Promise<TaskStandalone> {
+    return this.statusService.apiCall(this._client.get(`user-api/tasks/${taskID}`));
+  }
+
+  getByName(appName: string, taskName: string): Promise<TaskStandalone> {
+    return this.statusService.apiCall(this._client.get(`user-api/tasks/${appName}/${taskName}`));
   }
 
   getApplicationTasks(appID: string): Promise<Task[]> {
     return this._client.get(`user-api/applications/${appID}/defined-tasks`).then((r) => r.data);
   }
 
-  defineNewApplicationTask(appID: string, body: DefineTask): Promise<TaskStandalone> {
-    return this._client
-      .post(`user-api/applications/${appID}/defined-tasks`, body)
-      .then((r) => r.data);
+  define(appID: string, body: DefineTask): Promise<TaskStandalone> {
+    return this.statusService.apiCall(
+      this._client.post<TaskStandalone>(`user-api/applications/${appID}/defined-tasks`, body)
+    );
   }
 
-  async deleteApplicationTask(taskID: string): Promise<void> {
+  async delete(taskID: string): Promise<void> {
     await this._client.delete(`user-api/tasks/${taskID}`);
   }
 
-  updateApplicationTask(taskID: string, body: UpdateTask): Promise<TaskStandalone> {
-    return this._client
-      .patch(`user-api/tasks/${taskID}`, body)
-      .then((r) => r.data);
+  update(taskID: string, body: UpdateTask): Promise<TaskStandalone> {
+    return this._client.patch(`user-api/tasks/${taskID}`, body).then((r) => r.data);
   }
 }

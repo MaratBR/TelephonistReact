@@ -3,6 +3,11 @@ import { ConnectionInfo } from '../connection';
 import { Event, Sequence } from '../event';
 import { Task } from '../tasks';
 
+export interface WSTicketResponse {
+  exp: string;
+  ticket: string;
+}
+
 export interface AppUpdateMessage {
   id: string;
   update: Partial<Omit<Application, '_id'>>;

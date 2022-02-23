@@ -2,6 +2,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { resolve } from 'path';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { Configuration, EnvironmentPlugin, WebpackPluginInstance } from 'webpack';
 import 'webpack-dev-server';
 
@@ -28,6 +29,8 @@ const plugins: WebpackPluginInstance[] = [
 
 if (isDevelopment) {
   plugins.push(new ReactRefreshWebpackPlugin());
+} else {
+  plugins.push(new MiniCssExtractPlugin());
 }
 
 const configuration: Configuration = {
@@ -45,7 +48,7 @@ const configuration: Configuration = {
     alias: {
       '@locales': __dirname + '/locales',
       '@assets': SRC + '/assets',
-      '@ui': SRC + '/core/components',
+      '@coreui': SRC + '/core/components',
     },
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     modules: [SRC, 'node_modules'],
@@ -88,6 +91,7 @@ const configuration: Configuration = {
   devtool: 'inline-source-map',
   optimization: {
     runtimeChunk: 'single',
+    minimizer: isDevelopment ? undefined : [new UglifyJsPlugin()],
     splitChunks: {
       cacheGroups: {
         vendor: {

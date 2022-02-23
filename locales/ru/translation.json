@@ -33,10 +33,10 @@
   "pwdreset": {
     "header": "Установка пароля",
     "description": "Вам нужно установить новый пароль для этого аккаунта",
-    "tokenExpired": "",
-    "loading": "",
-    "success": "",
-    "remaining": ""
+    "tokenExpired": "Токен сброса пароля истек, войдите заново",
+    "loading": "Меняем ваш пароль...",
+    "success": "Пароль успешно сброшен",
+    "remaining": "Времени осталось"
   },
   "newPwd": "Новый пароль",
   "repeatNewPwd": "Повторите новый пароль",
@@ -84,5 +84,8 @@
   "createNew": "Создать",
   "newApplication": "Новое приложение",
   "triggerHasBeenDeleted": "Триггер был удален",
-  "restore": "Восстановить"
+  "restore": "Восстановить",
+  "nameCannotBeChangedAfterwards": "Вы не сможете изменить имя после сохранения!",
+  "displayNameDescription": "Отображаемое имя может быть любым",
+  "tagInputHint": "Нажмите ↵Enter, чтобы добавить тэг"
 }

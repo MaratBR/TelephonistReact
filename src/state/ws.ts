@@ -1,63 +1,57 @@
-import AuthState from './auth';
 import { UserHubWS } from 'api';
-import { autorun, makeObservable, observable, runInAction } from 'mobx';
+import IApiStatusService from 'api/IApiStatusService';
+import { AxiosInstance } from 'axios';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 
-export class WSState {
-  private _client: UserHubWS;
+export default class WSState {
+  readonly hub: UserHubWS;
 
-  private _authState: AuthState;
-
-  private _dispose: () => void;
+  private _connectRequests: number = 0;
 
   isConnected: boolean = false;
 
-  lastError: string | null = null;
+  constructor(client: AxiosInstance, statusService: IApiStatusService) {
+    this.hub = new UserHubWS(client, statusService);
+    this.hub.on('connected', action(this._onConnected.bind(this)));
+    this.hub.on('disconnected', action(this._onDisconnected.bind(this)));
 
-  get client() {
-    return this._client;
-  }
-
-  constructor(authState: AuthState) {
-    this._authState = authState;
-    this._client = new UserHubWS();
-    this._dispose = autorun(async () => {
-      if (this._authState.isAuthorized) {
-        if (!this.isConnected) {
-          await this.connect();
-        }
-      } else if (this.isConnected) {
-        await this.disconnect();
-      }
-    });
     makeObservable(this, {
       isConnected: observable,
-      lastError: observable,
     });
+  }
+
+  private _onConnected() {
+    this.isConnected = true;
+  }
+
+  private _onDisconnected() {
+    this.isConnected = false;
   }
 
   async connect() {
-    try {
-      await this._client.connect();
-      runInAction(() => {
-        this.lastError = null;
-        this.isConnected = true;
-      });
-    } catch (e) {
-      runInAction(() => {
-        this.isConnected = false;
-        this.lastError = e.toString();
-      });
-    }
-  }
-
-  async disconnect() {
-    this._client.disconnect();
+    await this.hub.start();
     runInAction(() => {
-      this.isConnected = false;
+      this.isConnected = true;
     });
   }
 
-  dispose() {
-    this._dispose();
+  requestConnect() {
+    this._connectRequests += 1;
+    if (this._connectRequests === 1) {
+      this.connect();
+    }
+    return this._decrementConnectionRequests.bind(this);
+  }
+
+  private _decrementConnectionRequests() {
+    this._connectRequests -= 1;
+    logging.warn(`_decrementConnectionRequests this._connectRequests=${this._connectRequests}`);
+    if (this._connectRequests === 0) {
+      setTimeout(() => {
+        if (this._connectRequests === 0) {
+          this.hub.stop();
+        }
+      }, 1000);
+    }
   }
 }

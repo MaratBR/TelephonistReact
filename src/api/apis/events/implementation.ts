@@ -1,19 +1,17 @@
-import ApiBase from "api/ApiBase";
-import { EventsOrderBy, GetEventsParams, Pagination, Sequence } from "api/definition";
-import { injectable } from "inversify";
-import { IEventsApi } from "./definition";
+import { IEventsApi } from './definition';
+import ApiBase from 'api/ApiBase';
+import { Event, EventsOrderBy, GetEventsParams, Pagination, Sequence } from 'api/definition';
 
-@injectable()
 export default class EventsApi extends ApiBase implements IEventsApi {
-  getEvents(params: GetEventsParams): Promise<Pagination<Event, EventsOrderBy>> {
-    return this._apiCall(this._client.get('events', { params }));
+  getAll(params: GetEventsParams): Promise<Pagination<Event, EventsOrderBy>> {
+    return this.statusService.apiCall(this._client.get('user-api/events', { params }));
   }
 
-  getEvent(id: string): Promise<Event> {
-    return this._apiCall(this._client.get(`events/${id}`));
+  get(id: string): Promise<Event> {
+    return this.statusService.apiCall(this._client.get(`user-api/events/${id}`));
   }
 
   getSequence(sequenceID: string): Promise<Sequence> {
-    return this._apiCall(this._client.get(`events/sequences/${sequenceID}`));
+    return this.statusService.apiCall(this._client.get(`user-api/events/sequences/${sequenceID}`));
   }
 }

@@ -46,6 +46,7 @@ export interface SelectProps<T> {
   renderElement?: (value: T) => React.ReactNode;
   selected?: T;
   onSelect: (value: T) => void;
+  placeholder?: string;
 }
 
 export default function Select<T>({
@@ -54,6 +55,7 @@ export default function Select<T>({
   renderElement,
   selected,
   onSelect,
+  placeholder,
 }: SelectProps<T>) {
   const render = renderElement ?? defaultRenderElement;
   const selectedElement = typeof selected === 'undefined' ? undefined : render(selected);
@@ -83,7 +85,7 @@ export default function Select<T>({
         className={classNames(S.select, { [S.expanded]: expanded })}
       >
         <div role="button" tabIndex={0} onClick={onClick} className={S.selectedItem}>
-          {selectedElement}
+          {selectedElement ?? placeholder}
         </div>
         <div className={S.items}>
           {options.map((value) => (

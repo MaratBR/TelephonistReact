@@ -1,8 +1,7 @@
-import { AUTH_API_DI_KEY, IAuthApi } from 'api/apis/auth';
+import { IAuthApi } from 'api/apis/auth';
 import { LoginRequest, LoginResponse, User } from 'api/definition';
-import axios from 'axios';
-import { inject } from 'inversify';
-import { action, makeAutoObservable, runInAction } from 'mobx';
+import axios, { AxiosInstance } from 'axios';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 
 export default class AuthState {
@@ -32,11 +31,30 @@ export default class AuthState {
 
   resetPasswordError: any = null;
 
-  @inject(AUTH_API_DI_KEY)
   private readonly _api: IAuthApi;
 
-  constructor() {
-    makeAutoObservable(this);
+  private readonly _client: AxiosInstance;
+
+  private _interceptorID?: number;
+
+  constructor(authApi: IAuthApi, client: AxiosInstance) {
+    this._client = client;
+    this._api = authApi;
+    makeObservable(this, {
+      accessToken: observable,
+      isAuthorized: observable,
+      user: observable,
+      lastUsername: observable,
+      loginError: observable,
+      fetchUserError: observable,
+      isLoading: observable,
+      isPasswordResetRequired: observable,
+      passwordResetExpiresAt: observable,
+      passwordResetToken: observable,
+      isInitialized: observable,
+      tokenExpiresAt: observable,
+      resetPasswordError: observable,
+    });
     makePersistable(this, {
       name: 'auth',
       storage: window.localStorage,
@@ -55,6 +73,17 @@ export default class AuthState {
         this.initialize();
       })
     );
+  }
+
+  installInterceptor() {
+    if (typeof this._interceptorID !== 'undefined') return;
+    this._interceptorID = this._client.interceptors.request.use((config) => ({
+      ...config,
+      headers: {
+        ...(config.headers ?? {}),
+        authorization: this.accessToken ? `Bearer ${this.accessToken}` : undefined,
+      },
+    }));
   }
 
   async login(r: LoginRequest) {
@@ -95,6 +124,7 @@ export default class AuthState {
       runInAction(() => {
         this.fetchUserError = e.toString();
       });
+      throw e;
     }
   }
 
@@ -126,6 +156,7 @@ export default class AuthState {
   }
 
   async initialize() {
+    this.installInterceptor();
     if (this.isAuthorized) {
       if (Date.now() > this.tokenExpiresAt) {
         try {
@@ -134,7 +165,15 @@ export default class AuthState {
           runInAction(() => this.handleLogout());
         }
       } else {
-        await this.fetchUser();
+        try {
+          await this.fetchUser();
+        } catch (e) {
+          if (axios.isAxiosError(e)) {
+            runInAction(() => {
+              this.isAuthorized = false;
+            });
+          }
+        }
         runInAction(() => {
           this.isInitialized = true;
         });

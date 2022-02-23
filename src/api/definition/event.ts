@@ -5,7 +5,8 @@ export interface Event {
   sequence_id: string | null;
   app_id: string;
   event_type: string;
-  related_task: string | null;
+  task_name: string | null;
+  task_id: string | null;
   data: any | null;
   publisher_ip: string | null;
   created_at: string;

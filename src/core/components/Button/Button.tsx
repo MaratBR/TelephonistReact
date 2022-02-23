@@ -1,7 +1,6 @@
 import React from 'react';
 import S from './Button.module.scss';
 import { Interpolation, css } from '@emotion/react';
-import styled from '@emotion/styled';
 import classNames from 'classnames';
 import LoadingSpinner from 'core/components/LoadingSpinner';
 import { useColor } from 'core/components/theme';
@@ -90,7 +89,7 @@ type ButtonOnlyProps = {
   loading?: boolean;
   left?: React.ReactNode;
   right?: React.ReactNode;
-  size?: string;
+  size?: 'sm';
 };
 
 type NavLinkButtonProps = ButtonOnlyProps & {
@@ -101,9 +100,18 @@ type NormalButtonProps = ButtonOnlyProps & {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 export type ButtonProps = NormalButtonProps | NavLinkButtonProps;
 
-const ButtonContent = styled.div<{ visible: boolean }>`
-  opacity: ${(props) => (props.visible ? 1 : 0)};
-`;
+interface ButtonContentProps {
+  visible: boolean;
+  children: React.ReactNode;
+}
+
+function ButtonContent({ children, visible }: ButtonContentProps) {
+  return (
+    <div style={{ opacity: visible ? 1 : 0 }} className={S.content}>
+      {children}
+    </div>
+  );
+}
 
 const Button = React.forwardRef(
   (
@@ -112,7 +120,7 @@ const Button = React.forwardRef(
   ) => {
     const inner = (
       <>
-        {left}
+        {left ? <div className={S.aside}>{left}</div> : undefined}
         <ButtonContent visible={!loading}>{children}</ButtonContent>
         {right}
         {loading ? (

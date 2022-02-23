@@ -13,7 +13,7 @@ const _css = css`
   }
 
   color: var(--t-primary);
-  animation: spin 2s linear infinite;
+  animation: spin 1s linear infinite;
 `;
 
 type LoadingSpinnerProps = {

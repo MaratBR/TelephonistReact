@@ -1,0 +1,18 @@
+.key {
+  font-family: var(--t-font-headers);
+  font-size: 1em;
+  font-weight: 500;
+
+  & > .task {
+    font-weight: 300;
+    color: var(--t-color-3);
+  }
+}
+
+.row {
+  border-left: 2px solid transparent;
+
+  &.selected {
+    border-left-color: var(--t-primary);
+  }
+}

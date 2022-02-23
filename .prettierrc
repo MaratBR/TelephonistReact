@@ -1,6 +1,6 @@
 {
   "singleQuote": true,
-  "importOrder": ["^react$", "^@ui/.+$", "<THIRD_PARTY_MODULES>", "^.+$"],
+  "importOrder": ["^react$", "^@coreui/.+$", "<THIRD_PARTY_MODULES>", "^.+$"],
   "importOrderSortSpecifiers": true,
   "importOrderSeparation": false,
   "importOrderCaseInsensitive": false,

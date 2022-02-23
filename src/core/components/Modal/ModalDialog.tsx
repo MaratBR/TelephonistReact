@@ -1,4 +1,4 @@
-import { IconButton } from '@ui/Button';
+import { IconButton } from '@coreui/Button';
 import S from './ModalDialog.module.scss';
 import { mdiClose } from '@mdi/js';
 

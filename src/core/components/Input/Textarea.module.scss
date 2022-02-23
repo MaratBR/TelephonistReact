@@ -1,9 +1,14 @@
-@import "_common";
+@import '_common';
 
 .textarea {
   @include defaultInput();
-  --input-color: var(--t-primary); 
+  --input-color: var(--t-primary);
   font-family: var(--t-font-main);
   outline: none !important;
   resize: vertical;
+  min-height: 200px;
+
+  &:read-only {
+    border-color: transparent;
+  }
 }

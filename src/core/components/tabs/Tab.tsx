@@ -1,5 +1,5 @@
 import React from 'react';
-import { combineListeners } from '@ui/utils';
+import { combineListeners } from '@coreui/utils';
 import S from './Tab.module.scss';
 import { isReactElement } from './helpers';
 import classNames from 'classnames';

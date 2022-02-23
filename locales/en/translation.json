@@ -83,5 +83,8 @@
   "viewDeletedTasks": "View deleted tasks",
   "general": "General",
   "noTaskTriggersDefined": "This task defines no triggers",
-  "lastUpdated": "Last updated at"
+  "lastUpdated": "Last updated at",
+  "nameCannotBeChangedAfterwards": "You won't be able to change afterwards!",
+  "areYouSure": "Are you sure?",
+  "doYouWantDeleteTask": "Do you want to delete the task <1>{{name}}</1>?"
 }

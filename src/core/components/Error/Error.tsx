@@ -7,6 +7,9 @@ interface ErrorProps {
 
 export default function Error({ error }: ErrorProps) {
   const { t } = useTranslation();
+
+  if (typeof error === 'undefined') return null;
+
   let header: React.ReactNode;
   let body: React.ReactNode;
 

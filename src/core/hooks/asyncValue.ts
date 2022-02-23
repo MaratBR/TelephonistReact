@@ -11,7 +11,7 @@ export interface MutableAsyncValue<T> extends AsyncValue<T> {
 }
 
 export interface RefreshableAsyncValue<T> extends MutableAsyncValue<T> {
-  refresh(): void;
+  refresh(silent?: boolean): void;
 }
 
 export function useRefreshableAsyncValue<T>(
@@ -22,8 +22,8 @@ export function useRefreshableAsyncValue<T>(
   const [error, setError] = useState<any>();
   const [value, setValue] = useState<T>(undefined);
   const [isLoading, setLoading] = useState(prefetch);
-  const retry = () => {
-    setLoading(true);
+  const retry = (silent?: boolean) => {
+    if (!silent) setLoading(true);
     getter()
       .then(setValue)
       .catch(setError)

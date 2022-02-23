@@ -94,7 +94,7 @@ export const defaultTheme: ThemeData = {
   fonts: {
     main: 'Roboto',
     logo: '"Abril Fatface"',
-    headers: '"Noto Sans Display"',
+    headers: '"Jost", Ubuntu, sans-serif',
     button: 'Inter',
   },
   transition: {

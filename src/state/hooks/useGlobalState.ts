@@ -1,9 +1,5 @@
 import state from 'state';
 
-export function useGlobalState() {
+export default function useGlobalState() {
   return state;
-}
-
-export function useHub() {
-  return useGlobalState().ws.client;
 }

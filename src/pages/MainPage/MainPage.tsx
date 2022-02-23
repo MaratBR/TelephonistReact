@@ -1,8 +1,7 @@
 import React, { ErrorInfo } from 'react';
-import { Alert } from '@ui/Alert';
-import { Nav, NavGroup, NavItem, NavItems } from '@ui/Nav';
-import { Stack } from '@ui/Stack';
-import AppInitializationWrapper from '../AppInitializationWrapper';
+import { Alert } from '@coreui/Alert';
+import AuthorizatioRequired from '../AuthorizationRequired';
+import { Nav, NavGroup, NavItem, NavItems } from './Nav';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { mdiDotsGrid, mdiHomeCircleOutline, mdiPlus } from '@mdi/js';
@@ -12,7 +11,7 @@ import { Outlet } from 'react-router-dom';
 
 const rootCSS = css`
   display: grid;
-  grid-template: 70px 1fr / 300px 1fr;
+  grid-template: 70px 1fr / auto 1fr;
   grid-template-areas:
     'side head'
     'side body';
@@ -61,24 +60,31 @@ class MainPageInner extends React.Component<MainPageInnerProps, MainPageInnerSta
           accusantium illo autem recusandae rerum! Ratione porro reprehenderit a saepe, vero
           voluptates natus dignissimos quia, numquam sint ab.
         </Top>
-        <Stack>
-          <Nav>
-            <NavItems>
-              <NavItem to="/" iconSVG={mdiHomeCircleOutline}>
-                {t('home')}
+        <Nav>
+          <NavItems>
+            <NavItem to="/" iconSVG={mdiHomeCircleOutline}>
+              {t('home')}
+            </NavItem>
+            <NavGroup text={t('applications')}>
+              <NavItem to="/applications" iconSVG={mdiDotsGrid}>
+                {t('allApps')}
               </NavItem>
-              <NavGroup text={t('applications')}>
-                <NavItem to="/applications" iconSVG={mdiDotsGrid}>
-                  {t('allApps')}
-                </NavItem>
 
-                <NavItem to="/applications/new" iconSVG={mdiPlus}>
-                  {t('createNewApp')}
-                </NavItem>
-              </NavGroup>
-            </NavItems>
-          </Nav>
-        </Stack>
+              <NavItem to="/applications/new" iconSVG={mdiPlus}>
+                {t('createNewApp')}
+              </NavItem>
+              <NavItem to="/applications/new" iconSVG={mdiPlus}>
+                {t('createNewApp')}
+              </NavItem>
+              <NavItem to="/applications/new" iconSVG={mdiPlus}>
+                {t('createNewApp')}
+              </NavItem>
+              <NavItem to="/applications/new" iconSVG={mdiPlus}>
+                {t('createNewApp')}
+              </NavItem>
+            </NavGroup>
+          </NavItems>
+        </Nav>
 
         <Main>
           {error ? (
@@ -99,8 +105,8 @@ const MainPageInnerIntl = withTranslation()(MainPageInner);
 
 export default function MainPage() {
   return (
-    <AppInitializationWrapper>
+    <AuthorizatioRequired>
       <MainPageInnerIntl />
-    </AppInitializationWrapper>
+    </AuthorizatioRequired>
   );
 }

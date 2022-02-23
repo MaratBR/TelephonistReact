@@ -1,0 +1,10 @@
+.text {
+  border: none;
+  outline: none !important;
+  white-space: pre-wrap;
+  margin: 0;
+  padding: var(--t-spacing-md);
+  border-radius: var(--t-radius-sm);
+  background-color: #333;
+  color: white;
+}

@@ -1,14 +1,11 @@
 import React from 'react';
-import { configureAxiosInterceptors } from './api/client';
 import { initI18N } from './i18n';
 import './logging';
-import state from './state';
 import './styles/index.scss';
-import { App } from 'App';
+import App from 'app';
 import ReactDOM from 'react-dom';
 import 'reflect-metadata';
 
-configureAxiosInterceptors(state);
 initI18N();
 
 if (!(window as any).__APP_INITIALIZED) {

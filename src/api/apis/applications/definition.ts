@@ -10,10 +10,10 @@ import {
 
 export const APPLICATION_DI_API = Symbol.for('Application API');
 export interface IApplicationsApi {
-  getApplictions(params?: PaginationParams<'_id' | 'name'>): Promise<Pagination<Application>>;
-  getAppliction(id: string): Promise<ApplicationResponse>;
-  getApplictionByName(name: string): Promise<ApplicationResponse>;
-  createApplication(data: CreateApplication): Promise<IdObject>;
-  updateApplication(id: string, update: UpdateApplication): Promise<Application>;
-  checkIfApplicationNameTaken(name: string): Promise<boolean>;
+  getAll(params?: PaginationParams<'_id' | 'name'>): Promise<Pagination<Application>>;
+  get(id: string): Promise<ApplicationResponse>;
+  getByName(name: string): Promise<ApplicationResponse>;
+  create(data: CreateApplication): Promise<IdObject>;
+  update(id: string, update: UpdateApplication): Promise<Application>;
+  checkName(name: string): Promise<boolean>;
 }

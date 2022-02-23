@@ -1,0 +1,50 @@
+.item {
+  display: block;
+  padding: var(--t-spacing-sm) var(--t-spacing-lg);
+  color: inherit;
+  font-weight: 400;
+  font-size: 0.9em;
+  font-family: 'Jost';
+  position: relative;
+
+  .inner {
+    border-radius: var(--t-radius-md);
+    padding: 0.6em 0.5em;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: var(--t-spacing-md);
+      height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: inherit;
+    }
+  }
+
+  &:hover:not(.active) {
+    border-color: transparent;
+    .inner {
+      background-color: var(--t-highlight);
+    }
+  }
+
+  &.active {
+    color: var(--t-primary);
+    background-color: var(--t-primary-50);
+
+    &::after {
+      display: block;
+      position: absolute;
+      content: '';
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      bottom: 0;
+      height: 60%;
+      width: 0.4em;
+      border-radius: 5px;
+      background-color: var(--t-primary);
+    }
+  }
+}

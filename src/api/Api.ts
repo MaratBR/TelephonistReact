@@ -1,18 +1,47 @@
-import { inject, injectable } from "inversify";
-import { APPLICATION_DI_API, IApplicationsApi } from "./apis/applications";
-import { AUTH_API_DI_KEY, IAuthApi } from "./apis/auth";
-import { EVENTS_API_DI_KEY, IEventsApi } from "./apis/events";
-import { ITasksApi, TASKS_API_DI_KEY } from "./apis/tasks";
+import ApiBase from './ApiBase';
+import ApiStatusService from './ApiStatusService';
+import { IApplicationsApi } from './apis/applications';
+import ApplicationsApi from './apis/applications/implementation';
+import { AuthApi, IAuthApi } from './apis/auth';
+import { EventsApi, IEventsApi } from './apis/events';
+import { ITasksApi, TasksApi } from './apis/tasks';
+import axios, { AxiosInstance } from 'axios';
+import { action, makeObservable, observable } from 'mobx';
 
-export const API_DI_KEY = Symbol.for('API'); 
+export const API_DI_KEY = Symbol.for('API');
 
-@injectable()
-export class Api {
-  @inject(EVENTS_API_DI_KEY) readonly events: IEventsApi;
+export class Api extends ApiBase {
+  readonly events: IEventsApi;
 
-  @inject(APPLICATION_DI_API) readonly applications: IApplicationsApi;
+  readonly applications: IApplicationsApi;
 
-  @inject(AUTH_API_DI_KEY) readonly auth: IAuthApi;
+  readonly auth: IAuthApi;
 
-  @inject(TASKS_API_DI_KEY) readonly tasks: ITasksApi;
+  readonly tasks: ITasksApi;
+
+  readonly client: AxiosInstance;
+
+  isOnline: boolean = true;
+
+  constructor() {
+    super(axios.create(), new ApiStatusService());
+    this.client = this._client;
+    this.events = new EventsApi(this._client, this.statusService);
+    this.applications = new ApplicationsApi(this._client, this.statusService);
+    this.auth = new AuthApi(this._client, this.statusService);
+    this.tasks = new TasksApi(this._client, this.statusService);
+
+    makeObservable(this, { isOnline: observable });
+    this.checkApi();
+    this.statusService.isOnlineObservable.subscribe(
+      action((v: boolean) => {
+        logging.debug(`isOnline = ${v}`);
+        this.isOnline = v;
+      })
+    );
+  }
+
+  checkApi() {
+    this.statusService.apiCall(this._client.get('')).catch(() => {});
+  }
 }

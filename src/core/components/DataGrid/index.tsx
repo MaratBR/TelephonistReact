@@ -1,6 +1,6 @@
 import React from 'react';
-import { Checkbox } from '@ui/Input';
-import { Stack } from '@ui/Stack';
+import { Checkbox } from '@coreui/Input';
+import { Stack } from '@coreui/Stack';
 import { mdiCalendar, mdiCheckCircle, mdiCloseCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import Table from 'core/components/Table';
@@ -198,7 +198,7 @@ export function renderObjectID(id: string) {
   );
 }
 
-export function dateRender(d: string) {
+export function renderDate(d: string) {
   const dt = new Date(d);
   return (
     <Stack h>

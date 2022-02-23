@@ -16,7 +16,7 @@
     "baseUrl": "./src",
     "strictBindCallApply": true,
     "paths": {
-      "@ui/*": ["./core/components/*"],
+      "@coreui/*": ["./core/components/*"],
       "@locales/*": ["../locales/*"]
     }
   },

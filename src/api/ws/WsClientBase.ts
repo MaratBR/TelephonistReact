@@ -42,8 +42,9 @@ export default abstract class WSClientBase {
     };
   }
 
-  async connect() {
+  async start() {
     if (this.websocket) return;
+    this.isActivated = true;
     this._clearReconnection();
 
     const query = await this.modifyQuery({});
@@ -68,36 +69,37 @@ export default abstract class WSClientBase {
 
   protected abstract onMessage(event: MessageEvent): void | Promise<void>;
 
-  protected onError() {
-    // eslint-disable-line class-methods-use-this
-    /* no-op */
-  }
+  protected onError() {}
 
-  private _onOpen() {
+  protected _onOpen() {
     this.isConnected = true;
     this._reconnectionAttempt = 0;
   }
 
-  private _onClose() {
+  protected _onClose(_event: CloseEvent) {
     this.isConnected = false;
-    if (this.options.reconnect ?? true) {
+    if (this.isActivated && (this.options.reconnect ?? true)) {
       this._reconnectionAttempt += 1;
       const timeout = (this.options.reconnectStrategy ?? defaultReconnectStrategy)(
         this._reconnectionAttempt
       );
-      setTimeout(() => this.connect(), timeout);
+      setTimeout(() => this.start(), timeout);
     }
   }
 
   async reconnect() {
     if (this.websocket) {
-      await this.disconnect();
+      await this.stop();
     }
-    await this.connect();
+    await this.start();
   }
 
-  async disconnect() {
-    this.websocket.close();
-    this.websocket = null;
+  async stop() {
+    if (!this.isActivated) return;
+    this.isActivated = false;
+    if (this.websocket) {
+      this.websocket.close();
+      this.websocket = null;
+    }
   }
 }

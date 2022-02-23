@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, Fields } from '@ui/Field';
+import { Field, Fields } from '@coreui/Field';
 
 export default function Parameters({
   parameters,
