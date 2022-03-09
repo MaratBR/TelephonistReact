@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 import { combineListeners } from '@coreui/utils';
 import InputBox, { InputBoxVariant } from './InputBox';
 import S from './Textarea.module.scss';
@@ -9,16 +9,24 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   isInvalid?: boolean;
 };
 
-export default function Textarea({ className, variant, onBlur, onFocus, ...props }: TextareaProps) {
-  const [focused, setFocused] = useState(false);
-  return (
-    <InputBox variant={variant} focused={focused && !props.readOnly}>
-      <textarea
-        onFocus={combineListeners(onFocus, () => setFocused(true))}
-        onBlur={combineListeners(onBlur, () => setFocused(false))}
-        className={classNames(S.textarea, className)}
-        {...props}
-      />
-    </InputBox>
-  );
-}
+const Textarea = forwardRef(
+  (
+    { className, variant, onBlur, onFocus, ...props }: TextareaProps,
+    ref: ForwardedRef<HTMLTextAreaElement>
+  ) => {
+    const [focused, setFocused] = useState(false);
+    return (
+      <InputBox variant={variant} focused={focused && !props.readOnly}>
+        <textarea
+          ref={ref}
+          onFocus={combineListeners(onFocus, () => setFocused(true))}
+          onBlur={combineListeners(onBlur, () => setFocused(false))}
+          className={classNames(S.textarea, className)}
+          {...props}
+        />
+      </InputBox>
+    );
+  }
+);
+
+export default Textarea;

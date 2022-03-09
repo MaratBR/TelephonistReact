@@ -16,12 +16,12 @@ export interface RefreshableAsyncValue<T> extends MutableAsyncValue<T> {
 
 export function useRefreshableAsyncValue<T>(
   getter: () => Promise<T>,
-  deps?: any[],
-  prefetch: boolean = true
+  deps?: any[]
 ): RefreshableAsyncValue<T> {
   const [error, setError] = useState<any>();
   const [value, setValue] = useState<T>(undefined);
-  const [isLoading, setLoading] = useState(prefetch);
+  const [isLoading, setLoading] = useState(true);
+
   const retry = (silent?: boolean) => {
     if (!silent) setLoading(true);
     getter()
@@ -30,15 +30,7 @@ export function useRefreshableAsyncValue<T>(
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    if (prefetch) {
-      retry();
-    }
-  }, []);
-
-  if (deps && deps.length > 0) {
-    useEffect(retry, deps);
-  }
+  useEffect(retry, deps ?? []);
 
   return {
     isLoading,

@@ -4,14 +4,22 @@
   position: relative;
   top: 1px;
   user-select: none;
+  transition: border-color var(--t-transition-sm);
+  border-bottom: 3px solid transparent;
+  display: flex;
+  justify-content: center;
 
   &:hover {
     color: var(--t-color-3);
   }
 
-  &.selected {
-    font-weight: 600;
+  &:active {
+    background-color: var(--t-highlight);
     color: var(--t-primary);
-    border-bottom: 3px solid var(--t-primary);
+  }
+
+  &.selected {
+    font-weight: bold;
+    border-color: currentColor;
   }
 }

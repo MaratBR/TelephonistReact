@@ -2,29 +2,37 @@ import IApiStatusService from 'api/IApiStatusService';
 import { WS_URL } from 'api/client';
 import {
   AppUpdateMessage,
+  CG,
   ConnectionInfo,
-  Event,
+  LogsMessage,
   SequenceMetaMessage,
   Task,
+  Event as TelephonistEvent,
   UserHubIncomingMessages,
   UserHubOutgoingMessages,
   WSTicketResponse,
 } from 'api/definition';
 import { WSClient } from 'api/ws';
 import { AxiosInstance } from 'axios';
+import { VoidCallback } from 'core/utils/types';
 
-type EventListener = (event: Event) => void;
+type EventListener = (event: TelephonistEvent) => void;
+type LogListener = (log: LogsMessage) => void;
 
 export default class UserHubWS extends WSClient<UserHubIncomingMessages, UserHubOutgoingMessages> {
   private readonly _client: AxiosInstance;
 
   private readonly _statusService: IApiStatusService;
 
+  private readonly _subscribtions: Record<string, number> = {};
+
   private readonly _applicationEventSubcriptions: Record<string, EventListener[]> = {};
+
+  private readonly _logListeners: Record<string, LogListener[]> = {};
 
   constructor(client: AxiosInstance, statusService: IApiStatusService) {
     super({
-      path: `${WS_URL}user-api/ws`,
+      path: `${WS_URL}_ws/user-api/main`,
       wsTicketFactory: () => this.issueWSTicket(),
     });
     this._client = client;
@@ -42,13 +50,47 @@ export default class UserHubWS extends WSClient<UserHubIncomingMessages, UserHub
       .then((data) => data.ticket);
   }
 
+  private bookTopic(...topics: string[]): VoidCallback {
+    for (const t of topics) {
+      if (typeof this._subscribtions[t] === 'number') {
+        this._subscribtions[t] += 1;
+      } else {
+        this._subscribtions[t] = 1;
+        this.subscribeToTopic(t);
+      }
+    }
+
+    return this.cancelTopic.bind(this, ...topics);
+  }
+
+  private cancelTopic(...topics: string[]) {
+    for (const t of topics) {
+      if (typeof this._subscribtions[t] === 'number') {
+        if (this._subscribtions[t] === 1) {
+          delete this._subscribtions[t];
+          this.unsubscibeFromTopic(t);
+        } else {
+          this._subscribtions[t] -= 1;
+        }
+      }
+    }
+  }
+
+  private subscribeToTopic(topic: string | string[]) {
+    this.send({ msg_type: 'sub', data: topic });
+  }
+
+  private unsubscibeFromTopic(topic: string | string[]) {
+    this.send({ msg_type: 'sub', data: topic });
+  }
+
   addAppEventsListener(appID: string, listener: EventListener) {
     const listeners = this._applicationEventSubcriptions[appID];
     if (listeners) {
       if (!listeners.includes(listener)) listeners.push(listener);
     } else {
       this._applicationEventSubcriptions[appID] = [listener];
-      this.subscribeToApplicationEvents(appID);
+      this.subscribeToTopic(CG.appEvents(appID));
     }
   }
 
@@ -60,26 +102,56 @@ export default class UserHubWS extends WSClient<UserHubIncomingMessages, UserHub
       listeners.splice(index, 1);
       if (listeners.length === 0) {
         delete this._applicationEventSubcriptions[appID];
-        this.unsubscribeFromApplicationEvents(appID);
+        this.unsubscibeFromTopic(CG.appEvents(appID));
       }
     }
   }
 
-  subscribeToApplicationEvents(...appIDs: string[]) {
-    this.send({ msg_type: 'sub_to_app_events', data: appIDs }, true);
+  private addLogsListener(topic: string, listener: LogListener) {
+    const listeners = this._logListeners[topic];
+    if (listeners) {
+      listeners.push(listener);
+    } else {
+      this._logListeners[topic] = [listener];
+      this.subscribeToTopic(topic);
+    }
   }
 
-  unsubscribeFromApplicationEvents(...appIDs: string[]) {
-    this.send({ msg_type: 'unsub_from_app_events', data: appIDs });
+  private removeLogsListener(topic: string, listener: LogListener) {
+    const listeners = this._logListeners[topic];
+    if (listeners) {
+      const index = listeners.indexOf(listener);
+      if (index !== -1) {
+        listeners.splice(index, 1);
+        if (listeners.length === 0) {
+          delete this._logListeners[topic];
+          this.unsubscibeFromTopic(topic);
+        }
+      }
+    }
   }
 
-  protected _onOpen(): void {
-    super._onOpen();
-    for (const appID of Object.keys(this._applicationEventSubcriptions))
-      this.subscribeToApplicationEvents(appID);
+  removeSequenceEventsListener(sequenceID: string, listener: LogListener) {
+    const key = `sequenceLogs/${sequenceID}`;
+    const listeners = this._logListeners[key];
+    if (listeners) {
+      const index = listeners.indexOf(listener);
+      if (index !== -1) {
+        listeners.splice(index, 1);
+        if (listeners.length === 0) {
+          delete this._logListeners[key];
+          this.unsubscibeFromTopic(key);
+        }
+      }
+    }
   }
 
-  private _onEvent(event: Event) {
+  protected _onOpen(event: Event): void {
+    super._onOpen(event);
+    for (const appID of Object.keys(this._subscribtions)) this.subscribeToTopic(appID);
+  }
+
+  private _onEvent(event: TelephonistEvent) {
     logging.debug('new_event: ', event);
     const listeners = this._applicationEventSubcriptions[event.app_id];
     if (listeners) for (const listener of listeners) listener(event);

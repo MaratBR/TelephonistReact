@@ -1,0 +1,19 @@
+.root {
+  padding-top: var(--t-spacing-xl);
+  background-color: var(--t-primary-50);
+  margin-bottom: var(--t-spacing-xl);
+  box-shadow: 0 10px 10px -10px var(--t-primary-100);
+}
+
+.body {
+  display: flex;
+  padding-bottom: var(--t-spacing-lg);
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  gap: var(--t-spacing-md);
+}

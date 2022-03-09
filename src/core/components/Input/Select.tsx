@@ -44,26 +44,26 @@ export interface SelectProps<T> {
   options: T[];
   keyFactory: (value: T) => React.Key;
   renderElement?: (value: T) => React.ReactNode;
-  selected?: T;
-  onSelect: (value: T) => void;
+  value?: T;
+  onChange: (value: T) => void;
   placeholder?: string;
 }
 
-export default function Select<T>({
+function Select<T>({
   options,
   keyFactory,
   renderElement,
-  selected,
-  onSelect,
+  value: selected,
+  onChange,
   placeholder,
 }: SelectProps<T>) {
   const render = renderElement ?? defaultRenderElement;
   const selectedElement = typeof selected === 'undefined' ? undefined : render(selected);
 
   const [expanded, setExpanded] = useState(false);
-  const ref = useRef<HTMLDivElement>();
+  const divRef = useRef<HTMLDivElement>();
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside(divRef, () => {
     setExpanded(false);
   });
 
@@ -71,15 +71,15 @@ export default function Select<T>({
   const onSelectX = useCallback(
     (value: T) => {
       setExpanded(false);
-      onSelect(value);
+      onChange(value);
     },
-    [onSelect]
+    [onChange]
   );
 
   return (
     <InputBox>
       <div
-        ref={ref}
+        ref={divRef}
         aria-haspopup="true"
         aria-expanded={expanded}
         className={classNames(S.select, { [S.expanded]: expanded })}
@@ -105,3 +105,5 @@ export default function Select<T>({
     </InputBox>
   );
 }
+
+export default Select;

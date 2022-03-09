@@ -18,7 +18,7 @@
       {
         "languages": ["shell", "json"],
         "plugins": ["line-numbers"],
-        "theme": "okaidia",
+        "theme": "tomorrow",
         "css": true
       }
     ]

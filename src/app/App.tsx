@@ -30,11 +30,12 @@ function Root({ children }: React.PropsWithChildren<{}>) {
 const COMPONENTS = {
   LoginPage: lazy(() => import('pages/auth/LoginPage/LoginPage')),
   PasswordResetPage: lazy(() => import('pages/auth/PasswordResetPage')),
-  AllApplications: lazy(() => import('pages/applications/AllApplications')),
-  NewApplication: lazy(() => import('pages/applications/NewApplication')),
-  ViewApplication: lazy(() => import('pages/applications/ViewApplication')),
-  ViewApplicationTask: lazy(() => import('pages/tasks/ViewApplicationTask')),
-  EditApplication: lazy(() => import('pages/applications/EditApplication')),
+
+  AllApplications: lazy(() => import('pages/admin/applications/AllApplications')),
+  NewApplication: lazy(() => import('pages/admin/applications/NewApplication')),
+  ViewApplication: lazy(() => import('pages/admin/applications/ViewApplication')),
+  ViewApplicationTask: lazy(() => import('pages/admin/tasks/ViewApplicationTask')),
+  SequenceView: lazy(() => import('pages/admin/sequence/SequenceView')),
 };
 
 function AppRouter() {
@@ -44,12 +45,12 @@ function AppRouter() {
         <Routes>
           <Route path="/login" element={COMPONENTS.LoginPage} />
           <Route path="/login/password-reset" element={COMPONENTS.PasswordResetPage} />
-          <Route path="/" element={lazy(() => import('pages/MainPage'))}>
+          <Route path="/admin/" element={lazy(() => import('pages/admin/MainPage'))}>
             <Route path="applications" element={COMPONENTS.AllApplications} />
             <Route path="applications/new" element={COMPONENTS.NewApplication} />
             <Route path="applications/:id" element={COMPONENTS.ViewApplication} />
-            <Route path="applications/:id/edit" element={COMPONENTS.EditApplication} />
             <Route path="tasks/:appName/:taskName" element={COMPONENTS.ViewApplicationTask} />
+            <Route path="sequences/:id" element={COMPONENTS.SequenceView} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,3 +1,4 @@
+import { ConnectionInfo } from './connection';
 import { PaginationParams } from './pagination';
 
 export interface Event {
@@ -20,6 +21,7 @@ export enum SequenceState {
   SUCCEEDED = 'succeeded',
   SKIPPED = 'skipped',
   IN_PROGRESS = 'in_progress',
+  FROZEN = 'frozen',
 }
 
 export interface Sequence {
@@ -37,6 +39,52 @@ export interface Sequence {
   error: string | null;
   connection_id: string | null;
 }
+
+export interface SequenceStandalone extends Omit<Sequence, 'connection_id' | 'app_id' | 'task_id'> {
+  app: {
+    _id: string;
+    name: string;
+    display_name: string;
+    deleted_at: string | null;
+  };
+  connection: ConnectionInfo;
+  logs: {
+    t: string;
+    severity: number;
+    body: string;
+    _id: string;
+  }[];
+}
+
+function toSequenceProcess(v: any): SequenceProcess {
+  if (typeof v !== 'object' || v === null) return {};
+  let { progress, steps_done, steps_total, description } = v;
+  if (typeof progress !== 'number' && typeof progress !== 'number') progress = undefined;
+  if (typeof steps_done !== 'number' && typeof steps_done !== 'undefined') steps_done = undefined;
+  if (typeof steps_total !== 'number' && typeof steps_total !== 'undefined')
+    steps_total = undefined;
+  if (typeof description !== 'string' && typeof description !== 'undefined')
+    description = undefined;
+  return {
+    progress,
+    steps_done,
+    steps_total,
+    description,
+  };
+}
+
+interface SequenceProcess {
+  progress?: number;
+  steps_done?: number;
+  steps_total?: number;
+  description?: string;
+}
+
+export function toSequenceMeta(v: any): SequenceMeta {
+  return toSequenceProcess(v);
+}
+
+export interface SequenceMeta extends SequenceProcess {}
 
 export interface GetEventsParams extends PaginationParams<EventsOrderBy> {
   event_type?: string;

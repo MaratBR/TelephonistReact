@@ -1,0 +1,31 @@
+.state {
+  display: inline-block;
+  border-radius: var(--t-radius-md);
+  padding: var(--t-spacing-sm);
+  font-weight: 500;
+  font-family: var(--t-font-headers);
+}
+
+.in_progress {
+  background-color: var(--t-primary);
+  color: var(--t-primary-50);
+}
+
+.frozen {
+  background-color: var(--t-primary-100);
+}
+
+.failed {
+  background-color: var(--t-danger);
+  color: var(--t-on-danger);
+}
+
+.succeeded {
+  background-color: var(--t-success);
+  color: var(--t-on-success);
+}
+
+.skipped {
+  background-color: var(--t-neutral-1);
+  color: var(--t-neutral-7);
+}

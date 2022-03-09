@@ -1,6 +1,4 @@
-import throttle from './throttle';
+export * from './functions';
 
 export * from './hash';
 export * from './async';
-
-export { throttle };

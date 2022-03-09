@@ -82,6 +82,7 @@ export const defaultTheme: ThemeData = {
       secondary: '#2e2e2f',
       success: '#22ac00',
       danger: '#ff0121',
+      warning: '#ecb500',
     }),
     background: '#F7F8FC',
     paper: '#fff',

@@ -1,7 +1,7 @@
 import WSClientBase from './WsClientBase';
 import { RegistryMessage } from 'api/definition';
-import { Events } from 'api/events';
-import { Dispose, ListenerFunction } from 'api/events/Events';
+import { Events } from 'utils/events';
+import { Dispose, ListenerFunction } from 'utils/events/Events';
 
 interface ConnectedEvent {
   innerEvent: Event;
@@ -88,8 +88,9 @@ export default class WSClient<
     this._events.dispatch('disconnected', { innerEvent: event });
   }
 
-  protected _onOpen(): void {
-    super._onOpen();
+  protected _onOpen(event: Event): void {
+    super._onOpen(event);
+    this._events.dispatch('connected', { innerEvent: event });
     // we can some initialization here
     this._events.dispatch('ready', {});
   }

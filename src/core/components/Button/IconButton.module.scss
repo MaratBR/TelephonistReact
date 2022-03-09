@@ -3,7 +3,16 @@
   border-radius: 10000px;
   background: transparent;
   cursor: pointer;
+  transition: box-shadow var(--t-transition-sm);
+
   &:hover {
     background-color: var(--t-highlight);
+  }
+
+  &:active {
+    box-shadow: 0 0 0 1px var(--t-neutral-5);
+  }
+  &:focus {
+    outline: 3px dotted currentColor;
   }
 }

@@ -15,9 +15,13 @@ export default function CodeViewer({ code, lang }: CodeViewerProps) {
   useEffect(() => {
     if (ref.current) {
       const html = Prism.highlight(code, Prism.languages[lang ?? 'json'], lang ?? 'json');
-      ref.current.innerHTML = `<pre><code>${html}<code></pre>`;
+      ref.current.innerHTML = `<pre>${html}</pre>`;
     }
   }, [ref.current, code]);
 
-  return <div className={S.viewer} ref={ref} />;
+  return (
+    <div className={S.viewer}>
+      <div ref={ref} className={S.code} />
+    </div>
+  );
 }

@@ -17,3 +17,26 @@
     outline: none;
   }
 }
+
+@mixin minimalInput {
+  border-width: 0 0 2px 0;
+  border-radius: 0;
+
+  &::after {
+    content: ' ';
+    background-color: var(--input-color);
+    height: 1px;
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+    transition: transform var(--t-transition-md);
+    transform: scaleX(0);
+  }
+
+  &.focus::after,
+  &.invalid::after {
+    transform: scaleX(1);
+  }
+}

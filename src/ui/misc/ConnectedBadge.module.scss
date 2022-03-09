@@ -1,0 +1,15 @@
+.badge {
+  display: inline-block;
+  padding: 0 var(--t-spacing-sm);
+  border-radius: 100px;
+  color: var(--t-on-danger);
+  background-color: var(--t-danger);
+  text-transform: uppercase;
+  line-height: 1.1rem;
+  font-size: 0.7em;
+
+  &.connected {
+    color: var(--t-on-success);
+    background-color: var(--t-success);
+  }
+}

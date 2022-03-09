@@ -1,6 +1,12 @@
 import { IEventsApi } from './definition';
 import ApiBase from 'api/ApiBase';
-import { Event, EventsOrderBy, GetEventsParams, Pagination, Sequence } from 'api/definition';
+import {
+  Event,
+  EventsOrderBy,
+  GetEventsParams,
+  Pagination,
+  SequenceStandalone,
+} from 'api/definition';
 
 export default class EventsApi extends ApiBase implements IEventsApi {
   getAll(params: GetEventsParams): Promise<Pagination<Event, EventsOrderBy>> {
@@ -11,7 +17,7 @@ export default class EventsApi extends ApiBase implements IEventsApi {
     return this.statusService.apiCall(this._client.get(`user-api/events/${id}`));
   }
 
-  getSequence(sequenceID: string): Promise<Sequence> {
+  getSequence(sequenceID: string): Promise<SequenceStandalone> {
     return this.statusService.apiCall(this._client.get(`user-api/events/sequences/${sequenceID}`));
   }
 }

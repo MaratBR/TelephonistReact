@@ -19,6 +19,11 @@ export interface TaskTypesRegistry {
   script: string;
 }
 
+export interface TaskBody {
+  type: string;
+  value: any;
+}
+
 export interface Task {
   _id: string;
   name: string;
@@ -30,8 +35,7 @@ export interface Task {
   last_updated: string;
   disabled: boolean;
   errors: Record<string, string>;
-  task_type: string;
-  body: any;
+  body: TaskBody;
   app_id: string;
   app_name: string;
 }
@@ -58,8 +62,7 @@ export interface DefineTask {
   _id: string;
   name: string;
   description: string;
-  task_type: string;
-  body: any;
+  body: TaskBody;
   env: Record<string, string>;
   tags: string[];
   triggers: TaskTrigger[];

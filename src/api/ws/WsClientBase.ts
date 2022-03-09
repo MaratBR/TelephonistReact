@@ -13,9 +13,9 @@ export type WSOptions = {
 export default abstract class WSClientBase {
   protected readonly options: WSOptions;
 
-  protected isConnected: boolean = false;
+  isConnected: boolean = false;
 
-  protected isActivated: boolean = false;
+  isActivated: boolean = false;
 
   protected websocket: WebSocket | null = null;
 
@@ -71,7 +71,7 @@ export default abstract class WSClientBase {
 
   protected onError() {}
 
-  protected _onOpen() {
+  protected _onOpen(_event: Event) {
     this.isConnected = true;
     this._reconnectionAttempt = 0;
   }

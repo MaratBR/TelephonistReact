@@ -7,12 +7,15 @@ import Tag from 'core/components/Tag';
 import { useTranslation } from 'react-i18next';
 
 interface TagsInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'dafaultValue' | 'type'> {
-  tags: TagDescriptor[];
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'value' | 'dafaultValue' | 'type' | 'onChange'
+  > {
+  value: TagDescriptor[];
   // eslint-disable-next-line no-unused-vars
   onRawTags?: (tags: TagDescriptor[]) => void;
   // eslint-disable-next-line no-unused-vars
-  onTags?: (tags: string[]) => void;
+  onChange?: (tags: string[]) => void;
   // eslint-disable-next-line no-unused-vars
   onTagRemoved?: (tag: TagDescriptor, oldIndex: number) => void;
   // eslint-disable-next-line no-unused-vars
@@ -57,23 +60,23 @@ function TagInput({
   variant,
   disallowDuplicates,
   submitOnSpace,
-  tags,
+  value,
   onRawTags,
-  onTags,
+  onChange,
   onTagAdded,
   onTagRemoved,
   ...props
 }: TagsInputProps) {
   const { t } = useTranslation();
-  const tagsChildren = tags.map((tag, index) => {
+  const tagsChildren = value.map((tag, index) => {
     const onClose = () => {
-      const newTags = [...tags];
+      const newTags = [...value];
       newTags.splice(index, 1);
       if (onRawTags) onRawTags(newTags);
-      if (onTags) {
-        onTags(newTags.map((newTag) => (typeof newTag === 'string' ? newTag : newTag.key)));
+      if (onChange) {
+        onChange(newTags.map((newTag) => (typeof newTag === 'string' ? newTag : newTag.key)));
       }
-      if (onTagRemoved) onTagRemoved(tags[index], index);
+      if (onTagRemoved) onTagRemoved(value[index], index);
     };
     const tagValue = tag;
     if (typeof tagValue === 'string') {
@@ -94,22 +97,22 @@ function TagInput({
     if (e.key === 'Enter' || (submitOnSpace && e.key === ' ')) {
       e.preventDefault();
       const target = e.target as HTMLInputElement;
-      const value = target.value.trim();
-      if (value === '') return;
+      const inputValue = target.value.trim();
+      if (inputValue === '') return;
       if (
         disallowDuplicates &&
-        tags.some((t) => (typeof t === 'string' ? t === value : t.key === value))
+        value.some((tag) => (typeof tag === 'string' ? tag === inputValue : tag.key === inputValue))
       ) {
         target.value = '';
         return;
       }
-      const newTags = [...tags, value];
+      const newTags = [...value, inputValue];
 
       if (onRawTags) onRawTags(newTags);
-      if (onTags) {
-        onTags(newTags.map((tag) => (typeof tag === 'string' ? tag : tag.key)));
+      if (onChange) {
+        onChange(newTags.map((tag) => (typeof tag === 'string' ? tag : tag.key)));
       }
-      if (onTagAdded) onTagAdded(value, tags.length);
+      if (onTagAdded) onTagAdded(inputValue, value.length);
       target.value = '';
     }
   };

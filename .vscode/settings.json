@@ -12,5 +12,7 @@
     "**/*.code-search": true,
     "**/.telephonist_cache": true,
     "**/.idea": true
-  }
+  },
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single"
 }

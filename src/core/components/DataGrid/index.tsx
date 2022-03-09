@@ -9,6 +9,7 @@ type StrKeyOf<T> = keyof T & string;
 type DataGridColumnObjectField<T, K extends StrKeyOf<T>> = {
   key: K;
   title: React.ReactNode;
+  width?: string | number;
   render?: (value: T[K]) => React.ReactNode;
   custom?: false;
 };
@@ -20,6 +21,7 @@ type GenericDataGridColumnObject<T> = {
   key: string;
   render: (value: T) => React.ReactNode;
   title: React.ReactNode;
+  width?: string | number;
   custom: true;
 };
 
@@ -58,7 +60,9 @@ function DataRow<T>({ selectable, selected, onSelected, columns, item }: DataRow
         </td>
       ) : undefined}
       {columns.map((c) => (
-        <td>{isCustom(c) ? c.render(item) : (c.render ?? defaultRender)(item[c.key])}</td>
+        <td width={c.width}>
+          {isCustom(c) ? c.render(item) : (c.render ?? defaultRender)(item[c.key])}
+        </td>
       ))}
     </tr>
   );

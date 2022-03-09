@@ -1,17 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useGlobalState from './useGlobalState';
 import { UserHubWS } from 'api';
+
+interface UseUserHub {
+  hub: UserHubWS;
+  connected: boolean;
+}
 
 const noop = () => {};
 
 export default function useUserHub(
-  connect: boolean = true,
+  active: boolean = true,
   init: (() => void) | undefined = undefined
-): UserHubWS {
+): UseUserHub {
   const { ws } = useGlobalState();
+  const [connected, setConnected] = useState(ws.hub.isConnected);
 
   useEffect(() => {
-    if (connect) {
+    const disposeDisconnect = ws.hub.on('disconnected', () => setConnected(false));
+    const disposeConnect = ws.hub.on('connected', () => setConnected(true));
+
+    return () => {
+      disposeConnect();
+      disposeDisconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (active) {
       const disposeHubRequest = ws.requestConnect();
 
       const onReady = () => {
@@ -24,7 +40,10 @@ export default function useUserHub(
       };
     }
     return noop;
-  }, [connect]);
+  }, [active]);
 
-  return ws.hub;
+  return {
+    hub: ws.hub,
+    connected,
+  };
 }

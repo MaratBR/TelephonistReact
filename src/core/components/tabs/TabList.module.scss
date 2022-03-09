@@ -4,4 +4,11 @@
   margin: 0;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--t-neutral-8);
+  max-height: 100px;
+  transition: max-height var(--t-transition-sm);
+  overflow: hidden;
+
+  &.hidden {
+    max-height: 0;
+  }
 }

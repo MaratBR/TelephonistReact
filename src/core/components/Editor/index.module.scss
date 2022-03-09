@@ -1,28 +1,36 @@
-.viewer {
+.code {
   color: white;
   background-color: #333;
   padding: var(--t-spacing-md);
-  border-radius: var(--t-radius-sm);
   font-family: 'Jetbrains Mono', monospace;
   font-size: 0.8em;
+  height: 100%;
 
-  pre,
-  code {
-    background-color: transparent;
-  }
+  min-height: 150px;
+  max-height: 600px;
 
   pre {
     margin: 0;
   }
 }
 
-.editor {
-  min-height: 150px;
-  max-height: 600px;
-  resize: vertical;
-  border: 2px solid #333;
+.viewer {
+  border-radius: var(--t-radius-sm);
+  overflow: hidden;
+}
 
-  &:focus {
-    box-shadow: 0 0 0 2px var(--t-primary-t70);
+.error {
+  color: var(--t-on-danger);
+  background-color: var(--t-danger);
+  max-height: 300px;
+  overflow: hidden;
+  transform: scaleY(1);
+
+  &:empty {
+    height: 0;
+  }
+
+  & > div:not(:empty) {
+    margin: var(--t-spacing-md);
   }
 }

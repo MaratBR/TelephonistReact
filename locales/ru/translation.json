@@ -28,7 +28,7 @@
   "accessKey": "Ключ доступа",
   "hideKey": "Скрыть ключ",
   "showKey": "Показать ключ",
-  "noOpenConnections": "Открытых задач нет",
+  "noOpenConnections": "Открытых  нет",
   "createNewApp": "Новое приложение",
   "pwdreset": {
     "header": "Установка пароля",
@@ -87,5 +87,13 @@
   "restore": "Восстановить",
   "nameCannotBeChangedAfterwards": "Вы не сможете изменить имя после сохранения!",
   "displayNameDescription": "Отображаемое имя может быть любым",
-  "tagInputHint": "Нажмите ↵Enter, чтобы добавить тэг"
+  "tagInputHint": "Нажмите ↵Enter, чтобы добавить тэг",
+  "sequence": "Последовательность",
+  "triggerType": "Тип триггера",
+  "sequenceState": {
+    "succeeded": "Завершено успешно",
+    "in_progress": "В процессе...",
+    "failed": "Ошибка",
+    "frozen": "Заморожено"
+  }
 }

@@ -6,3 +6,4 @@ export * from './pagination';
 export * from './tasks';
 export * from './websocket';
 export * from './auth';
+export * from './log';

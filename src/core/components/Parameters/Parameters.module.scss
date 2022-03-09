@@ -1,0 +1,27 @@
+.group {
+  .parameters {
+    & > .parameter {
+      flex: 1 1 400px;
+    }
+  }
+}
+
+.parameter {
+  padding: var(--t-spacing-md) var(--t-spacing-sm);
+  border-bottom: 1px solid var(--t-neutral-8);
+  display: flex;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .term {
+    flex-basis: 30%;
+    font-weight: bold;
+    margin-inline-end: var(--t-spacing-md);
+  }
+
+  .value {
+    flex-basis: 70%;
+  }
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { combineListeners } from '@coreui/utils';
 import S from './Tab.module.scss';
 import { isReactElement } from './helpers';
@@ -20,13 +20,25 @@ export default function Tab({
   className,
   ...props
 }: TabProps) {
+  const [width, setWidth] = useState('auto');
+  const ref = useRef<HTMLLIElement>();
+
+  useEffect(() => {
+    if (ref.current) {
+      setWidth(`${ref.current.clientWidth + 6}px`);
+      console.log('set Width');
+    }
+  }, [props.children, ref.current]);
+
   return (
     <li
+      ref={ref}
       role="tab"
-      onClick={combineListeners(() => {
+      onClick={combineListeners<[React.MouseEvent<HTMLLIElement>]>(() => {
         if (!disabled && onSelect) onSelect();
       }, onClick)}
       id={id}
+      style={{ width }}
       className={classNames(className, S.tab, {
         [S.disabled]: disabled,
         [S.selected]: selected,

@@ -39,7 +39,19 @@ export interface UserHubIncomingMessages {
 }
 
 export interface UserHubOutgoingMessages {
-  sub_to_app_events: string[];
-  unsub_from_app_events: string[];
-  set_application_subscription: string | null;
+  sub: string | string[];
+  unsub: string | string[];
+  unsuball: void;
 }
+
+export const CG = {
+  app(id: string) {
+    return `app/${id}`;
+  },
+  appEvents(id: string) {
+    return `appEvents/${id}`;
+  },
+  sequenceEvents(id: string) {
+    return `sequenceEvents/${id}`;
+  },
+};
