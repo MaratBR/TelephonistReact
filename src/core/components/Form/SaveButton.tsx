@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Button } from '@coreui/Button';
+import { Button } from '@ui/Button';
 import S from './SaveButton.module.scss';
 import { FormStatusContext } from './context';
 import { mdiCheck, mdiClose, mdiContentSave } from '@mdi/js';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button } from '@coreui/Button';
-import { Parameters, StringValue } from '@coreui/Parameters';
-import Tags from '@coreui/Tags';
+import { Button } from '@ui/Button';
+import { Parameters, StringValue } from '@ui/Parameters';
+import Tags from '@ui/Tags';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Application } from 'api/definition';

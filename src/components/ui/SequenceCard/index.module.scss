@@ -1,0 +1,48 @@
+.card {
+  padding: var(--t-spacing-md);
+  border-bottom: 2px solid var(--t-neutral-8);
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto;
+  transition: var(--t-transition-sm);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: 0 0 0 1px var(--t-neutral-4);
+    background-color: var(--t-neutral-8);
+  }
+
+  .icon {
+    padding: var(--t-spacing-sm) var(--t-spacing-md) var(--t-spacing-sm) 0;
+
+    .succeeded {
+      color: var(--t-success-600);
+    }
+  }
+
+  .name {
+    font-family: var(--t-font-headers);
+    font-size: 1.1em;
+  }
+
+  .taskName {
+    color: var(--t-color-3);
+  }
+
+  .period {
+    display: flex;
+    align-items: center;
+    color: var(--t-color-3);
+    margin: 3px;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    padding: var(--t-spacing-md);
+    &:hover {
+      background-color: var(--t-highlight);
+    }
+  }
+}

@@ -38,6 +38,7 @@
   .body {
     flex-basis: 70%;
     flex-grow: 1;
+    padding: var(--t-spacing-lg) 0 0 var(--t-spacing-md);
   }
 
   &.right {

@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from 'react';
-import { Form, FormError, SaveButton } from '@coreui/Form';
-import { Input, InputLayout } from '@coreui/Input';
+import { Form, FormError, SaveButton } from '@ui/Form';
+import { Input, InputLayout } from '@ui/Input';
 import { TaskBodyEditor } from '../_common/TaskBodyEditor';
 import S from './TaskForm.module.scss';
 import { DEFAULT_TASK_BODY, DefineTask, TASK_SCRIPT, TaskStandalone } from 'api/definition';
-import { useApi } from 'api/hooks';
+import { ParametersStack } from 'components/ui/Parameters';
+import { useApi } from 'hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ParametersStack } from 'ui/Parameters';
 import { v4 as uuidv4 } from 'uuid';
 
 type TaskFormProps = {

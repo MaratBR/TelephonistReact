@@ -1,0 +1,20 @@
+.info {
+  display: flex;
+  justify-content: right;
+  padding: 0 0 var(--t-spacing-md) 0;
+  font-size: 0.9em;
+  gap: var(--t-spacing-sm);
+}
+
+.error {
+  $strips-width: 70px;
+  width: 100%;
+  height: 8px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--t-danger-t70),
+    var(--t-danger-t70) $strips-width,
+    var(--t-danger-t10) $strips-width,
+    var(--t-danger-t10) $strips-width * 2
+  );
+}

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Input, InputProps } from '@coreui/Input';
+import { Input, InputProps } from '@ui/Input';
 import { FormControl, FormControlsRegistryContext } from './context';
 import { ValueCallback } from 'core/utils/types';
 

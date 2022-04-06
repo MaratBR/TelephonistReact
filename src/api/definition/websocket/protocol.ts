@@ -1,8 +1,14 @@
 import { ValueOf } from '../_utils';
 
-export type Message<T = any, TMessageType = string> = {
-  msg_type: TMessageType;
-  data: T;
+export type OutMessage<T = any, TMessageType = string> = {
+  t: TMessageType;
+  d: T;
+};
+
+export type InMessage<T = any, TMessageType = string> = {
+  t: TMessageType;
+  d: T;
+  topic: string;
 };
 
 interface Serializable {
@@ -11,6 +17,10 @@ interface Serializable {
 interface SerializableArray
   extends Array<string | number | boolean | Date | Serializable | SerializableArray> {}
 
-export type RegistryMessage<Registry> = ValueOf<{
-  [K in keyof Registry]: Message<Registry[K], K>;
+export type OutRegistryMessage<Registry> = ValueOf<{
+  [K in keyof Registry]: OutMessage<Registry[K], K>;
+}>;
+
+export type InRegistryMessage<Registry> = ValueOf<{
+  [K in keyof Registry]: InMessage<Registry[K], K>;
 }>;

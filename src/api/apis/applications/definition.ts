@@ -1,6 +1,7 @@
 import {
   Application,
   ApplicationResponse,
+  CodeRegistrationResponse,
   CreateApplication,
   IdObject,
   Pagination,
@@ -16,4 +17,6 @@ export interface IApplicationsApi {
   create(data: CreateApplication): Promise<IdObject>;
   update(id: string, update: UpdateApplication): Promise<Application>;
   checkName(name: string): Promise<boolean>;
+  createRegistrationCode(params?: { del_code?: string }): Promise<CodeRegistrationResponse>;
+  deleteRegistrationCode(code: string): Promise<void>;
 }

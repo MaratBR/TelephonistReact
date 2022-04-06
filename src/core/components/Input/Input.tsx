@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { combineListeners } from '@coreui/utils';
+import { combineListeners } from '@ui/utils';
 import S from './Input.module.scss';
 import InputBox, { InputBoxVariant } from './InputBox';
 import classNames from 'classnames';
@@ -14,12 +14,12 @@ export type InputProps = AnyInputProps & Omit<React.InputHTMLAttributes<HTMLInpu
 
 const Input = React.forwardRef(
   (
-    { variant, isInvalid, onFocus, onBlur, ...props }: InputProps,
+    { variant, isInvalid, onFocus, onBlur, className, ...props }: InputProps,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [focus, setFocus] = useState(false);
     return (
-      <InputBox variant={variant} focused={focus} isInvalid={isInvalid}>
+      <InputBox className={className} variant={variant} focused={focus} isInvalid={isInvalid}>
         <input
           onFocus={combineListeners(onFocus, () => setFocus(true))}
           onBlur={combineListeners(onBlur, () => setFocus(false))}

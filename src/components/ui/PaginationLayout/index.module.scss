@@ -1,0 +1,30 @@
+@keyframes bg {
+  0% {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.overlay {
+  overflow: hidden;
+  &.loading {
+    position: relative;
+    &::after {
+      width: 200%;
+      animation: bg 1.5s infinite;
+      height: 100%;
+      width: 100%;
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+}

@@ -1,21 +1,25 @@
 import ApiBase from '../../ApiBase';
 import { IAuthApi } from './definition';
-import { LoginRequest, LoginResponse, ResetPassword, User } from 'api/definition';
+import { LoginRequest, LoginResponse, ResetPassword, WhoAmI } from 'api/definition';
 
 export default class AuthApi extends ApiBase implements IAuthApi {
-  authorize(data: LoginRequest): Promise<LoginResponse> {
-    return this.statusService.apiCall(this._client.post('auth/token', data));
+  getCSRFToken(): Promise<string> {
+    return this.client.get('auth/csrf').then((r) => r.data);
+  }
+
+  async authorize(data: LoginRequest): Promise<LoginResponse> {
+    return this.client.post('auth/login', data).then((r) => r.data);
   }
 
   async resetPassword(data: ResetPassword) {
-    await this.statusService.apiCall(this._client.post('auth/reset-password', data));
+    await this.client.post('auth/reset-password', data);
   }
 
-  refreshToken(): Promise<LoginResponse> {
-    return this.statusService.apiCall(this._client.post('auth/refresh'));
+  whoami(): Promise<WhoAmI> {
+    return this.client.get('auth/whoami').then((r) => r.data);
   }
 
-  getUser(): Promise<User> {
-    return this.statusService.apiCall(this._client.get('auth/user'));
+  async logout(): Promise<void> {
+    await this.client.post('auth/logout');
   }
 }

@@ -4,7 +4,7 @@ import S from './Select.module.scss';
 import { mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
 import classNames from 'classnames';
-import useOnClickOutside from 'core/hooks/useOnClickOutside';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 interface OptionProps {
   onSelect: () => void;

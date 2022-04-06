@@ -1,6 +1,6 @@
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import { ModalDialog } from '@coreui/Modal';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import { ModalDialog } from '@ui/Modal';
 import { useTranslation } from 'react-i18next';
 
 type DeleteTaskModalProps = {

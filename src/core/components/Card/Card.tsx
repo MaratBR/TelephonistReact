@@ -1,10 +1,9 @@
-import styled from '@emotion/styled';
+import S from './Card.module.scss';
 
-const Card = styled.div`
-  padding: var(--t-spacing-lg);
-  box-shadow: 0 2px var(--t-box-shadow-md) var(--t-neutral-3);
-  background-color: var(--t-paper);
-  border-radius: var(--t-radius-md);
-`;
+interface CardProps {
+  children?: React.ReactNode;
+}
 
-export default Card;
+export default function Card({ children }: CardProps) {
+  return <div className={S.card}>{children}</div>;
+}

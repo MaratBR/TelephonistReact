@@ -37,14 +37,16 @@ export interface Task {
   errors: Record<string, string>;
   body: TaskBody;
   app_id: string;
-  app_name: string;
 }
 
-export interface TaskStandalone extends Omit<Task, 'app_id' | 'app_name'> {
+export interface TaskStandalone extends Omit<Task, 'app_id'> {
   app: {
     _id: string;
     name: string;
     display_name: string;
+  };
+  stats: {
+    failed_in_24h: number;
   };
 }
 

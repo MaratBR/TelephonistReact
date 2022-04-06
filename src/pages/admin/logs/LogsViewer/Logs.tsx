@@ -1,16 +1,12 @@
 import { useMemo, useState } from 'react';
-import ButtonGroup from '@coreui/ButtonGroup';
-import { DataGrid, renderDate } from '@coreui/DataGrid';
-import { Checkbox } from '@coreui/Input';
+import ButtonGroup from '@ui/ButtonGroup';
+import { DataGrid, renderDate } from '@ui/DataGrid';
+import { Checkbox } from '@ui/Input';
 import S from './Logs.module.scss';
 import { LogRecord, LogSeverity } from 'api/definition';
 import classNames from 'classnames';
 import Padded from 'pages/Padded';
 import { useTranslation } from 'react-i18next';
-
-interface LogRecordViewProps {
-  log: LogRecord;
-}
 
 const severityClasses = {
   [LogSeverity.DEBUG]: S.debug,

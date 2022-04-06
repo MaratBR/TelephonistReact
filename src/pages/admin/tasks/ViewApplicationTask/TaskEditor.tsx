@@ -1,5 +1,5 @@
-import { Textarea } from '@coreui/Input';
-import { Parameters } from '@coreui/Parameters';
+import { Textarea } from '@ui/Input';
+import { Parameters } from '@ui/Parameters';
 import { TaskBodyEditor } from '../_common/TaskBodyEditor';
 import { UpdateTask } from 'api/definition';
 import { Control, Controller } from 'react-hook-form';

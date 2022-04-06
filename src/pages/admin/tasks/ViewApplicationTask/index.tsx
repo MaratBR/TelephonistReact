@@ -1,72 +1,58 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Breadcrumb } from '@coreui/Breadcrumb';
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import Container from '@coreui/Container';
-import ContentSection from '@coreui/ContentSection';
-import Error from '@coreui/Error';
-import PageHeader from '@coreui/PageHeader';
-import { Parameters } from '@coreui/Parameters';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@coreui/tabs';
+import { useEffect } from 'react';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import Container from '@ui/Container';
+import ContentSection from '@ui/ContentSection';
+import ErrorView from '@ui/Error';
+import PageHeader from '@ui/PageHeader';
+import { Parameters } from '@ui/Parameters';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@ui/tabs';
 import { TaskBodyViewer } from '../_common/TaskBodyEditor';
 import TaskEditor from './TaskEditor';
+import TaskSequences from './TaskSequences';
 import TaskTriggers from './TaskTriggersEditor';
 import TaskTriggersViewer from './TaskTriggersViewer';
 import { mdiCancel, mdiContentSave } from '@mdi/js';
 import Icon from '@mdi/react';
 import { UpdateTask } from 'api/definition';
-import { useApi } from 'api/hooks';
-import { useRefreshableAsyncValue } from 'core/hooks';
+import { useApi } from 'hooks';
 import ContentLoader from 'react-content-loader';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useMutation, useQuery } from 'react-query';
+import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 
 export default function ViewApplicationTask() {
   const { t } = useTranslation();
-  const api = useApi();
   const { appName, taskName } = useParams();
-  const [search] = useSearchParams();
-  const [loading, setLoading] = useState(true);
-  const isEditing = search.get('edit') === '1';
-  const navigate = useNavigate();
+  const { tasks } = useApi();
 
-  const [isSaving, setSaving] = useState(false);
-  const [error, setError] = useState();
+  const [search, setSearch] = useSearchParams();
   const {
-    value,
-    setValue,
+    data: task,
+    status,
     error: fetchError,
-  } = useRefreshableAsyncValue(() => api.tasks.getByName(appName, taskName));
-
-  const { control, getValues, reset } = useForm<UpdateTask>({
-    defaultValues: { description: 'qweqweqw' },
-  });
-
-  const save = useCallback(async () => {
-    if (isSaving) return;
-    setSaving(true);
-    try {
-      const newTask = await api.tasks.update(value._id, getValues());
-      logging.warn('saved new triggers, setValue(...)', newTask);
-      reset(newTask);
-      setValue(newTask);
-      navigate('?');
-    } catch (e) {
-      setError(e);
-    } finally {
-      setSaving(false);
-    }
-  }, [isSaving, getValues, value]);
+    refetch,
+  } = useQuery(['task', appName, taskName], () => tasks.getByName(appName, taskName));
+  const isEditing = search.get('edit') === '1';
+  const { control, getValues, reset } = useForm<UpdateTask>();
 
   useEffect(() => {
-    setLoading(true);
-    api.tasks
-      .getByName(appName, taskName)
-      .then(reset)
-      .catch(setError)
-      .finally(() => setLoading(false));
-  }, [appName, taskName]);
+    reset(task);
+  }, [task]);
+
+  const save = useMutation(
+    async () => {
+      await tasks.update(task._id, getValues());
+    },
+    {
+      onSuccess: () => {
+        setSearch({ edit: '' });
+        refetch();
+      },
+    }
+  );
 
   const breadcrumb = (
     <Breadcrumb>
@@ -76,7 +62,7 @@ export default function ViewApplicationTask() {
     </Breadcrumb>
   );
 
-  if (loading) {
+  if (status === 'loading' || (isEditing && Object.keys(getValues()).length === 0)) {
     return (
       <>
         <PageHeader
@@ -102,7 +88,7 @@ export default function ViewApplicationTask() {
           subtitle={t('loading')}
         />
         <Container>
-          <Error error={fetchError} />
+          <ErrorView error={fetchError} />
         </Container>
       </>
     );
@@ -113,7 +99,7 @@ export default function ViewApplicationTask() {
   if (isEditing) {
     content = (
       <>
-        <Error error={error} />
+        <ErrorView error={save.error} />
         <ContentSection padded header={t('generalInformation')}>
           <TaskEditor control={control} />
         </ContentSection>
@@ -126,22 +112,26 @@ export default function ViewApplicationTask() {
     content = (
       <TabPanels>
         <TabPanel>
-          <Error error={error} />
+          <ErrorView error={fetchError} />
           <ContentSection padded header={t('generalInformation')}>
             <Parameters
               parameters={{
-                [t('description')]: value.description,
-                [t('taskBody')]: <TaskBodyViewer body={value.body} />,
-                [t('taskType')]: value.body.type,
+                [t('description')]: task.description,
+                [t('taskBody')]: <TaskBodyViewer body={task.body} />,
+                [t('taskType')]: task.body.type,
               }}
             />
           </ContentSection>
           <ContentSection padded header={t('triggers')}>
-            <TaskTriggersViewer triggers={value?.triggers ?? []} />
+            <TaskTriggersViewer triggers={task?.triggers ?? []} />
           </ContentSection>
         </TabPanel>
 
-        <TabPanel tabID="events">Events</TabPanel>
+        <TabPanel tabID="sequences">
+          <ContentSection padded>
+            {task ? <TaskSequences taskID={task._id} /> : undefined}
+          </ContentSection>
+        </TabPanel>
       </TabPanels>
     );
   }
@@ -153,7 +143,7 @@ export default function ViewApplicationTask() {
         bottom={
           <TabList>
             <Tab>{t('generalInformation')}</Tab>
-            <Tab tabID="events">{t('events')}</Tab>
+            <Tab tabID="sequences">{t('sequences')}</Tab>
           </TabList>
         }
         actions={
@@ -161,9 +151,9 @@ export default function ViewApplicationTask() {
             {isEditing ? (
               [
                 <Button
-                  loading={isSaving}
-                  disabled={isSaving}
-                  onClick={save}
+                  loading={save.isLoading}
+                  disabled={save.isLoading}
+                  onClick={() => save.mutate()}
                   color="success"
                   left={<Icon path={mdiContentSave} size={0.9} />}
                   key={0}
@@ -182,7 +172,7 @@ export default function ViewApplicationTask() {
           </ButtonGroup>
         }
         backAction={`/admin/applications/${appName}`}
-        subtitle={value._id}
+        subtitle={task._id}
         title={`${appName}/${taskName}`}
       />
 

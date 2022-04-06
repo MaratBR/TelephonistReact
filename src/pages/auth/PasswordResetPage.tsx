@@ -1,53 +1,78 @@
-import { FormEvent, useState } from 'react';
-import { Alert } from '@coreui/Alert';
-import { Button } from '@coreui/Button';
-import { ContentBox } from '@coreui/ContentBox';
-import { Input } from '@coreui/Input';
-import { SerenityLayout } from '@coreui/Layout';
-import { Stack } from '@coreui/Stack';
-import { Heading } from '@coreui/Text';
+import { Button } from '@ui/Button';
+import { ContentBox } from '@ui/ContentBox';
+import { Input } from '@ui/Input';
+import { SerenityLayout } from '@ui/Layout';
+import { Stack } from '@ui/Stack';
+import { Heading } from '@ui/Text';
 import TimeCountdown from 'core/components/TimeCountdown';
-import { useNextParam, useProperPasswordState } from 'core/hooks';
+import { useApi } from 'hooks';
+import useNextParam from 'hooks/useNextParam';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
 import { Navigate } from 'react-router-dom';
-import { useGlobalState } from 'state/hooks';
+import { useAppSelector } from 'store';
+
+interface FormData {
+  password: string;
+  password2: string;
+}
 
 export default function PasswordResetPage() {
   const { next, redirectWithNext } = useNextParam();
   const { t } = useTranslation();
-  const { auth } = useGlobalState();
-  const pwd = useProperPasswordState();
-  const [pwd2, setPwd2] = useState('');
+  const state = useAppSelector((s) => s.auth);
+  const { auth: api } = useApi();
+  const { register, getValues } = useForm<FormData>({
+    defaultValues: { password2: '', password: '' },
+  });
 
-  if (auth.passwordResetExpiresAt < Date.now()) {
-    toast.error(t('pwdreset.tokenExpired'));
+  if (state.passwordReset) {
+    if (state.passwordReset.deadline < Date.now()) {
+      toast.error(t('pwdreset.tokenExpired'));
+      return (
+        <Navigate
+          to={{
+            pathname: '/login',
+            search: `?from=pwdreset.tokenExpired${next ? `&next=${next}` : ''}`,
+          }}
+        />
+      );
+    }
+  } else {
+    toast.error(t('pwdreset.noToken'));
     return (
       <Navigate
         to={{
           pathname: '/login',
-          search: `?from=pwdreset.tokenExpired${next ? `&next=${next}` : ''}`,
+          search: `?from=pwdreset.noToken${next ? `&next=${next}` : ''}`,
         }}
       />
     );
   }
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const submit = useMutation(
+    async () => {
+      const { password, password2 } = getValues();
 
-    if (pwd.value !== pwd2) {
-      return;
-    }
+      if (password !== password2) throw new Error(t('pwdreset.unmatchingPasswords'));
 
-    toast.loading(t('pwdreset.loading'), { id: 'login' });
-    try {
-      await auth.resetPassword(pwd.value);
-      toast.success(t('pwdreset.success'), { id: 'login' });
-      redirectWithNext('/login?from=pwdreset.success');
-    } catch (exc) {
-      toast.error(exc.toString(), { id: 'login' });
+      await api.resetPassword({
+        new_password: password,
+        password_reset_token: state.passwordReset.token,
+      });
+    },
+    {
+      onSuccess: () => {
+        toast.success(t('pwdreset.success'), { id: 'login' });
+        redirectWithNext('/login?from=pwdreset.success');
+      },
+      onError: (error) => {
+        toast.error(error.toString(), { id: 'login' });
+      },
     }
-  }
+  );
 
   return (
     <SerenityLayout>
@@ -55,26 +80,29 @@ export default function PasswordResetPage() {
         <Heading as="h3">{t('pwdreset.header')}</Heading>
         <p>{t('pwdreset.description')}</p>
         <p>
-          {t('pwdreset.remaining')}: <TimeCountdown to={auth.passwordResetExpiresAt} />
+          {t('pwdreset.remaining')}: <TimeCountdown to={state.passwordReset.deadline} />
         </p>
 
-        <form onSubmit={onSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submit.mutate();
+          }}
+        >
           <Stack spacing="md">
             <Input
               variant="flushed"
               type="password"
               placeholder={t('newPwd')}
-              value={pwd.value}
-              onChange={(e) => pwd.setValue(e.target.value)}
+              {...register('password', { required: true })}
             />
             <Input
               variant="flushed"
               type="password"
               placeholder={t('repeatNewPwd')}
-              value={pwd2}
-              onChange={(e) => setPwd2(e.target.value)}
+              {...register('password2')}
             />
-            {pwd2 !== pwd.value ? <Alert color="danger">Passwords do not match!</Alert> : undefined}
+
             <Button type="submit">{t('setNewPwd')}</Button>
           </Stack>
         </form>

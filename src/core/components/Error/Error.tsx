@@ -1,14 +1,16 @@
 import S from './Error.module.scss';
+import { mdiAlertCircleOutline } from '@mdi/js';
+import Icon from '@mdi/react';
 import { useTranslation } from 'react-i18next';
 
 interface ErrorProps {
   error: any;
 }
 
-export default function Error({ error }: ErrorProps) {
+export default function ErrorView({ error }: ErrorProps) {
   const { t } = useTranslation();
 
-  if (typeof error === 'undefined') return null;
+  if (typeof error === 'undefined' || error === null) return null;
 
   let header: React.ReactNode;
   let body: React.ReactNode;
@@ -35,8 +37,11 @@ export default function Error({ error }: ErrorProps) {
   }
   return (
     <div className={S.error}>
-      <span className={S.header}>{header}</span>
-      {body}
+      <Icon color="var(--t-danger)" size={2} path={mdiAlertCircleOutline} />
+      <div>
+        <span className={S.header}>{header}</span>
+        {body}
+      </div>
     </div>
   );
 }

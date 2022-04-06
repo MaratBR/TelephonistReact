@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import Error from '@coreui/Error';
-import { ModalDialog } from '@coreui/Modal';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import ErrorView from '@ui/Error';
+import { ModalDialog } from '@ui/Modal';
 import { Task } from 'api/definition';
-import { useApi } from 'api/hooks';
+import { useApi } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
 
 interface DeleteTaskDialogProps {
   task: Task;
@@ -15,33 +15,25 @@ interface DeleteTaskDialogProps {
 
 export default function DeleteTaskDialog({ task, onClose, onDeleted }: DeleteTaskDialogProps) {
   const { tasks } = useApi();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
   const { t } = useTranslation();
   const name = task.qualified_name;
 
-  const deleteTask = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      await tasks.delete(task._id);
-      if (error) setError(undefined);
-      if (onDeleted) onDeleted();
-    } catch (exc) {
-      setError(exc);
-    } finally {
-      setLoading(false);
-    }
-  }, [task]);
+  const deleteTask = useMutation(async () => tasks.delete(task._id), {
+    onSuccess: () => onDeleted(),
+  });
 
   return (
     <ModalDialog
       footer={
         <ButtonGroup>
-          <Button disabled={loading} color="primary" onClick={onClose}>
+          <Button disabled={deleteTask.isLoading} color="primary" onClick={onClose}>
             {t('noCancel')}
           </Button>
-          <Button disabled={loading} loading={loading} onClick={deleteTask}>
+          <Button
+            disabled={deleteTask.isLoading}
+            loading={deleteTask.isLoading}
+            onClick={() => deleteTask.mutate()}
+          >
             {t('yesDelete')}
           </Button>
         </ButtonGroup>
@@ -54,7 +46,7 @@ export default function DeleteTaskDialog({ task, onClose, onDeleted }: DeleteTas
           Do you want to delete the task <b>{{ name }}</b>?
         </Trans>
       </p>
-      <Error error={error} />
+      <ErrorView error={deleteTask.error} />
     </ModalDialog>
   );
 }

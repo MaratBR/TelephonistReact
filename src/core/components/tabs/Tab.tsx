@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { combineListeners } from '@coreui/utils';
+import { combineListeners } from '@ui/utils';
 import S from './Tab.module.scss';
 import { isReactElement } from './helpers';
 import classNames from 'classnames';
@@ -25,8 +25,7 @@ export default function Tab({
 
   useEffect(() => {
     if (ref.current) {
-      setWidth(`${ref.current.clientWidth + 6}px`);
-      console.log('set Width');
+      setWidth(`${ref.current.clientWidth + 12}px`);
     }
   }, [props.children, ref.current]);
 

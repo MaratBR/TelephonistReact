@@ -1,11 +1,15 @@
 .error {
   background-color: var(--t-danger-50);
-  padding: var(--t-spacing-md);
-  border: 1px solid var(--t-danger);
+  padding: 1.5rem;
   margin: var(--t-spacing-sm);
+  border-radius: 0.5em;
+  display: flex;
+  gap: 1rem;
 
   .header {
-    font-weight: bold;
+    font-family: var(--t-font-headers);
+    display: block;
+    font-weight: 500;
     color: var(--t-danger);
   }
 }

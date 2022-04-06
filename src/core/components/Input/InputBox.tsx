@@ -16,11 +16,16 @@ type InputBoxProps = {
   isInvalid?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
-const InputBox = forwardRef(({ variant, focused, ...props }: InputBoxProps) => (
+const InputBox = forwardRef(({ variant, className, focused, ...props }: InputBoxProps) => (
   <div
-    className={classNames(S.box, variants[variant ?? 'default'], {
-      [S.focused]: focused,
-    })}
+    className={classNames(
+      S.box,
+      variants[variant ?? 'default'],
+      {
+        [S.focused]: focused,
+      },
+      className
+    )}
     {...props}
   />
 ));

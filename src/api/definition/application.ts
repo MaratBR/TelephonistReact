@@ -32,3 +32,9 @@ export interface UpdateApplication {
   disabled?: boolean;
   tags?: string[];
 }
+
+export interface CodeRegistrationResponse {
+  code: string;
+  expires_at: string;
+  ttl: number;
+}

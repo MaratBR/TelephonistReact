@@ -6,6 +6,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "explorer.autoReveal": true,
   "search.exclude": {
     "**/node_modules": true,
     "**/bower_components": true,

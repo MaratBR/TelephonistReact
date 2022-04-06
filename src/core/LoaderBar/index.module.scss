@@ -1,0 +1,28 @@
+.bar {
+  background-color: var(--t-primary-t20);
+  height: 0.35rem;
+  width: 100%;
+  overflow: hidden;
+  .rect {
+    height: 100%;
+    background-color: var(--t-primary);
+  }
+}
+
+.indetermined {
+  .rect {
+    width: 25%;
+    @keyframes bar {
+      0% {
+        transform: translateX(-100%) scaleX(1);
+      }
+      50% {
+        transform: translateX(150%) scaleX(2);
+      }
+      100% {
+        transform: translateX(400%) scaleX(1);
+      }
+    }
+    animation: bar 1s linear infinite;
+  }
+}

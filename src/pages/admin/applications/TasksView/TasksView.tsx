@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import { Modal } from '@coreui/Modal';
-import { combineListeners } from '@coreui/utils';
-import { Shruggie } from '../../../../ui/misc';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import { Modal } from '@ui/Modal';
+import { combineListeners } from '@ui/utils';
+import { Shruggie } from '../../../../components/ui/misc';
 import NewTaskModalDialog from '../../tasks/NewTask/NewTaskModalDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 import S from './TasksView.module.scss';
@@ -11,7 +11,7 @@ import { mdiExclamationThick, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Task, TaskStandalone } from 'api/definition';
 import { DataGrid, renderBoolean } from 'core/components/DataGrid';
-import { useModal } from 'core/hooks';
+import useModal from 'hooks/useModal';
 import Padded from 'pages/Padded';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
@@ -85,7 +85,7 @@ export default function ApplicationTasks({
               const [appName, taskName] = v.qualified_name.split('/');
               return (
                 <div className={S.name}>
-                  <NavLink to={`/admin/tasks/${v.app_name}/${v.name}`}>
+                  <NavLink to={`/admin/tasks/${v.qualified_name}`}>
                     <h2>
                       <span>{appName}</span>/<span>{taskName}</span>
                     </h2>
@@ -94,6 +94,12 @@ export default function ApplicationTasks({
                 </div>
               );
             },
+          },
+          {
+            key: '__body_type',
+            custom: true,
+            render: (v) => <code>{v.body.type}</code>,
+            title: t('type'),
           },
           {
             key: 'disabled',

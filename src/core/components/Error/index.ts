@@ -1,3 +1,3 @@
-import Error from './Error';
+import ErrorView from './Error';
 
-export default Error;
+export default ErrorView;

@@ -1,9 +1,9 @@
-import { LoginRequest, LoginResponse, ResetPassword, User } from 'api/definition';
+import { LoginRequest, LoginResponse, ResetPassword, WhoAmI } from 'api/definition';
 
-export const AUTH_API_DI_KEY = Symbol.for('Auth API');
 export interface IAuthApi {
   authorize(data: LoginRequest): Promise<LoginResponse>;
   resetPassword(data: ResetPassword): Promise<void>;
-  getUser(): Promise<User>;
-  refreshToken(): Promise<LoginResponse>;
+  whoami(): Promise<WhoAmI>;
+  getCSRFToken(): Promise<string>;
+  logout(): Promise<void>;
 }

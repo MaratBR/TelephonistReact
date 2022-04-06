@@ -1,62 +1,65 @@
 import React from 'react';
-import { Alert } from '@coreui/Alert';
-import { Button } from '@coreui/Button';
-import { ContentBox } from '@coreui/ContentBox';
-import { Input, InputLayout } from '@coreui/Input';
-import { SerenityLayout } from '@coreui/Layout';
-import { Logo } from '@coreui/brand';
-import { useRequiredStringState, validateAnd } from 'core/hooks';
-import { observer } from 'mobx-react';
+import { Alert } from '@ui/Alert';
+import { Button } from '@ui/Button';
+import { ContentBox } from '@ui/ContentBox';
+import { Input, InputLayout } from '@ui/Input';
+import { SerenityLayout } from '@ui/Layout';
+import { Logo } from '@ui/brand';
+import { LoginRequest, isPasswordReset } from 'api/definition';
+import { useApi } from 'hooks';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { useGlobalState } from 'state/hooks';
+import { handleLoginResponse, logout } from 'reducers/authReducer';
+import { useAppDispatch, useAppSelector } from 'store';
 
 function LoginPage() {
-  const loginVal = useRequiredStringState();
-  const passwordVal = useRequiredStringState();
+  const {
+    register,
+    getValues,
+    formState: { errors },
+  } = useForm<LoginRequest>();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { auth } = useGlobalState();
+  const { auth: api } = useApi();
+  const isLoggedIn = useAppSelector((s) => s.auth.isLoggedIn);
+  const dispatch = useAppDispatch();
 
   let formBody: React.ReactNode;
 
-  const login = async () => {
-    toast.loading(t('login.progress'), { id: 'login' });
-    try {
-      await auth.login({
-        login: loginVal.value,
-        password: passwordVal.value,
-      });
-    } catch (e) {
+  const login = useMutation(() => api.authorize(getValues()), {
+    retry: false,
+    onMutate: () => {
+      toast.loading(t('login.progress'), { id: 'login' });
+    },
+    onError: (err) => {
       toast.error(t('login.error'), { id: 'login' });
-      return;
-    }
-
-    if (!auth.isPasswordResetRequired) {
-      toast.success(t('login.welcome'), { id: 'login' });
-      if (params.has('next')) {
-        navigate(params.get('next'));
+      toast.error(err.toString());
+    },
+    onSuccess: (data) => {
+      dispatch(handleLoginResponse(data));
+      if (isPasswordReset(data)) {
+        navigate(`/login/password-reset`);
       } else {
-        navigate('/');
+        if (params.has('next')) {
+          navigate(params.get('next'));
+        } else {
+          navigate('/');
+        }
+        toast.success(t('login.welcome'), { id: 'login' });
       }
-    } else {
-      toast.remove('login');
-      let query = '';
-      if (params.has('next')) {
-        query = `next=${encodeURIComponent(params.get('next'))}`;
-      }
-      navigate(`/login/password-reset?${query}`);
-    }
-  };
+    },
+  });
 
-  if (auth.isAuthorized) {
+  if (isLoggedIn) {
     formBody = (
       <>
         <Alert>{t('alreadyloggedin')}</Alert>
-        <Button onClick={() => auth.logout()}>{t('logout')}</Button>
+        <Button onClick={() => dispatch(logout({}))}>{t('logout')}</Button>
       </>
     );
   } else {
@@ -65,28 +68,22 @@ function LoginPage() {
         <InputLayout variant="top" id="username" header={t('username')}>
           <Input
             id="username"
-            isInvalid={loginVal.isError}
-            disabled={auth.isLoading}
-            value={loginVal.value}
-            onChange={(e) => loginVal.setValue(e.target.value)}
+            isInvalid={!!errors.username}
+            disabled={login.isLoading}
             placeholder={t('username')}
+            {...register('username')}
           />
         </InputLayout>
         <InputLayout variant="top" id="password" header={t('password')}>
           <Input
-            isInvalid={passwordVal.isError}
+            isInvalid={!!errors.password}
             type="password"
-            disabled={auth.isLoading}
-            value={passwordVal.value}
-            onChange={(e) => passwordVal.setValue(e.target.value)}
+            disabled={login.isLoading}
+            {...register('password')}
             placeholder={t('password')}
           />
         </InputLayout>
-        <Button
-          loading={auth.isLoading}
-          color="primary"
-          onClick={validateAnd([loginVal, passwordVal], login)}
-        >
+        <Button loading={login.isLoading} color="primary" onClick={() => login.mutate()}>
           {t('login._')}
         </Button>
       </>
@@ -101,4 +98,4 @@ function LoginPage() {
   );
 }
 
-export default observer(LoginPage);
+export default LoginPage;

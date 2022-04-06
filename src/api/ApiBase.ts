@@ -1,13 +1,23 @@
-import IApiStatusService from './IApiStatusService';
+import ApiError from './ApiError';
 import { AxiosInstance } from 'axios';
+import { TFunction } from 'i18next';
+
+export interface ApiBaseOptions {
+  client: AxiosInstance;
+  t: TFunction;
+}
 
 export default abstract class ApiBase {
-  protected readonly _client: AxiosInstance;
+  readonly client: AxiosInstance;
 
-  readonly statusService: IApiStatusService;
+  protected readonly t: TFunction;
 
-  constructor(client: AxiosInstance, statusService: IApiStatusService) {
-    this._client = client;
-    this.statusService = statusService;
+  constructor({ t, client }: ApiBaseOptions) {
+    this.client = client;
+    this.t = t;
+  }
+
+  protected wrapError(err: any) {
+    return new ApiError(err, this.t);
   }
 }

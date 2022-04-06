@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef, useState } from 'react';
-import { combineListeners } from '@coreui/utils';
+import { combineListeners } from '@ui/utils';
 import InputBox, { InputBoxVariant } from './InputBox';
 import S from './Textarea.module.scss';
 import classNames from 'classnames';

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Input, InputLayout, Textarea } from '@coreui/Input';
-import TagInput from '@coreui/TagInput';
+import { Input, InputLayout, Textarea } from '@ui/Input';
+import TagInput from '@ui/TagInput';
 import { UpdateApplication } from 'api/definition';
+import { ParametersStack } from 'components/ui/Parameters';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ParametersStack } from 'ui/Parameters';
 
 type EditApplicationProps = {
   control: Control<UpdateApplication>;

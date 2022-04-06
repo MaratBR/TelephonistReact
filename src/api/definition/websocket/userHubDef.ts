@@ -28,6 +28,10 @@ export interface SequencesMessage {
   update: Partial<Omit<Sequence, '_id'>>;
 }
 
+export interface SyncState {
+  topics: string[];
+}
+
 export interface UserHubIncomingMessages {
   app: AppUpdateMessage;
   connection: ConnectionInfo;
@@ -36,12 +40,20 @@ export interface UserHubIncomingMessages {
   new_event: Event;
   sequence_meta: SequenceMetaMessage;
   sequences: SequencesMessage;
+  sync: SyncState;
+  cr_complete: {
+    cr: string;
+    app_id: string;
+    app_name: string;
+  };
 }
 
 export interface UserHubOutgoingMessages {
   sub: string | string[];
   unsub: string | string[];
   unsuball: void;
+  set_topics: string[];
+  cs: any;
 }
 
 export const CG = {

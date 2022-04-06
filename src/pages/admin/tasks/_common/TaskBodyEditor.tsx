@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CodeEditor, CodeViewer } from '@coreui/Editor';
+import { CodeEditor, CodeViewer } from '@ui/Editor';
 import S from './TaskBodyEditor.module.scss';
 import TaskTypeSelect from './TaskTypeSelect';
 import { DEFAULT_TASK_BODY, TASK_ARBITRARY, TaskBody } from 'api/definition';

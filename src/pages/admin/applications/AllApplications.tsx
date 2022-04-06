@@ -1,26 +1,32 @@
-import { useEffect, useState } from 'react';
-import { Breadcrumb } from '@coreui/Breadcrumb';
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import Container from '@coreui/Container';
-import ContentSection from '@coreui/ContentSection';
-import { DataGrid, DataGridColumn, renderBoolean, renderObjectID } from '@coreui/DataGrid';
-import PageHeader from '@coreui/PageHeader';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import Container from '@ui/Container';
+import ContentSection from '@ui/ContentSection';
+import { DataGrid, DataGridColumn, renderBoolean, renderObjectID } from '@ui/DataGrid';
+import PageHeader from '@ui/PageHeader';
 import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Application, Pagination } from 'api/definition';
-import { useApi } from 'api/hooks';
+import { Application } from 'api/definition';
+import PaginationLayout from 'components/ui/PaginationLayout';
+import { useApi } from 'hooks';
+import { usePageParam } from 'hooks/useSearchParam';
 import Padded from 'pages/Padded';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { NavLink } from 'react-router-dom';
+import { ellipsizeFn } from 'utils';
 
 export default function AllApplications() {
-  const [pagination, setPagination] = useState<Pagination<Application>>();
-  const { applications: applicationsApi } = useApi();
+  const [page, setPage] = usePageParam();
+  const { applications: api } = useApi();
 
-  useEffect(() => {
-    applicationsApi.getAll({}).then(setPagination);
-  }, []);
+  const {
+    data: pagination,
+    error,
+    status,
+    isFetching,
+  } = useQuery(['allApplications', page], () => api.getAll({ page }), { keepPreviousData: true });
 
   const { t } = useTranslation();
 
@@ -36,15 +42,23 @@ export default function AllApplications() {
       render: (name) => <NavLink to={`/admin/applications/${name}`}>{name}</NavLink>,
     },
     { key: 'disabled', title: t('disabled'), render: renderBoolean },
-    { key: 'description', title: t('description') },
+    {
+      key: 'description',
+      title: t('description'),
+      render: ellipsizeFn(20),
+    },
     {
       custom: true,
-      render: () => (
-        <span>
-          <Button size="sm" left={<Icon size={0.9} path={mdiPencil} />}>
+      render: ({ name }) => (
+        <ButtonGroup>
+          <Button
+            to={`/admin/applications/${name}?edit=1`}
+            size="sm"
+            left={<Icon size={0.9} path={mdiPencil} />}
+          >
             {t('edit')}
           </Button>
-        </span>
+        </ButtonGroup>
       ),
       key: 'buttons',
       title: '',
@@ -68,7 +82,7 @@ export default function AllApplications() {
             <ButtonGroup>
               <Button
                 color="primary"
-                to="/applications/new"
+                to="/admin/applications/new"
                 left={<Icon size={0.9} path={mdiPlus} />}
               >
                 {t('createNew')}
@@ -79,12 +93,19 @@ export default function AllApplications() {
             </ButtonGroup>
           </Padded>
 
-          <DataGrid
-            keyFactory={(a) => a._id}
-            selectable
-            data={pagination?.result ?? []}
-            columns={columns}
-          />
+          <PaginationLayout
+            loading={isFetching}
+            onSelect={setPage}
+            selectedPage={page}
+            totalPages={pagination?.pages_total}
+          >
+            <DataGrid
+              keyFactory={(a) => a._id}
+              selectable
+              data={pagination ? pagination.result : []}
+              columns={columns}
+            />
+          </PaginationLayout>
         </ContentSection>
       </Container>
     </>

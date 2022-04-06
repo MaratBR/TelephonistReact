@@ -1,27 +1,26 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Breadcrumb } from '@coreui/Breadcrumb';
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import Container from '@coreui/Container';
-import ContentSection from '@coreui/ContentSection';
-import ErrorView from '@coreui/Error';
-import LoadingSpinner from '@coreui/LoadingSpinner';
-import PageHeader from '@coreui/PageHeader';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@coreui/tabs';
+import { useCallback, useEffect } from 'react';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import Container from '@ui/Container';
+import ContentSection from '@ui/ContentSection';
+import ErrorView from '@ui/Error';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import PageHeader from '@ui/PageHeader';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@ui/tabs';
 import ApplicationEvents from './ApplicationEvents';
 import EditApplication from './EditApplication';
 import ViewApplicationInfo from './ViewApplicationInfo';
+import ViewApplicationSequences from './ViewApplicationSequences';
 import { mdiCancel, mdiContentSave, mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
-import { TaskStandalone, UpdateApplication } from 'api/definition';
-import { useApi } from 'api/hooks';
-import { useRefreshableAsyncValue } from 'core/hooks';
-import { observer } from 'mobx-react';
+import { ApplicationResponse, TaskStandalone, UpdateApplication } from 'api/definition';
+import { useApi } from 'hooks';
 import ConnectionsView from 'pages/admin/applications/ConnectionsView';
 import ApplicationTasks from 'pages/admin/applications/TasksView/TasksView';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 
 function ViewApplication() {
@@ -30,16 +29,14 @@ function ViewApplication() {
   const [search] = useSearchParams();
   const isEditing = search.get('edit') === '1';
   const { applications } = useApi();
-  const [isSaving, setSaving] = useState(false);
-  const [error, setError] = useState();
-  const {
-    value,
-    isLoading,
-    error: fetchError,
-    setValue,
-    refresh,
-  } = useRefreshableAsyncValue(() => applications.get(id), [id]);
+
+  const queryClient = useQueryClient();
+  const { data: value, error, status } = useQuery(['application', id], () => applications.get(id));
   const { reset, control, getValues } = useForm<UpdateApplication>();
+
+  const save = useMutation(async () => {
+    await applications.update(value.app._id, getValues());
+  });
 
   useEffect(() => {
     if (!value) return;
@@ -54,11 +51,11 @@ function ViewApplication() {
 
   const onTaskDeleted = useCallback(
     (taskID: string) => {
-      refresh(true);
-      setValue({
-        ...value,
-        tasks: value.tasks.filter((task) => task._id !== taskID),
-      });
+      queryClient.setQueryData<ApplicationResponse>(['application', id], (response) => ({
+        ...response,
+        tasks: response.tasks.filter((task) => task._id !== taskID),
+      }));
+      queryClient.invalidateQueries(['application', id]);
     },
     [value]
   );
@@ -66,45 +63,29 @@ function ViewApplication() {
   const onTaskAdded = useCallback(
     (task: TaskStandalone) => {
       // do optimistic update for now
-      refresh(true);
-      setValue({
-        ...value,
+      queryClient.setQueryData<ApplicationResponse>(['application', id], (response) => ({
+        ...response,
         tasks: [
-          ...value.tasks,
+          ...response.tasks,
           {
             ...task,
             app_id: task.app._id,
-            app_name: task.app.name,
           },
         ],
-      });
+      }));
+      queryClient.invalidateQueries(['application', id]);
     },
     [value]
   );
 
-  const save = useCallback(async () => {
-    if (!value) return;
-    setSaving(true);
-    try {
-      const app = await applications.update(value.app._id, getValues());
-      reset(app);
-      toast.success(t('saved'));
-      setError(undefined);
-    } catch (e) {
-      setError(e);
-    } finally {
-      setSaving(false);
-    }
-  }, [getValues, value]);
-
-  const appName = value ? value.app.display_name : id;
+  const appName = value ? value.app.display_name || value.app.name : id;
   const altName = value ? value.app.name : '';
 
   let content: React.ReactNode;
 
-  if (fetchError) {
-    content = <ErrorView error={fetchError} />;
-  } else if (isLoading) {
+  if (status === 'error') {
+    content = <ErrorView error={error} />;
+  } else if (status === 'loading') {
     content = <LoadingSpinner size={2} />;
   } else if (isEditing) {
     content = (
@@ -142,6 +123,11 @@ function ViewApplication() {
             <ApplicationEvents maxEvents={100} appID={value.app._id} />
           </ContentSection>
         </TabPanel>
+        <TabPanel>
+          <ContentSection padded>
+            <ViewApplicationSequences appID={value.app._id} />
+          </ContentSection>
+        </TabPanel>
       </TabPanels>
     );
   }
@@ -159,12 +145,13 @@ function ViewApplication() {
         title={appName}
         subtitle={altName}
         bottom={
-          isLoading ? undefined : (
+          status !== 'success' ? undefined : (
             <TabList>
               <Tab>{t('general')}</Tab>
               <Tab>{t('tasks')}</Tab>
               <Tab>{t('connections')}</Tab>
               <Tab>{t('events')}</Tab>
+              <Tab>{t('sequences')}</Tab>
             </TabList>
           )
         }
@@ -172,9 +159,9 @@ function ViewApplication() {
           isEditing ? (
             <ButtonGroup>
               <Button
-                onClick={save}
-                loading={isSaving}
-                disabled={isSaving}
+                onClick={() => save.mutate()}
+                loading={save.isLoading}
+                disabled={save.isLoading}
                 left={<Icon size={1} path={mdiContentSave} />}
                 color="success"
               >
@@ -200,4 +187,4 @@ function ViewApplication() {
   );
 }
 
-export default observer(ViewApplication);
+export default ViewApplication;

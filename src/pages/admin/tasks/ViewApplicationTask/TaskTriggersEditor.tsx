@@ -1,13 +1,13 @@
-import { Button } from '@coreui/Button';
-import ButtonGroup from '@coreui/ButtonGroup';
-import { Input, Select } from '@coreui/Input';
-import Table from '@coreui/Table';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
+import { Input, Select } from '@ui/Input';
+import Table from '@ui/Table';
 import { mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { DEFAULT_TRIGGER_BODY, TRIGGER_EVENT, UpdateTask } from 'api/definition';
+import { Shruggie } from 'components/ui/misc';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Shruggie } from 'ui/misc';
 
 type TaskTriggersProps = {
   control: Control<UpdateTask>;

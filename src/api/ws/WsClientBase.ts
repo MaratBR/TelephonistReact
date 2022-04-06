@@ -3,19 +3,36 @@ type ReconnectStrategy = (attempt: number) => number;
 const defaultReconnectStrategy: ReconnectStrategy = (attempt) =>
   1000 * ([1, 5, 5, 10, 10, 10, 20, 20, 30, 30][attempt - 1] ?? 30);
 
+export interface WSClientState {
+  isEnabled: boolean;
+  state: 'connected' | 'disconnected' | 'connecting' | 'reconnecting';
+}
+
 export type WSOptions = {
   reconnectStrategy?: (attempt: number) => number;
   wsTicketFactory?: () => Promise<string>;
   path: string;
   reconnect?: boolean;
+  onStateChanged?: (state: WSClientState) => void;
 };
+
+function validateWebsocketPath(path: string) {
+  const url = new URL(window.location.origin + path);
+  if (url.protocol === 'https') {
+    url.protocol = 'wss';
+  } else {
+    url.protocol = 'ws';
+  }
+  return url.toString();
+}
 
 export default abstract class WSClientBase {
   protected readonly options: WSOptions;
 
-  isConnected: boolean = false;
-
-  isActivated: boolean = false;
+  state: WSClientState = {
+    state: 'disconnected',
+    isEnabled: false,
+  };
 
   protected websocket: WebSocket | null = null;
 
@@ -25,9 +42,9 @@ export default abstract class WSClientBase {
 
   constructor(options: WSOptions) {
     this.options = options;
-    this._onOpen = this._onOpen.bind(this);
-    this._onClose = this._onClose.bind(this);
-    this.onMessage = this.onMessage.bind(this);
+    this.onOpen = this.onOpen.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.onWebsocketMessage = this.onWebsocketMessage.bind(this);
     this.onError = this.onError.bind(this);
   }
 
@@ -44,20 +61,21 @@ export default abstract class WSClientBase {
 
   async start() {
     if (this.websocket) return;
-    this.isActivated = true;
+    this._updateState({ state: 'connecting', isEnabled: true });
     this._clearReconnection();
 
     const query = await this.modifyQuery({});
+    const url = validateWebsocketPath(this.options.path);
     this.websocket = new WebSocket(
-      `${this.options.path}?${Object.entries(query)
+      `${url}?${Object.entries(query)
         .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
         .join('&')}`
     );
 
-    this.websocket.addEventListener('close', this._onClose);
+    this.websocket.addEventListener('close', this.onClose);
     this.websocket.addEventListener('error', this.onError);
-    this.websocket.addEventListener('message', this.onMessage);
-    this.websocket.addEventListener('open', this._onOpen);
+    this.websocket.addEventListener('message', this.onWebsocketMessage);
+    this.websocket.addEventListener('open', this.onOpen);
   }
 
   private _clearReconnection() {
@@ -67,23 +85,32 @@ export default abstract class WSClientBase {
     }
   }
 
-  protected abstract onMessage(event: MessageEvent): void | Promise<void>;
+  private _updateState(update: Partial<WSClientState>) {
+    this.state = { ...this.state, ...update };
+    if (this.options.onStateChanged) {
+      this.options.onStateChanged(this.state);
+    }
+  }
+
+  protected abstract onWebsocketMessage(event: MessageEvent): void | Promise<void>;
 
   protected onError() {}
 
-  protected _onOpen(_event: Event) {
-    this.isConnected = true;
+  protected onOpen(_event: Event) {
+    this._updateState({ state: 'connected' });
     this._reconnectionAttempt = 0;
   }
 
-  protected _onClose(_event: CloseEvent) {
-    this.isConnected = false;
-    if (this.isActivated && (this.options.reconnect ?? true)) {
+  protected onClose(_event: CloseEvent) {
+    if (this.state.isEnabled && (this.options.reconnect ?? true)) {
       this._reconnectionAttempt += 1;
       const timeout = (this.options.reconnectStrategy ?? defaultReconnectStrategy)(
         this._reconnectionAttempt
       );
       setTimeout(() => this.start(), timeout);
+      this._updateState({ state: 'reconnecting' });
+    } else {
+      this._updateState({ state: 'disconnected' });
     }
   }
 
@@ -95,8 +122,8 @@ export default abstract class WSClientBase {
   }
 
   async stop() {
-    if (!this.isActivated) return;
-    this.isActivated = false;
+    if (!this.state.isEnabled) return;
+    this._updateState({ isEnabled: false });
     if (this.websocket) {
       this.websocket.close();
       this.websocket = null;

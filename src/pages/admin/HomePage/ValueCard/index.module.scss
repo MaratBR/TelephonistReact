@@ -1,0 +1,29 @@
+.root {
+  border-radius: var(--t-radius-lg);
+  transition: all var(--t-transition-md);
+  padding: var(--t-spacing-md);
+  min-width: 10em;
+  max-width: 18em;
+  position: relative;
+
+  &:hover {
+    background-color: var(--t-highlight);
+  }
+
+  &.danger {
+    color: var(--t-danger);
+
+    &:hover {
+      background-color: var(--t-danger-t10);
+    }
+  }
+}
+
+.value {
+  font-family: var(--t-font-headers);
+  font-size: 2.5em;
+}
+
+.name {
+  font-size: 0.85em;
+}

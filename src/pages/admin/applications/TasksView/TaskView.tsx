@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button } from '@coreui/Button';
-import { Input, Textarea } from '@coreui/Input';
-import { Parameters } from '@coreui/Parameters';
-import Tags from '@coreui/Tags';
+import { Button } from '@ui/Button';
+import { Input, Textarea } from '@ui/Input';
+import { Parameters } from '@ui/Parameters';
+import Tags from '@ui/Tags';
 import S from './TaskView.module.scss';
 import { mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';

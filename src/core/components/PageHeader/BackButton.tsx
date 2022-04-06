@@ -1,4 +1,4 @@
-import { IconButton } from '@coreui/Button';
+import { IconButton } from '@ui/Button';
 import { mdiArrowLeft } from '@mdi/js';
 import { VoidCallback } from 'core/utils/types';
 import { To } from 'react-router';

@@ -23,8 +23,9 @@ const cssLoader = {
 const plugins: WebpackPluginInstance[] = [
   new HTMLWebpackPlugin({
     title: 'Telephonist',
+    template: resolve(SRC, isDevelopment ? 'index.ejs' : 'index.prod.ejs'),
   }),
-  new EnvironmentPlugin(['NODE_ENV', 'DEBUG', 'API_URL']),
+  new EnvironmentPlugin(['NODE_ENV', 'DEBUG_API_URL']),
 ];
 
 if (isDevelopment) {
@@ -48,7 +49,8 @@ const configuration: Configuration = {
     alias: {
       '@locales': __dirname + '/locales',
       '@assets': SRC + '/assets',
-      '@coreui': SRC + '/core/components',
+      '@ui': SRC + '/core/components',
+      '@admin': SRC + '/pages/admin',
     },
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     modules: [SRC, 'node_modules'],
@@ -87,6 +89,7 @@ const configuration: Configuration = {
   devServer: {
     historyApiFallback: true,
     hot: isDevelopment,
+    allowedHosts: 'all',
   },
   devtool: 'inline-source-map',
   optimization: {

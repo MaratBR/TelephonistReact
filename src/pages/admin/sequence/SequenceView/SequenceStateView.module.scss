@@ -1,6 +1,7 @@
 .state {
-  display: inline-block;
-  border-radius: var(--t-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--t-spacing-sm);
   font-weight: 500;
   font-family: var(--t-font-headers);

@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
-import Error from '@coreui/Error';
-import { Checkbox } from '@coreui/Input';
-import { Stack } from '@coreui/Stack';
+import { useState } from 'react';
+import ErrorView from '@ui/Error';
+import { Checkbox } from '@ui/Input';
+import { Stack } from '@ui/Stack';
 import { Event } from 'api/definition';
-import { useApi } from 'api/hooks';
-import { throttleCollector } from 'core/utils';
-import { observer } from 'mobx-react';
+import PaginationLayout from 'components/ui/PaginationLayout';
+import ConnectedBadge from 'components/ui/misc/ConnectedBadge';
+import { useApi } from 'hooks';
+import { usePageParam } from 'hooks/useSearchParam';
+import { useTopic } from 'hooks/useUserHub';
 import Padded from 'pages/Padded';
 import EventsViewer from 'pages/admin/events/EventsViewer';
 import { useTranslation } from 'react-i18next';
-import { useUserHub } from 'state/hooks';
-import ConnectedBadge from 'ui/misc/ConnectedBadge';
+import { useQuery } from 'react-query';
+import { useAppSelector } from 'store';
 
 interface ApplicationEventsProps {
   appID: string;
@@ -19,39 +21,31 @@ interface ApplicationEventsProps {
 
 function ApplicationEvents({ appID, maxEvents }: ApplicationEventsProps) {
   const [active, setActive] = useState(true);
-  const { events: eventsAPI } = useApi();
-  const [events, setEvents] = useState<Event[]>([]);
-  const [error, setError] = useState();
-  const { hub, connected } = useUserHub(active);
+  const isConnected = useAppSelector((s) => s.ws.isConnected);
+  const api = useApi();
+
+  const [page, setPage] = usePageParam();
+  const [newEvents, setNewEvents] = useState<Event[]>([]);
+  const {
+    data: events,
+    error,
+    refetch,
+  } = useQuery(['appEvents', appID, page], () => api.events.getAll({ app_id: appID, page }), {
+    keepPreviousData: true,
+    onSuccess: () => setNewEvents([]),
+    refetchOnWindowFocus: false,
+  });
+
+  useTopic(active, `m/appEvents/${appID}`, (ctx) => {
+    ctx.addEventListener('new_event', (event) => {
+      setNewEvents([event, ...newEvents]);
+      if (newEvents.length > 40) {
+        refetch();
+      }
+    });
+  });
+
   const { t } = useTranslation();
-
-  const refresh = useCallback(async () => {
-    try {
-      const { result } = await eventsAPI.getAll({ app_id: appID });
-      setEvents(result);
-    } catch (e) {
-      setError(e);
-    }
-  }, [eventsAPI, appID]);
-  const addEvent = useCallback(
-    throttleCollector(10, 500, (newEvents: Event[]) => {
-      setEvents((arr) =>
-        arr.length + newEvents.length >= maxEvents
-          ? [...newEvents, ...arr.slice(0, arr.length - newEvents.length)]
-          : [...newEvents, ...arr]
-      );
-    }),
-    []
-  );
-
-  useEffect(() => {
-    if (active) {
-      refresh();
-      hub.addAppEventsListener(appID, addEvent);
-      return () => hub.removeAppEventsListener(appID, addEvent);
-    }
-    return undefined;
-  }, [active, appID]);
 
   return (
     <>
@@ -59,13 +53,19 @@ function ApplicationEvents({ appID, maxEvents }: ApplicationEventsProps) {
         <Stack h alignItems="center" spacing="sm">
           <Checkbox checked={active} onChange={(e) => setActive(e.target.checked)} id="active" />
           <label htmlFor="active">{t('enableLiveUpdate')}</label>
-          <ConnectedBadge connected={connected} />
+          <ConnectedBadge connected={isConnected} />
         </Stack>
       </Padded>
-      <Error error={error} />
-      <EventsViewer events={events} />
+      <ErrorView error={error} />
+      <PaginationLayout
+        onSelect={setPage}
+        selectedPage={page}
+        totalPages={events ? events.pages_total : page}
+      >
+        <EventsViewer newEvents={newEvents} events={events ? events.result : []} />
+      </PaginationLayout>
     </>
   );
 }
 
-export default observer(ApplicationEvents);
+export default ApplicationEvents;

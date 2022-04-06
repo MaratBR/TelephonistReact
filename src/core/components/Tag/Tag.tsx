@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconButton } from '@coreui/Button';
-import { useColor } from '@coreui/theme';
+import { IconButton } from '@ui/Button';
+import { useColor } from '@ui/theme';
 import S from './Tag.module.scss';
 import { mdiClose } from '@mdi/js';
 

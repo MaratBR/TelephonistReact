@@ -1,6 +1,6 @@
 import React from 'react';
-import { Checkbox } from '@coreui/Input';
-import { Stack } from '@coreui/Stack';
+import { Checkbox } from '@ui/Input';
+import { Stack } from '@ui/Stack';
 import { mdiCalendar, mdiCheckCircle, mdiCloseCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import Table from 'core/components/Table';

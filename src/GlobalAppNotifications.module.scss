@@ -1,0 +1,18 @@
+.notifications {
+  position: fixed;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.notification {
+  padding: var(--t-spacing-md);
+}
+
+.danger {
+  background-color: var(--t-danger);
+  color: var(--t-on-danger);
+}

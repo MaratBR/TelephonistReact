@@ -1,5 +1,5 @@
 import WSClientBase from './WsClientBase';
-import { RegistryMessage } from 'api/definition';
+import { InRegistryMessage, OutRegistryMessage } from 'api/definition';
 import { Events } from 'utils/events';
 import { Dispose, ListenerFunction } from 'utils/events/Events';
 
@@ -11,16 +11,12 @@ interface DisconnectEvent {
   innerEvent: CloseEvent;
 }
 
-interface ClientMessageEvent<Messages extends object> {
-  message: RegistryMessage<Messages>;
-}
-
 interface ReadyEvent {}
 
 interface WSEvents<Messages extends object> {
   connected: ConnectedEvent;
   disconnected: DisconnectEvent;
-  message: ClientMessageEvent<Messages>;
+  message: InRegistryMessage<Messages>;
   ready: ReadyEvent;
 }
 
@@ -35,16 +31,16 @@ export default class WSClient<
 
   private _messages = new Events<Messages>();
 
-  protected onMessage(event: MessageEvent<any>): void | Promise<void> {
+  protected onWebsocketMessage(event: MessageEvent<any>): void | Promise<void> {
     if (typeof event.data === 'string') {
-      let message: RegistryMessage<Messages>;
+      let message: InRegistryMessage<Messages>;
       try {
         message = JSON.parse(event.data);
       } catch {
         return;
       }
-      this._events.dispatch('message', { message });
-      this._messages.dispatch(message.msg_type, message.data);
+      this._events.dispatch('message', message);
+      this._messages.dispatch(message.t, message.d);
     }
   }
 
@@ -70,7 +66,7 @@ export default class WSClient<
     this._events.removeEventListener(event, listener);
   }
 
-  send(rawMessage: RegistryMessage<OutMessages>, queue: boolean = true) {
+  send(rawMessage: OutRegistryMessage<OutMessages>, queue: boolean = true) {
     const raw = JSON.stringify(rawMessage);
     if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
       if (queue || this.websocket?.readyState === WebSocket.CONNECTING) {
@@ -83,13 +79,13 @@ export default class WSClient<
     }
   }
 
-  protected _onClose(event: CloseEvent): void {
-    super._onClose(event);
+  protected onClose(event: CloseEvent): void {
+    super.onClose(event);
     this._events.dispatch('disconnected', { innerEvent: event });
   }
 
-  protected _onOpen(event: Event): void {
-    super._onOpen(event);
+  protected onOpen(event: Event): void {
+    super.onOpen(event);
     this._events.dispatch('connected', { innerEvent: event });
     // we can some initialization here
     this._events.dispatch('ready', {});

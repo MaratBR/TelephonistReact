@@ -1,15 +1,27 @@
-import React from 'react';
-import { Centered } from '@coreui/Layout';
-import LoadingSpinner from '@coreui/LoadingSpinner';
-import Screen from '@coreui/Screen';
-import { observer } from 'mobx-react';
+import React, { useEffect } from 'react';
+import { Centered } from '@ui/Layout';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import Screen from '@ui/Screen';
+import { useApi } from 'hooks';
 import { Navigate } from 'react-router-dom';
-import { useGlobalState } from 'state/hooks';
+import { initializeAuthThunk } from 'reducers/authReducer';
+import { useAppDispatch, useAppSelector } from 'store';
 
 function AuthorizatioRequired({ children }: React.PropsWithChildren<{}>) {
-  const state = useGlobalState();
+  const { isInitialized, isLoggedIn } = useAppSelector(({ auth }) => ({
+    isInitialized: auth.isInitialized,
+    isLoggedIn: auth.isLoggedIn,
+  }));
+  const dispatch = useAppDispatch();
+  const { auth } = useApi();
 
-  if (!state.isInitialized) {
+  useEffect(() => {
+    if (!isInitialized) {
+      dispatch(initializeAuthThunk({ authAPI: auth }));
+    }
+  }, [isInitialized]);
+
+  if (!isInitialized) {
     return (
       <Screen>
         <Centered>
@@ -19,7 +31,7 @@ function AuthorizatioRequired({ children }: React.PropsWithChildren<{}>) {
     );
   }
 
-  if (!state.auth.isAuthorized) {
+  if (!isLoggedIn) {
     return <Navigate to={{ pathname: '/login', search: `next=${window.location.pathname}` }} />;
   }
 
@@ -31,4 +43,4 @@ function AuthorizatioRequired({ children }: React.PropsWithChildren<{}>) {
   );
 }
 
-export default observer(AuthorizatioRequired);
+export default AuthorizatioRequired;

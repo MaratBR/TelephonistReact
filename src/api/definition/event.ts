@@ -1,13 +1,14 @@
 import { ConnectionInfo } from './connection';
-import { PaginationParams } from './pagination';
+import { CounterValues } from './misc';
+import { Pagination, PaginationParams } from './pagination';
 
 export interface Event {
   event_key: string;
   sequence_id: string | null;
   app_id: string;
   event_type: string;
-  task_name: string | null;
-  task_id: string | null;
+  task_name: string;
+  task_id: string;
   data: any | null;
   publisher_ip: string | null;
   created_at: string;
@@ -35,9 +36,9 @@ export interface Sequence {
   task_name: string | null;
   task_id: string | null;
   expires_at: string | null;
-  frozen: boolean;
   error: string | null;
   connection_id: string | null;
+  created_at: string;
 }
 
 export interface SequenceStandalone extends Omit<Sequence, 'connection_id' | 'app_id' | 'task_id'> {
@@ -94,3 +95,16 @@ export interface GetEventsParams extends PaginationParams<EventsOrderBy> {
   before?: string;
   sequence_id?: string;
 }
+
+export interface GetSequencesParams extends PaginationParams<'_id'> {
+  app_id?: string;
+  state?: SequenceState | SequenceState[];
+}
+
+export type SequencesPagination = Pagination<Sequence> & {
+  counters: {
+    failed: CounterValues;
+    total: CounterValues;
+    finished: CounterValues;
+  };
+};

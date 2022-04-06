@@ -1,5 +1,5 @@
-import { DataGrid, renderBoolean, renderDate, renderObjectID } from '@coreui/DataGrid';
-import { Shruggie } from '../../../../ui/misc';
+import { DataGrid, renderBoolean, renderDate, renderObjectID } from '@ui/DataGrid';
+import { Shruggie } from '../../../../components/ui/misc';
 import { ConnectionInfo } from 'api/definition';
 import { useTranslation } from 'react-i18next';
 

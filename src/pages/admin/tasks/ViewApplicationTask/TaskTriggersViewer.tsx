@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { DataGrid } from '@coreui/DataGrid';
+import { DataGrid } from '@ui/DataGrid';
 import TriggerBodyView from './TriggerBodyView';
 import { TaskTrigger } from 'api/definition';
+import { Shruggie } from 'components/ui/misc';
 import { MD5 } from 'object-hash';
 import { useTranslation } from 'react-i18next';
-import { Shruggie } from 'ui/misc';
 
 export default function TaskTriggersViewer({ triggers }: { triggers: TaskTrigger[] }) {
   const { t } = useTranslation();

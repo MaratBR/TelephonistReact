@@ -1,5 +1,6 @@
 import React, { ErrorInfo } from 'react';
-import { Alert } from '@coreui/Alert';
+import { Alert } from '@ui/Alert';
+import CurrentUser from './CurrentUser';
 import { Nav, NavGroup, NavItem, NavItems } from './Nav';
 import { css } from '@emotion/react';
 import { mdiDotsGrid, mdiHomeCircleOutline, mdiPlus } from '@mdi/js';
@@ -37,7 +38,8 @@ class MainPageInner extends React.Component<MainPageInnerProps, MainPageInnerSta
       <div css={rootCSS}>
         <Nav>
           <NavItems>
-            <NavItem to="/" iconSVG={mdiHomeCircleOutline}>
+            <CurrentUser />
+            <NavItem to="/admin" iconSVG={mdiHomeCircleOutline}>
               {t('home')}
             </NavItem>
             <NavGroup text={t('applications')}>
@@ -47,6 +49,18 @@ class MainPageInner extends React.Component<MainPageInnerProps, MainPageInnerSta
 
               <NavItem to="/admin/applications/new" iconSVG={mdiPlus}>
                 {t('createNewApp')}
+              </NavItem>
+              <NavItem to="/admin/applications/cr" iconSVG={mdiPlus}>
+                {t('registerYourApp')}
+              </NavItem>
+            </NavGroup>
+            <NavGroup text={t('users')}>
+              <NavItem to="/admin/users" iconSVG={mdiDotsGrid}>
+                {t('allUsers')}
+              </NavItem>
+
+              <NavItem to="/admin/users/new" iconSVG={mdiPlus}>
+                {t('newUser')}
               </NavItem>
             </NavGroup>
           </NavItems>

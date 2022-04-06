@@ -1,30 +1,32 @@
 import { useMemo } from 'react';
-import { Breadcrumb } from '@coreui/Breadcrumb';
-import Container from '@coreui/Container';
-import ContentSection from '@coreui/ContentSection';
-import Error from '@coreui/Error';
-import LoadingSpinner from '@coreui/LoadingSpinner';
-import PageHeader from '@coreui/PageHeader';
-import { Parameters } from '@coreui/Parameters';
+import { Breadcrumb } from '@ui/Breadcrumb';
+import Container from '@ui/Container';
+import ContentSection from '@ui/ContentSection';
+import ErrorView from '@ui/Error';
+import LoadingSpinner from '@ui/LoadingSpinner';
+import PageHeader from '@ui/PageHeader';
+import { Parameters } from '@ui/Parameters';
+import SequenceMetaBar from './SequenceMetaBar';
 import SequenceStateView from './SequenceStateView';
 import { SequenceStandalone } from 'api/definition';
-import { useApi } from 'api/hooks';
 import { isNotFound } from 'api/utils';
-import { useRefreshableAsyncValue } from 'core/hooks';
+import { useApi } from 'hooks';
 import LogsViewer from 'pages/admin/logs/LogsViewer';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 import { NavLink, useSearchParams } from 'react-router-dom';
 
 function getBackAction(params: URLSearchParams, sequence: SequenceStandalone | undefined) {
   if (!sequence) return undefined;
+
   if (params.has('ba')) {
     const ba = params.get('ba');
     switch (ba) {
       case 'a':
         return `/admin/applications/${sequence.app.name}`;
       case 't':
-        return `/admin/tasks/${sequence.app.name}/${sequence.task_name}`;
+        return `/admin/tasks/${sequence.task_name}`;
       default:
         return undefined;
     }
@@ -40,10 +42,10 @@ export default function SequenceView() {
   } = useTranslation();
   const { events } = useApi();
   const {
-    value: sequence,
+    data: sequence,
     error,
     isLoading,
-  } = useRefreshableAsyncValue(() => events.getSequence(id));
+  } = useQuery(['sequence', id], () => events.getSequence(id));
   const title = isLoading ? t('loading') : `${t('sequence')} – ${sequence.name}`;
   const td = useMemo(
     () => ({
@@ -60,8 +62,8 @@ export default function SequenceView() {
   const breadcrumb = sequence ? (
     <Breadcrumb>
       <NavLink to={`/admin/applications/${sequence.app.name}`}>{sequence.app.display_name}</NavLink>
-      <NavLink to={`/admin/tasks/${sequence.app.name}/${sequence.task_name}`}>
-        {sequence.task_name}
+      <NavLink to={`/admin/tasks/${sequence.task_name}`}>
+        {sequence.task_name.split('/')[1]}
       </NavLink>
       <span>{sequence.name}</span>
     </Breadcrumb>
@@ -76,14 +78,15 @@ export default function SequenceView() {
     content = <LoadingSpinner />;
   } else if (error) {
     if (isNotFound(error)) {
-      content = <Error error={td.notFound} />;
+      content = <ErrorView error={td.notFound} />;
     } else {
-      content = <Error error={error} />;
+      content = <ErrorView error={error} />;
     }
   } else {
     content = (
       <>
-        <ContentSection padded>
+        <ErrorView error={sequence.error} />
+        <ContentSection padded header={t('generalInformation')}>
           <Parameters
             parameters={{
               [td.id]: sequence._id,
@@ -97,7 +100,7 @@ export default function SequenceView() {
             }}
           />
         </ContentSection>
-        <ContentSection>
+        <ContentSection header={t('logs')}>
           <LogsViewer logs={sequence.logs} />
         </ContentSection>
       </>
@@ -112,6 +115,9 @@ export default function SequenceView() {
         top={breadcrumb}
         title={title}
         subtitle={id}
+        bottom={
+          sequence ? <SequenceMetaBar state={sequence.state} meta={sequence.meta} /> : undefined
+        }
       />
       <Container>{content}</Container>
     </>

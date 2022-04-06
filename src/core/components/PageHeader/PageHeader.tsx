@@ -1,5 +1,5 @@
-import Container from '@coreui/Container';
-import { TextHeader } from '@coreui/Text';
+import Container from '@ui/Container';
+import { TextHeader } from '@ui/Text';
 import BackButton from './BackButton';
 import S from './PageHeader.module.scss';
 import { VoidCallback } from 'core/utils/types';

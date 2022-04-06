@@ -1,5 +1,5 @@
-import DescriptiveItem from '@coreui/DescriptiveItem';
-import { Select } from '@coreui/Input';
+import DescriptiveItem from '@ui/DescriptiveItem';
+import { Select } from '@ui/Input';
 import { DEFAULT_TASK_BODY } from 'api/definition';
 import { useTranslation } from 'react-i18next';
 

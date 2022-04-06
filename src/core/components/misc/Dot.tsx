@@ -1,4 +1,4 @@
-import { useColor } from '@coreui/theme';
+import { useColor } from '@ui/theme';
 import S from './Dot.module.css';
 import { ColorInput } from 'tinycolor2';
 

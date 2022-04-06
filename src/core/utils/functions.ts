@@ -35,3 +35,13 @@ export function throttleCollector<T>(
     }
   };
 }
+
+export function delay(fn: () => void, ms: number) {
+  let lastCall = 0;
+
+  return () => {
+    if (lastCall + ms > Date.now()) return;
+    lastCall = Date.now();
+    fn();
+  };
+}
