@@ -6,6 +6,7 @@ import { Stack } from '@ui/Stack';
 import { TextHeader } from '@ui/Text';
 import FailedSequences from './FailedSequences';
 import ValueCard from './ValueCard';
+import SequenceCard from 'components/ui/SequenceCard';
 import { useApi } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -15,39 +16,52 @@ export default function HomePage() {
   const api = useApi();
   const user = useAppSelector((s) => s.auth.user);
   const { t } = useTranslation();
-  const { data: stats, status, error } = useQuery('stats', () => api.getStats());
+  const {
+    data: stats,
+    status,
+    error,
+  } = useQuery('stats', () => api.getStats(), { keepPreviousData: true, refetchInterval: 15000 });
 
   let content: React.ReactNode;
   if (status === 'loading') content = <LoadingSpinner />;
   else if (status === 'error') content = <ErrorView error={error} />;
   else {
-    const segments = [];
-    const isSomethingWrong = stats.counters.values.failed_sequences.day > 0;
-    segments.push(
-      <Card>
-        <h3>{t('inLast24h')}</h3>
-        <Stack h>
-          <ValueCard
-            type={stats.counters.values.failed_sequences.day > 0 ? 'danger' : undefined}
-            name={t('failedSequences')}
-            value={stats.counters.values.failed_sequences.day}
-          />
-          <ValueCard
-            name={t('completedSequences')}
-            value={stats.counters.values.finished_sequences.day}
-          />
-          <ValueCard name={t('events')} value={stats.counters.values.events.day} />
-        </Stack>
-      </Card>
+    content = (
+      <>
+        <Card>
+          <h3>{t('home.inLast24h')}</h3>
+          <Stack h>
+            <ValueCard name={t('home.seqInProgress')} value={stats.in_progress_sequences.count} />
+            <ValueCard
+              type={stats.counters.values.failed_sequences.day > 0 ? 'danger' : undefined}
+              name={t('home.seqFail')}
+              value={stats.counters.values.failed_sequences.day}
+            />
+            <ValueCard
+              name={t('home.seqCompleted')}
+              value={stats.counters.values.finished_sequences.day}
+            />
+            <ValueCard name={t('home.events')} value={stats.counters.values.events.day} />
+          </Stack>
+        </Card>
+        <FailedSequences key="sequences" sequences={stats.failed_sequences} />
+        <Card>
+          <h3>{t('home.seqInProgress')}</h3>
+          {stats.in_progress_sequences.list.length ? (
+            stats.in_progress_sequences.list.map((seq) => (
+              <SequenceCard sequence={seq} key={seq._id} />
+            ))
+          ) : (
+            <p>{t('home.noSeqInProgress')}</p>
+          )}
+        </Card>
+      </>
     );
-
-    segments.push(<FailedSequences key="sequences" sequences={stats.failed_sequences} />);
-    content = segments;
   }
 
   return (
     <Container>
-      <TextHeader title={t('hi', { name: user.username })} subtitle={t('welcomeBack')} />
+      <TextHeader title={t('hi', { name: user.username })} subtitle={t('home.welcomeBack')} />
       <Stack spacing="md">{content}</Stack>
     </Container>
   );

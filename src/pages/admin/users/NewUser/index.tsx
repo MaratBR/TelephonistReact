@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Button } from '@ui/Button';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
@@ -18,7 +18,8 @@ export default function NewUser() {
   const {
     register,
     getValues,
-    formState: { errors, isValid },
+    handleSubmit,
+    formState: { errors },
   } = useForm<CreateUser>();
   const { users } = useApi();
   const saveUser = useMutation(() => users.create(getValues()), {
@@ -26,31 +27,33 @@ export default function NewUser() {
       navigate(`/admin/users/${data.username}`);
     },
   });
-  const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (isValid) {
-      saveUser.mutate();
-    }
-  }, []);
+  const onSubmit = handleSubmit(() => {
+    saveUser.mutate();
+  });
 
   return (
     <>
-      <PageHeader title={t('newUser')} />
+      <PageHeader title={t('users.new')} />
       <Container>
         <ContentSection padded>
           <form onSubmit={onSubmit}>
+            <pre>{JSON.stringify(errors)}</pre>
             <ParametersStack>
               <InputLayout id="username" header={t('username')}>
                 <Input {...register('username')} />
+                {errors.username}
               </InputLayout>
               <InputLayout
                 description={t('userWillBePromptedNewPassword')}
                 id="password"
                 header={t('password')}
               >
+                {errors.password}
+
                 <Input type="password" {...register('password')} />
               </InputLayout>
-              <InputLayout id="su" header={t('isSuperuser')}>
+              <InputLayout id="su" header={t('user.isSuperuser')}>
+                {errors.is_superuser}
                 <Checkbox {...register('is_superuser')} />
               </InputLayout>
             </ParametersStack>

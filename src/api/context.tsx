@@ -10,20 +10,34 @@ export interface ApiConfiguration {
 
 export const ApiInstanceContext = React.createContext<Api | null>(null);
 
-let metaApiUrl = getMeta('backend-api-url');
+export function getApiURL() {
+  let metaApiUrl = getMeta('backend-api-url');
 
-if (process.env.NODE_ENV === 'development') {
-  metaApiUrl = process.env.DEBUG_API_URL || 'locahost:5789';
+  if (process.env.NODE_ENV === 'development') {
+    metaApiUrl = process.env.DEBUG_API_URL || 'http://locahost:5789';
+  }
+
+  let u: URL;
+  try {
+    try {
+      u = new URL(metaApiUrl);
+    } catch {
+      if (!metaApiUrl.startsWith('/')) metaApiUrl = `/${metaApiUrl}`;
+      metaApiUrl = window.location.origin + metaApiUrl;
+      u = new URL(metaApiUrl);
+    }
+  } catch (e) {
+    throw new Error(`invalid API URL: ${e.toString()}`);
+  }
+  return u;
 }
-
-if (metaApiUrl.endsWith('/')) metaApiUrl = metaApiUrl.substring(0, metaApiUrl.length - 1);
 
 export function ApiProvider({ children }: React.PropsWithChildren<{}>) {
   const csrfToken = useAppSelector((s) => s.auth.csrfToken);
   const { t } = useTranslation();
 
   const api = useMemo(
-    () => new Api({ t, csrfToken, baseURL: `${metaApiUrl}/api/user-v1` }),
+    () => new Api({ t, csrfToken, baseURL: `${getApiURL().toString()}api/user-v1` }),
     [csrfToken, t]
   );
 

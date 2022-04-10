@@ -80,8 +80,8 @@ export default function UserView() {
             parameters={{
               [t('id')]: data.user._id,
               [t('username')]: data.user.username,
-              [t('isSuperuser')]: renderBoolean(data.user.is_superuser),
-              [t('isBlocked')]: renderBoolean(data.user.is_blocked),
+              [t('user.isSuperuser')]: renderBoolean(data.user.is_superuser),
+              [t('user.isBlocked')]: renderBoolean(data.user.is_blocked),
             }}
           />
         </ContentSection>
@@ -167,8 +167,10 @@ export default function UserView() {
         backAction="/admin/users"
         title={
           <Stack h alignItems="center">
-            {name === currentUsername ? <Icon path={mdiAccount} size={1} /> : undefined}
-            {name}
+            {name.toUpperCase() === currentUsername.toUpperCase() ? (
+              <Icon path={mdiAccount} size={1} />
+            ) : undefined}
+            {data ? data.user.username : name}
           </Stack>
         }
       />

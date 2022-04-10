@@ -9,7 +9,7 @@
     "lint": "eslint src --ext ts,tsx",
     "lint:fix": "eslint src --ext ts,tsx --fix",
     "i18n": "node scripts/i18n.js && i18next-scanner 'src/**/*.{ts,tsx}'",
-    "build": "NODE_ENV=production DEBUG=false webpack"
+    "build": "NODE_ENV=production webpack"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.16.7",

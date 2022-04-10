@@ -20,7 +20,6 @@ export default function ViewApplicationSequences({ appID }: ViewApplicationSeque
   const {
     data: pagination,
     error,
-    status,
     dataUpdatedAt,
     isFetching,
   } = useQuery(['appSequences', appID, page], () => api.events.getSequences({ app_id: appID }), {
@@ -29,7 +28,6 @@ export default function ViewApplicationSequences({ appID }: ViewApplicationSeque
 
   return (
     <>
-      {status}
       <ErrorView error={error} />
       <Text type="hint">
         {t('lastUpdated')}: <AtTime at={dataUpdatedAt} />

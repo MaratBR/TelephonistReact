@@ -26,7 +26,7 @@ import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 function ViewApplication() {
   const { id } = useParams();
   const { t } = useTranslation();
-  const [search] = useSearchParams();
+  const [search, setSearch] = useSearchParams();
   const isEditing = search.get('edit') === '1';
   const { applications } = useApi();
 
@@ -34,9 +34,14 @@ function ViewApplication() {
   const { data: value, error, status } = useQuery(['application', id], () => applications.get(id));
   const { reset, control, getValues } = useForm<UpdateApplication>();
 
-  const save = useMutation(async () => {
-    await applications.update(value.app._id, getValues());
-  });
+  const save = useMutation(
+    async () => {
+      await applications.update(value.app._id, getValues());
+    },
+    {
+      onMutate: () => setSearch({ edit: '' }),
+    }
+  );
 
   useEffect(() => {
     if (!value) return;
@@ -97,7 +102,7 @@ function ViewApplication() {
     content = (
       <TabPanels>
         <TabPanel>
-          <ContentSection padded>
+          <ContentSection header={t('generalInformation')} padded>
             <ViewApplicationInfo app={value.app} />
           </ContentSection>
         </TabPanel>
@@ -167,7 +172,10 @@ function ViewApplication() {
               >
                 {t('save')}
               </Button>
-              <Button to="?" left={<Icon size={1} path={mdiCancel} />}>
+              <Button
+                onClick={() => setSearch({ edit: '' })}
+                left={<Icon size={1} path={mdiCancel} />}
+              >
                 {t('cancel')}
               </Button>{' '}
             </ButtonGroup>

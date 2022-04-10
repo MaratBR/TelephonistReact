@@ -79,14 +79,15 @@ function Select<T>({
   return (
     <InputBox>
       <div
+        role="button"
+        tabIndex={0}
+        onClick={onClick}
         ref={divRef}
         aria-haspopup="true"
         aria-expanded={expanded}
         className={classNames(S.select, { [S.expanded]: expanded })}
       >
-        <div role="button" tabIndex={0} onClick={onClick} className={S.selectedItem}>
-          {selectedElement ?? placeholder}
-        </div>
+        <div className={S.selectedItem}>{selectedElement ?? placeholder}</div>
         <div className={S.items}>
           {options.map((value) => (
             <Option

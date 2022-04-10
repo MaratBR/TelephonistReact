@@ -6,13 +6,14 @@ import ErrorView from '@ui/Error';
 import LoadingSpinner from '@ui/LoadingSpinner';
 import PageHeader from '@ui/PageHeader';
 import { Parameters } from '@ui/Parameters';
+import { Text } from '@ui/Text';
 import SequenceMetaBar from './SequenceMetaBar';
 import SequenceStateView from './SequenceStateView';
-import { SequenceStandalone } from 'api/definition';
+import { ConnectionInfo, SequenceStandalone, ServerInfo } from 'api/definition';
 import { isNotFound } from 'api/utils';
 import { useApi } from 'hooks';
 import LogsViewer from 'pages/admin/logs/LogsViewer';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 import { NavLink, useSearchParams } from 'react-router-dom';
@@ -34,6 +35,29 @@ function getBackAction(params: URLSearchParams, sequence: SequenceStandalone | u
   return undefined;
 }
 
+function SequenceConnectionView({
+  connection,
+  server,
+}: {
+  connection: ConnectionInfo;
+  server: ServerInfo;
+}) {
+  return (
+    <>
+      <h3>
+        <NavLink to={`/admin/connection/${connection._id}`}>{connection._id}</NavLink>
+      </h3>
+      <Trans
+        values={{ os: server.os, name: connection.client_name, serverName: server.ip }}
+        i18nKey="sequence.connectionDescription"
+      >
+        <b>{'{{name}}'}</b> at {'{{serverName}}'} <br />
+        <Text type="hint">{'{{os}}'}</Text>
+      </Trans>
+    </>
+  );
+}
+
 export default function SequenceView() {
   const { id } = useParams();
   const {
@@ -53,7 +77,6 @@ export default function SequenceView() {
       sequence: t('sequence'),
       id: t('id'),
       name: t('name'),
-      connection: t('connnection'),
       clientName: t('clientName'),
     }),
     [language, id]
@@ -91,17 +114,24 @@ export default function SequenceView() {
             parameters={{
               [td.id]: sequence._id,
               [td.name]: sequence.name,
-              [td.connection]: sequence.connection
-                ? {
-                    [td.id]: sequence.connection._id,
-                    [td.clientName]: sequence.connection.client_name,
-                  }
-                : undefined,
             }}
           />
         </ContentSection>
+        <ContentSection padded header={t('connnection')}>
+          {sequence.connection ? (
+            <SequenceConnectionView server={sequence.host} connection={sequence.connection} />
+          ) : undefined}
+        </ContentSection>
         <ContentSection header={t('logs')}>
           <LogsViewer logs={sequence.logs} />
+        </ContentSection>
+        <ContentSection padded header={t('application')}>
+          <h3>
+            <NavLink to={`/admin/applications/${sequence.app.name}`}>
+              {sequence.app.display_name} ({sequence.app.name})
+            </NavLink>
+          </h3>
+          <Text type="hint">{sequence.app._id}</Text>
         </ContentSection>
       </>
     );

@@ -1,10 +1,22 @@
 import React, { useEffect, useMemo } from 'react';
 import UserHubWS from './UserHubWS';
+import { getApiURL } from 'api/context';
 import { useApi } from 'hooks';
 import { onWSStateChanged } from 'reducers/wsReducer';
 import { useAppDispatch, useAppSelector } from 'store';
 
 export const UserHubContext = React.createContext<UserHubWS | null>(null);
+
+function getWSUrl() {
+  const url = getApiURL();
+  url.pathname = '/_ws/user/main';
+  if (url.protocol === 'https:') {
+    url.protocol = 'wss:';
+  } else {
+    url.protocol = 'ws:';
+  }
+  return url;
+}
 
 export function UserHubProvider({ children }: React.PropsWithChildren<{}>) {
   const api = useApi();
@@ -13,7 +25,7 @@ export function UserHubProvider({ children }: React.PropsWithChildren<{}>) {
   const hub = useMemo(
     () =>
       new UserHubWS({
-        path: `/_ws/user/main`,
+        url: getWSUrl(),
         wsTicketFactory: () => api.issueWsTicket(),
         onStateChanged: (state) => dispatch(onWSStateChanged(state)),
       }),

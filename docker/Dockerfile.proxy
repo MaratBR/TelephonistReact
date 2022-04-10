@@ -15,7 +15,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 RUN mkdir dist
 COPY --from=build /app/dist /dist
 RUN mkdir -p /etc/confd
-COPY ./docker/confd /etc/confd
+COPY ./docker/confd.proxy /etc/confd
 RUN rm /docker-entrypoint.sh && rm -r /docker-entrypoint.d
 COPY ./docker/docker-entrypoint.sh /docker-entrypoint.sh
 RUN cp /dist/index.html index.html.tmpl

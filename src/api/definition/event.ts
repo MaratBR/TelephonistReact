@@ -1,4 +1,4 @@
-import { ConnectionInfo } from './connection';
+import { ConnectionInfo, ServerInfo } from './connection';
 import { CounterValues } from './misc';
 import { Pagination, PaginationParams } from './pagination';
 
@@ -49,6 +49,7 @@ export interface SequenceStandalone extends Omit<Sequence, 'connection_id' | 'ap
     deleted_at: string | null;
   };
   connection: ConnectionInfo;
+  host: ServerInfo;
   logs: {
     t: string;
     severity: number;

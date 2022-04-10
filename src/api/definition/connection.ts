@@ -6,3 +6,8 @@ export interface ConnectionInfo {
   client_name: string | null;
   is_connected: boolean;
 }
+
+export interface ServerInfo {
+  ip: string;
+  description: string | null;
+}

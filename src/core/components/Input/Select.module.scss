@@ -4,15 +4,12 @@
   display: flex;
   width: 100%;
   position: relative;
+  cursor: pointer;
 
   .selectedItem {
     @include defaultInput();
     flex-grow: 1;
     border-radius: var(--t-radius-sm);
-
-    &:hover {
-      background-color: var(--t-neutral-9);
-    }
   }
 
   .chevron {
@@ -46,6 +43,7 @@
 
     .option {
       padding: var(--t-spacing-md);
+      cursor: pointer;
 
       &:focus {
         outline: 1px solid var(--t-color);
@@ -68,7 +66,6 @@
 
         &:hover {
           border-color: var(--t-primary-900);
-          background-color: var(--t-primary-800);
         }
       }
     }

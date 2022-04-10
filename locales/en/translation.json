@@ -16,9 +16,9 @@
   },
   "alreadyloggedin": "You're already logged in",
   "logout": "Log out",
+  "wantLogout": "Do you want to log out?",
   "username": "Username",
   "password": "Password",
-  "home": "Home",
   "newApplication": "New application",
   "edit": "Edit",
   "id": "ID",
@@ -121,9 +121,7 @@
   "generateCode": "Generate code",
   "codeExpiresAt": "Code expires at {{exp}}",
   "clickToCopy": "Click to copy",
-
   "hi": "Hi, {{name}}!",
-
   "sessions": {
     "_": "Sessions",
     "closeAll": "Close all sessions",
@@ -138,5 +136,28 @@
   "blockTheUser": "Block the user",
   "wantBlockTheUser": "Are you sure you want to block the user {{name}} ({{id}})",
   "youAreBlockingYourself": "Warning! You are blocking yourself, you won't be able to access the dashboard after that action",
-  "pleaseProvideReasonForBlock": "Please provide reason for blocking this user"
+  "pleaseProvideReasonForBlock": "Please provide reason for blocking this user",
+  "users": {
+    "all": "All users",
+    "new": "New users",
+    "_": "Users"
+  },
+  "home": {
+    "_": "Home",
+    "events": "Events",
+    "seqCompleted": "Finished sequences",
+    "seqInProgress": "Sequences in progress",
+    "seqFail": "Failed sequences",
+    "noFailedRecently": "No failed sequences recently",
+    "inLast24h": "In last 24 hours",
+    "noSeqInProgress": "No ongoing sequences",
+    "welcomeBack": "Welcome back"
+  },
+  "order": {
+    "new2Old": "From new to old"
+  },
+  "user": {
+    "isBlocked": "Is blocked",
+    "isSuperuser": "Is superuser"
+  }
 }

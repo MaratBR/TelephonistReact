@@ -53,8 +53,8 @@ export default function CurrentUser() {
   return (
     <div className={S.root}>
       <span>
-        <Trans>
-          Logged in as <NavLink to={`/admin/users/${user.username}`}>{user.username}</NavLink>
+        <Trans i18nKey="login.loggedInAs" values={{ username: user.username }}>
+          Logged in as <NavLink to={`/admin/users/${user.username}`}>{'{{username}}'}</NavLink>
         </Trans>
       </span>
 

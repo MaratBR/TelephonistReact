@@ -4,6 +4,11 @@
   box-shadow: 0 2px 5px var(--t-neutral-3);
   min-width: 300px;
   min-height: 200px;
+  max-height: 90vh;
+  max-width: 90vw;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -22,6 +27,7 @@
 
 .body {
   padding: 0.5em 1em 1em 1em;
+  margin-bottom: auto;
 }
 
 .footer {

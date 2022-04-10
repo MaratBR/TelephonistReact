@@ -13,7 +13,7 @@ import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { persistQueryClient } from 'react-query/persistQueryClient-experimental';
 import { Provider as StoreProvider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import store from 'store';
 
 function Loader() {
@@ -71,6 +71,8 @@ function AppRouter() {
             <Route path="users/new" element={COMPONENTS.NewUser} />
             <Route path="users/:name" element={COMPONENTS.UserView} />
           </Route>
+
+          <Route path="*" element={<Navigate to="/admin" replace />} />
         </Routes>
       </BrowserRouter>
     </React.Suspense>

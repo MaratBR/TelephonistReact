@@ -37,6 +37,10 @@ interface CollectionStats {
 export interface TelephonistStats {
   counters: Counters;
   failed_sequences: Sequence[];
+  in_progress_sequences: {
+    count: number;
+    list: Sequence[];
+  };
   db: {
     stats: {
       allocated: number;

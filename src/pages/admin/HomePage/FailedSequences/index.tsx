@@ -13,11 +13,11 @@ export default function FailedSequences({ sequences }: FailedSequencesProps) {
   return (
     <Card>
       <h3>
-        {t('failedSequences')}
+        {t('home.seqFail')}
         {sequences.length ? <span className={S.count}>{sequences.length}</span> : undefined}
       </h3>
       {sequences.length === 0
-        ? t('noFailedSequencesRecently')
+        ? t('home.noFailedRecently')
         : sequences.map((sequence) => <SequenceCard sequence={sequence} />)}
     </Card>
   );

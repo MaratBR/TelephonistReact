@@ -24,13 +24,13 @@ export default function UsersList() {
   const [order, setOrder] = useState<'_id' | 'username'>('_id');
   const { data: pagination, isFetching } = useQuery(
     ['users', order, page],
-    () => users.getUsers({ page, order_by: order }),
+    () => users.getUsers({ page, order_by: order, order: order === 'username' ? 'asc' : 'desc' }),
     { keepPreviousData: true, retry: 3 }
   );
 
   return (
     <>
-      <PageHeader title={t('allUsers')} />
+      <PageHeader title={t('users.all')} />
       <Container>
         <Padded>
           <Stack h>
@@ -39,7 +39,7 @@ export default function UsersList() {
               onChange={setOrder}
               value={order}
               options={['_id', 'username']}
-              renderElement={(field) => (field === '_id' ? t('newToOld') : t('username'))}
+              renderElement={(field) => (field === '_id' ? t('order.new2Old') : t('username'))}
             />
           </Stack>
         </Padded>
@@ -65,12 +65,12 @@ export default function UsersList() {
                 },
                 {
                   key: 'is_blocked',
-                  title: t('isBlocked'),
+                  title: t('user.isBlocked'),
                   render: renderBoolean,
                 },
                 {
                   key: 'is_superuser',
-                  title: t('isSuperuser'),
+                  title: t('user.isSuperuser'),
                   render: renderBoolean,
                 },
               ]}

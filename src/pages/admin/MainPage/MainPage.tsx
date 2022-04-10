@@ -1,19 +1,13 @@
 import React, { ErrorInfo } from 'react';
 import { Alert } from '@ui/Alert';
 import CurrentUser from './CurrentUser';
+import S from './MainPage.module.scss';
 import { Nav, NavGroup, NavItem, NavItems } from './Nav';
-import { css } from '@emotion/react';
 import { mdiDotsGrid, mdiHomeCircleOutline, mdiPlus } from '@mdi/js';
 import { TFunction } from 'i18next';
 import AuthorizatioRequired from 'pages/AuthorizationRequired';
 import { withTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
-
-const rootCSS = css`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  height: 100vh;
-`;
 
 interface MainPageInnerState {
   error?: Error;
@@ -35,12 +29,12 @@ class MainPageInner extends React.Component<MainPageInnerProps, MainPageInnerSta
     const { error, errorInfo } = this.state;
 
     return (
-      <div css={rootCSS}>
+      <div className={S.page}>
         <Nav>
           <NavItems>
             <CurrentUser />
             <NavItem to="/admin" iconSVG={mdiHomeCircleOutline}>
-              {t('home')}
+              {t('home._')}
             </NavItem>
             <NavGroup text={t('applications')}>
               <NavItem to="/admin/applications" iconSVG={mdiDotsGrid}>
@@ -54,13 +48,13 @@ class MainPageInner extends React.Component<MainPageInnerProps, MainPageInnerSta
                 {t('registerYourApp')}
               </NavItem>
             </NavGroup>
-            <NavGroup text={t('users')}>
+            <NavGroup text={t('users._')}>
               <NavItem to="/admin/users" iconSVG={mdiDotsGrid}>
-                {t('allUsers')}
+                {t('users.all')}
               </NavItem>
 
               <NavItem to="/admin/users/new" iconSVG={mdiPlus}>
-                {t('newUser')}
+                {t('users.new')}
               </NavItem>
             </NavGroup>
           </NavItems>

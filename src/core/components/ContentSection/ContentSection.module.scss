@@ -7,14 +7,16 @@
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-areas:
-    "h h"
-    "b a";
+    'h h'
+    'b a';
 }
 
 .header {
   grid-area: h;
   padding: 0 1em;
   border-bottom: 2px solid var(--t-neutral-8);
+
+  padding: var(--t-spacing-md);
 }
 
 .body {

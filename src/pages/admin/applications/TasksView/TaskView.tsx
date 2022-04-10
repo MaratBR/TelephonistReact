@@ -32,13 +32,12 @@ function TaskBodyView({ value, type }: TaskBodyProps) {
 
 type TaskViewProps = {
   task: Task;
-  editable?: boolean;
 };
 
-export function TaskView({ task, editable }: TaskViewProps) {
+export function TaskView({ task }: TaskViewProps) {
   const [appName, taskName] = task.qualified_name.split('/');
   const [collapsed, setCollapsed] = useState(true);
-  const [editMode, setEditMode] = useState(false);
+  const [editMode] = useState(false);
   const { t } = useTranslation();
 
   let body;

@@ -1,6 +1,6 @@
 import S from './Text.module.scss';
 
-type TextType = 'hint';
+type TextType = 'hint' | 'h3' | 'h2' | 'h1';
 
 interface TextProps {
   type?: TextType;

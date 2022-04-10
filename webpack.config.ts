@@ -25,7 +25,10 @@ const plugins: WebpackPluginInstance[] = [
     title: 'Telephonist',
     template: resolve(SRC, isDevelopment ? 'index.ejs' : 'index.prod.ejs'),
   }),
-  new EnvironmentPlugin(['NODE_ENV', 'DEBUG_API_URL']),
+  new EnvironmentPlugin({
+    NODE_ENV: 'production',
+    DEBUG_API_URL: 'http://localhost:5789',
+  }),
 ];
 
 if (isDevelopment) {

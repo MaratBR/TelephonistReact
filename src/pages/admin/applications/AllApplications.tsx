@@ -4,6 +4,7 @@ import ButtonGroup from '@ui/ButtonGroup';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
 import { DataGrid, DataGridColumn, renderBoolean, renderObjectID } from '@ui/DataGrid';
+import ErrorView from '@ui/Error';
 import PageHeader from '@ui/PageHeader';
 import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -24,7 +25,6 @@ export default function AllApplications() {
   const {
     data: pagination,
     error,
-    status,
     isFetching,
   } = useQuery(['allApplications', page], () => api.getAll({ page }), { keepPreviousData: true });
 
@@ -92,6 +92,8 @@ export default function AllApplications() {
               </Button>
             </ButtonGroup>
           </Padded>
+
+          <ErrorView error={error} />
 
           <PaginationLayout
             loading={isFetching}

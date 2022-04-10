@@ -11,20 +11,10 @@ export interface WSClientState {
 export type WSOptions = {
   reconnectStrategy?: (attempt: number) => number;
   wsTicketFactory?: () => Promise<string>;
-  path: string;
+  url: URL;
   reconnect?: boolean;
   onStateChanged?: (state: WSClientState) => void;
 };
-
-function validateWebsocketPath(path: string) {
-  const url = new URL(window.location.origin + path);
-  if (url.protocol === 'https') {
-    url.protocol = 'wss';
-  } else {
-    url.protocol = 'ws';
-  }
-  return url.toString();
-}
 
 export default abstract class WSClientBase {
   protected readonly options: WSOptions;
@@ -65,9 +55,8 @@ export default abstract class WSClientBase {
     this._clearReconnection();
 
     const query = await this.modifyQuery({});
-    const url = validateWebsocketPath(this.options.path);
     this.websocket = new WebSocket(
-      `${url}?${Object.entries(query)
+      `${this.options.url.toString()}?${Object.entries(query)
         .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
         .join('&')}`
     );

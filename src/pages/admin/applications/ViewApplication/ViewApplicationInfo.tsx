@@ -17,24 +17,22 @@ export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
   return (
     <Parameters
       parameters={{
-        [t('generalInformation')]: {
-          [t('id')]: <code>{app._id}</code>,
-          [t('name')]: <StringValue value={app.name} />,
-          [t('description')]: <StringValue value={app.description} />,
-          [t('accessKey')]: (
-            <>
-              <code>{showKey ? app.access_key : Array(app.access_key.length + 1).join('#')}</code>
-              <Button
-                variant="link"
-                onClick={() => setShowKey(!showKey)}
-                left={<Icon size={0.8} path={showKey ? mdiEyeOff : mdiEye} />}
-              >
-                {showKey ? t('hideKey') : t('showKey')}
-              </Button>
-            </>
-          ),
-          [t('tags')]: <Tags tags={app.tags} />,
-        },
+        [t('id')]: <code>{app._id}</code>,
+        [t('name')]: <StringValue value={app.name} />,
+        [t('description')]: <StringValue value={app.description} />,
+        [t('accessKey')]: (
+          <>
+            <code>{showKey ? app.access_key : Array(app.access_key.length + 1).join('#')}</code>
+            <Button
+              variant="link"
+              onClick={() => setShowKey(!showKey)}
+              left={<Icon size={0.8} path={showKey ? mdiEyeOff : mdiEye} />}
+            >
+              {showKey ? t('hideKey') : t('showKey')}
+            </Button>
+          </>
+        ),
+        [t('tags')]: <Tags tags={app.tags} />,
       }}
     />
   );
