@@ -41,7 +41,7 @@ export default function GenerateRegistrationCode() {
         <ContentSection padded>
           <p>{t('crDescription')}</p>
           <div title={t('clickToCopy')} className={S.code}>
-            {!code ? t('########') : code}
+            {!code ? '########' : code}
           </div>
           {exp ? <span>{t('codeExpiresAt', { exp: exp.toLocaleTimeString() })}</span> : undefined}
           <ButtonGroup>

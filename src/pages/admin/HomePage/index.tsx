@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
 import { Card } from '@ui/Card';
 import Container from '@ui/Container';
 import ErrorView from '@ui/Error';
@@ -16,6 +19,7 @@ export default function HomePage() {
   const api = useApi();
   const user = useAppSelector((s) => s.auth.user);
   const { t } = useTranslation();
+  const [showMore, setShowMore] = useState(false);
   const {
     data: stats,
     status,
@@ -43,8 +47,88 @@ export default function HomePage() {
             />
             <ValueCard name={t('home.events')} value={stats.counters.values.events.day} />
           </Stack>
+
+          <ButtonGroup>
+            <Button onClick={() => setShowMore(!showMore)} color="primary" variant="ghost">
+              {showMore ? t('less') : t('more')}
+            </Button>
+          </ButtonGroup>
+
+          {showMore ? (
+            <>
+              <hr />
+              <h3>{t('home.inTheLast')}</h3>
+              <table>
+                <tr>
+                  <th>{t('home.week')}</th>
+                  <th>{t('home.month')}</th>
+                  <th>{t('home.year')}</th>
+                </tr>
+                <tr>
+                  <td>
+                    <ValueCard
+                      type={stats.counters.values.failed_sequences.week > 0 ? 'danger' : undefined}
+                      name={t('home.seqFail')}
+                      value={stats.counters.values.failed_sequences.week}
+                    />
+                  </td>
+                  <td>
+                    <ValueCard
+                      type={stats.counters.values.failed_sequences.week > 0 ? 'danger' : undefined}
+                      name={t('home.seqFail')}
+                      value={stats.counters.values.failed_sequences.month}
+                    />
+                  </td>
+                  <td>
+                    <ValueCard
+                      type={stats.counters.values.failed_sequences.week > 0 ? 'danger' : undefined}
+                      name={t('home.seqFail')}
+                      value={stats.counters.values.failed_sequences.year}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <ValueCard
+                      name={t('home.seqCompleted')}
+                      value={stats.counters.values.finished_sequences.week}
+                    />
+                  </td>
+                  <td>
+                    <ValueCard
+                      name={t('home.seqCompleted')}
+                      value={stats.counters.values.finished_sequences.month}
+                    />
+                  </td>
+                  <td>
+                    <ValueCard
+                      name={t('home.seqCompleted')}
+                      value={stats.counters.values.finished_sequences.year}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <ValueCard name={t('home.events')} value={stats.counters.values.events.week} />
+                  </td>
+                  <td>
+                    <ValueCard name={t('home.events')} value={stats.counters.values.events.month} />
+                  </td>
+                  <td>
+                    <ValueCard name={t('home.events')} value={stats.counters.values.events.year} />
+                  </td>
+                </tr>
+              </table>
+            </>
+          ) : undefined}
         </Card>
-        <FailedSequences key="sequences" sequences={stats.failed_sequences} />
+        <FailedSequences
+          key="sequences"
+          totalCount={stats.failed_sequences.count}
+          sequences={stats.failed_sequences.list}
+        />
         <Card>
           <h3>{t('home.seqInProgress')}</h3>
           {stats.in_progress_sequences.list.length ? (

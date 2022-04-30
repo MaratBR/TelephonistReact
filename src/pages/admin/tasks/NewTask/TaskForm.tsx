@@ -8,6 +8,7 @@ import { ParametersStack } from 'components/ui/Parameters';
 import { useApi } from 'hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { isIdent } from 'utils/validation';
 import { v4 as uuidv4 } from 'uuid';
 
 type TaskFormProps = {
@@ -48,23 +49,23 @@ export default function TaskForm({ appID, onSaved }: TaskFormProps) {
       <FormError />
       <ParametersStack>
         <InputLayout id="name" header={t('name')}>
-          <Input {...register('name')} placeholder={t('name')} />
+          <Input
+            {...register('name', {
+              required: true,
+              validate: (v) => (isIdent(v) ? undefined : t<string>('errors.validation.ident')),
+            })}
+            placeholder={t('name')}
+          />
         </InputLayout>
         <InputLayout id="displayName" header={t('displayName')}>
-          <Input {...register('display_name')} placeholder={t('displayName')} />
+          <Input {...register('display_name', { required: true })} placeholder={t('displayName')} />
         </InputLayout>
         <InputLayout id="body" header={t('taskBody')}>
           <Controller
             control={control}
             name="body"
             render={({ field: { value, onChange } }) => (
-              <TaskBodyEditor
-                value={value}
-                onChange={(v) => {
-                  console.log('onChange from TaskForm', v);
-                  onChange(v);
-                }}
-              />
+              <TaskBodyEditor value={value} onChange={onChange} />
             )}
           />
         </InputLayout>

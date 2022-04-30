@@ -11,7 +11,7 @@ export interface Event {
   task_id: string;
   data: any | null;
   publisher_ip: string | null;
-  created_at: string;
+  t: number;
   _id: string;
 }
 
@@ -23,6 +23,12 @@ export enum SequenceState {
   SKIPPED = 'skipped',
   IN_PROGRESS = 'in_progress',
   FROZEN = 'frozen',
+}
+
+export interface TriggeredBy {
+  trigger_type: string;
+  trigger_body: any;
+  extra: null | Record<string, any>;
 }
 
 export interface Sequence {
@@ -37,11 +43,12 @@ export interface Sequence {
   task_id: string | null;
   expires_at: string | null;
   error: string | null;
+  triggered_by: TriggeredBy;
   connection_id: string | null;
   created_at: string;
 }
 
-export interface SequenceStandalone extends Omit<Sequence, 'connection_id' | 'app_id' | 'task_id'> {
+export interface SequenceStandalone extends Omit<Sequence, 'connection_id' | 'app_id'> {
   app: {
     _id: string;
     name: string;
@@ -50,12 +57,6 @@ export interface SequenceStandalone extends Omit<Sequence, 'connection_id' | 'ap
   };
   connection: ConnectionInfo;
   host: ServerInfo;
-  logs: {
-    t: string;
-    severity: number;
-    body: string;
-    _id: string;
-  }[];
 }
 
 function toSequenceProcess(v: any): SequenceProcess {

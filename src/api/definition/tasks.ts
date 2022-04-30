@@ -34,7 +34,6 @@ export interface Task {
   env: Record<string, string>;
   last_updated: string;
   disabled: boolean;
-  errors: Record<string, string>;
   body: TaskBody;
   app_id: string;
 }

@@ -3,7 +3,7 @@ export interface LoginRequest {
   password: string;
 }
 
-interface PasswordResetResponse {
+export interface PasswordResetResponse {
   detail: 'Password reset required';
   password_reset: {
     token: string;
@@ -20,12 +20,23 @@ interface LoggedInResponse {
 export type LoginResponse = LoggedInResponse | PasswordResetResponse;
 
 export function isPasswordReset(o: LoginResponse): o is PasswordResetResponse {
-  return typeof (o as any).password_reset === 'object';
+  return (
+    typeof o === 'object' &&
+    o !== null &&
+    typeof (o as any).password_reset === 'object' &&
+    typeof (o as any).password_reset.token === 'string' &&
+    typeof (o as any).password_reset.exp === 'number'
+  );
 }
 
 export interface ResetPassword {
   password_reset_token: string;
   new_password: string;
+}
+
+export interface ChangePassword {
+  new_password: string;
+  password: string;
 }
 
 export interface User {

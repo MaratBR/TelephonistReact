@@ -37,7 +37,6 @@ export default function NewUser() {
       <Container>
         <ContentSection padded>
           <form onSubmit={onSubmit}>
-            <pre>{JSON.stringify(errors)}</pre>
             <ParametersStack>
               <InputLayout id="username" header={t('username')}>
                 <Input {...register('username')} />

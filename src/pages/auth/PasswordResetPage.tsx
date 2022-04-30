@@ -93,13 +93,13 @@ export default function PasswordResetPage() {
             <Input
               variant="flushed"
               type="password"
-              placeholder={t('newPwd')}
+              placeholder={t('profile.changePassword.newPassword')}
               {...register('password', { required: true })}
             />
             <Input
               variant="flushed"
               type="password"
-              placeholder={t('repeatNewPwd')}
+              placeholder={t('profile.changePassword.repeatNewPassword')}
               {...register('password2')}
             />
 

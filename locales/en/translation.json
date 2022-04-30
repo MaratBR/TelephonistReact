@@ -5,14 +5,16 @@
   "save": "Save",
   "login": {
     "progress": "Logging you in...",
-    "error": "Ooops, failed to log in",
+    "error": "Ooops, failed to log in: {{error}}",
     "welcome": "Welcome back!",
-    "_": "Log in"
+    "_": "Log in",
+    "loggedInAs": "Logged in as <1>{{username}}</1>"
   },
   "errors": {
     "http": {
       "code": "Unexpected HTTP code: {{code}}"
-    }
+    },
+    "generic": "Something went wrong"
   },
   "alreadyloggedin": "You're already logged in",
   "logout": "Log out",
@@ -46,9 +48,6 @@
     "noToken": "",
     "unmatchingPasswords": ""
   },
-  "newPwd": "New password",
-  "repeatNewPwd": "Repeat new password",
-  "setNewPwd": "Set new password",
   "isConnected": "Connected",
   "clientName": "Client name",
   "connectedAt": "Connected at",
@@ -81,8 +80,17 @@
   "connected": "Connected",
   "disconnected": "Disconnected",
   "tagInputHint": "Press enter to add the tag",
-  "serverIsNotAvailable": "Server is unavailable",
-  "serverIsNotAvailableDetails": "Server seems to be offline for some reason. Try to reload the page.",
+  "serverUnavailable": {
+    "header": "Server is unavailable",
+    "solutions": {
+      "running": "Ensure that the API is running.",
+      "ssl": "Ensure the correctness of the SSL certificate (if applicable).",
+      "cors": "Ensure that the CORS is not misconfigured (if server is running on a different domain/port)",
+      "console": "Check the console output"
+    },
+    "url": "API URL:",
+    "whatYouCanDo": "Here's what you can try:"
+  },
   "displayNameDescription": "User-friends name, don't have to be unique (but higly encouraged).",
   "noCancel": "No, cancel",
   "yesDelete": "Yes, delete",
@@ -91,31 +99,22 @@
   "eventKey": "Event key",
   "createdAt": "Created at",
   "ip": "IP-address",
-  "sequence": "Sequence",
-  "sequenceState": {
-    "failed": "Failed",
-    "in_progress": "In progress...",
-    "skipped": "Skipped",
-    "frozen": "Frozen",
-    "succeeded": "Succeeded"
+  "application": "Application",
+  "sequence": {
+    "_": "Sequence",
+    "startedAt": "Started at",
+    "logs": "Logs"
   },
+  "noConnectionAssignedToSequence": "No connection asssigned to this sequence",
   "noEvents": "No events",
-  "log": {
-    "body": "Body",
-    "ts": "Timestamp",
-    "showRaw": "Show raw"
-  },
   "loading": "Loading...",
   "sequenceNotFound": "Sequence not found",
-  "connnection": "Connection",
+  "sequencesNotFound": "Sequences not found",
+  "connection": "Connection",
   "sequences": "Sequences",
   "newEventsAbove": "(new events above)",
   "triggerType": "Type of trigger",
   "lastUpdated": "Last updated",
-  "nSecondsAgo": "{{count}} seconds ago",
-  "nMinutesAgo": "{{count}} minutes ago",
-  "nHoursAgo": "{{count}} hours ago",
-  "justNow": "just now",
   "registerYourApp": "Register your app",
   "crDescription": "Here you can generate registration code for your new application. Press \"Generate code\" below and then copy the code to your application. Application should ask you for the code if it supports this feature.",
   "generateCode": "Generate code",
@@ -125,10 +124,9 @@
   "sessions": {
     "_": "Sessions",
     "closeAll": "Close all sessions",
-    "exceptCurrent": "Close all except current",
     "isCurrent": "This is current session",
-    "wantCloseAll": "Do you want to clsoe all sessions of {{username}}",
-    "wantClose": "Do you want to close the session {{id}} for user {{username}}"
+    "wantClose": "Do you want to close the session {{id}} for user {{username}}",
+    "empty": ""
   },
   "userAgent": "User agent",
   "os": "OS",
@@ -151,7 +149,11 @@
     "noFailedRecently": "No failed sequences recently",
     "inLast24h": "In last 24 hours",
     "noSeqInProgress": "No ongoing sequences",
-    "welcomeBack": "Welcome back"
+    "welcomeBack": "Welcome back",
+    "inTheLast": "In the last...",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year"
   },
   "order": {
     "new2Old": "From new to old"
@@ -159,5 +161,36 @@
   "user": {
     "isBlocked": "Is blocked",
     "isSuperuser": "Is superuser"
+  },
+  "nSecondsAgo+plural": "{{count}} seconds ago",
+  "nMinutesAgo+plural": "{{count}} minutes ago",
+  "nHoursAgo+plural": "{{count}} hours ago",
+  "nSecondsAgo": "{{count}} second ago",
+  "nMinutesAgo": "{{count}} minute ago",
+  "nHoursAgo": "{{count}} hour ago",
+  "justNow": "just now",
+  "yes": "Yes",
+  "no": "No",
+  "less": "Less",
+  "more": "More",
+  "logs": "Logs",
+  "userWillBePromptedNewPassword": "User will be promted new password during first log in",
+  "profile": {
+    "changePassword": {
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "repeatNewPassword": "Repeat new password",
+      "submit": "Submit",
+      "title": "Change password",
+      "actionName": "Change password",
+      "loading": "Changing your password...",
+      "success": "Password has been changed",
+      "error": "Failed to change your password"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Profile and UI settings",
+      "language": "Language"
+    }
   }
 }

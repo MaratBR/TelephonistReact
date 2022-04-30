@@ -40,7 +40,7 @@ export default function ErrorView({ error }: ErrorProps) {
       <Icon color="var(--t-danger)" size={2} path={mdiAlertCircleOutline} />
       <div>
         <span className={S.header}>{header}</span>
-        {body}
+        <pre>{body}</pre>
       </div>
     </div>
   );

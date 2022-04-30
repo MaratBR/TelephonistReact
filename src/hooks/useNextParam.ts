@@ -1,4 +1,4 @@
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useSearchParams } from 'react-router-dom';
 
 export interface NextParamController {
   nextIfPresent(): void;
@@ -54,6 +54,6 @@ class Next implements NextParamController {
 
 export default function useNextParam(): NextParamController {
   const navigate = useNavigate();
-  const { next } = useParams();
-  return new Next(next, navigate);
+  const [params] = useSearchParams();
+  return new Next(params.get('next'), navigate);
 }

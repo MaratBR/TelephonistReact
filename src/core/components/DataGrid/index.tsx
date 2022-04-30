@@ -202,7 +202,7 @@ export function renderObjectID(id: string) {
   );
 }
 
-export function renderDate(d: string) {
+export function renderDate(d: string | number) {
   const dt = new Date(d);
   return (
     <Stack h>

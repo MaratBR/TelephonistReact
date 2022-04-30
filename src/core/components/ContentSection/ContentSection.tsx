@@ -6,15 +6,9 @@ import { Heading } from 'core/components/Text';
 type ContentSectionProps = React.PropsWithChildren<{
   header?: React.ReactNode;
   padded?: boolean;
-  asideContent?: React.ReactNode;
 }>;
 
-export default function ContentSection({
-  header,
-  children,
-  padded,
-  asideContent,
-}: ContentSectionProps) {
+export default function ContentSection({ header, children, padded }: ContentSectionProps) {
   return (
     <div className={S.section}>
       {header ? (
@@ -23,7 +17,6 @@ export default function ContentSection({
         </div>
       ) : undefined}
       <div className={classNames(S.body, { [S.padded]: padded })}>{children}</div>
-      {asideContent ? <aside className={S.aside}>{asideContent}</aside> : undefined}
     </div>
   );
 }

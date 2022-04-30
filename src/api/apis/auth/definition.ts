@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse, ResetPassword, WhoAmI } from 'api/definition';
+import { ChangePassword, LoginRequest, LoginResponse, ResetPassword, WhoAmI } from 'api/definition';
 
 export interface IAuthApi {
   authorize(data: LoginRequest): Promise<LoginResponse>;
@@ -6,4 +6,5 @@ export interface IAuthApi {
   whoami(): Promise<WhoAmI>;
   getCSRFToken(): Promise<string>;
   logout(): Promise<void>;
+  changePassword(data: ChangePassword): Promise<void>;
 }

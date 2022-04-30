@@ -6,15 +6,16 @@ import { useTranslation } from 'react-i18next';
 
 interface FailedSequencesProps {
   sequences: Sequence[];
+  totalCount: number;
 }
 
-export default function FailedSequences({ sequences }: FailedSequencesProps) {
+export default function FailedSequences({ sequences, totalCount }: FailedSequencesProps) {
   const { t } = useTranslation();
   return (
     <Card>
       <h3>
         {t('home.seqFail')}
-        {sequences.length ? <span className={S.count}>{sequences.length}</span> : undefined}
+        {sequences.length ? <span className={S.count}>{totalCount}</span> : undefined}
       </h3>
       {sequences.length === 0
         ? t('home.noFailedRecently')

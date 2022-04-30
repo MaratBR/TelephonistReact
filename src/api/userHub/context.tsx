@@ -9,7 +9,7 @@ export const UserHubContext = React.createContext<UserHubWS | null>(null);
 
 function getWSUrl() {
   const url = getApiURL();
-  url.pathname = '/_ws/user/main';
+  url.pathname = '/api/user-v1/ws/main';
   if (url.protocol === 'https:') {
     url.protocol = 'wss:';
   } else {

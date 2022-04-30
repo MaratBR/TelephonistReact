@@ -5,8 +5,11 @@ import { ModalProvider } from '@ui/Modal';
 import { ThemeProvider } from '@ui/theme';
 import GlobalAppNotifications from './GlobalAppNotifications';
 import HomePage from '@admin/HomePage';
+import ConnectionView from '@admin/connections/ConnectionView';
+import LogsViewer from '@admin/logs/LogsViewer';
 import { ApiProvider } from 'api/context';
 import { UserHubProvider } from 'api/userHub/context';
+import Settings from 'pages/profile/Settings';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental';
@@ -60,6 +63,7 @@ function AppRouter() {
           <Route path="/login/password-reset" element={COMPONENTS.PasswordResetPage} />
           <Route path="/admin/" element={lazy(() => import('pages/admin/MainPage'))}>
             <Route path="" element={<HomePage />} />
+            <Route path="profile" element={<Settings />} />
             <Route path="applications" element={COMPONENTS.AllApplications} />
             <Route path="applications/new" element={COMPONENTS.NewApplication} />
             <Route path="applications/cr" element={COMPONENTS.GenerateRegistrationCode} />
@@ -70,6 +74,10 @@ function AppRouter() {
             <Route path="users" element={COMPONENTS.UsersList} />
             <Route path="users/new" element={COMPONENTS.NewUser} />
             <Route path="users/:name" element={COMPONENTS.UserView} />
+
+            <Route path="connections/:id" element={<ConnectionView />} />
+
+            <Route path="logs" element={<LogsViewer />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/admin" replace />} />

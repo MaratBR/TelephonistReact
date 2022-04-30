@@ -46,6 +46,7 @@ export interface UserHubIncomingMessages {
     app_id: string;
     app_name: string;
   };
+  updated: void;
 }
 
 export interface UserHubOutgoingMessages {

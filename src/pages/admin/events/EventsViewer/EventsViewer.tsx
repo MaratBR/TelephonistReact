@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { renderDate } from '@ui/DataGrid';
 import { Stack } from '@ui/Stack';
 import Table from '@ui/Table';
 import S from './EventsViewer.module.scss';
@@ -26,10 +25,11 @@ interface EventRowProps {
 
 function EventRow({ event, index, selected, onSelectSequence }: EventRowProps) {
   const { t } = useTranslation();
+  const date = new Date(event.t / 1000);
   return (
     <tr
       className={classNames(S.row, {
-        [S.selectfed]: selected,
+        [S.selected]: selected,
       })}
       key={event._id}
       onMouseLeave={() => onSelectSequence(null)}
@@ -37,12 +37,13 @@ function EventRow({ event, index, selected, onSelectSequence }: EventRowProps) {
     >
       <td>{index + 1}</td>
       <td>
-        <span className={S.key}>
-          {event.event_type}
-          {event.task_name ? <span className={S.task}>{`@${event.task_name}`}</span> : undefined}
-        </span>
+        <span className={S.key}>{event.event_key}</span>
       </td>
-      <td>{renderDate(event.created_at)}</td>
+      <td>
+        <small>{date.toLocaleDateString()}</small> {`${date.getHours()}`.padStart(2, '0')}:
+        {`${date.getMinutes()}`.padStart(2, '0')}:{`${date.getSeconds()}`.padStart(2, '0')}.
+        {`${date.getMilliseconds()}`.padStart(3, '0')}
+      </td>
       <td>
         <code>{event.publisher_ip}</code>
       </td>
@@ -50,7 +51,7 @@ function EventRow({ event, index, selected, onSelectSequence }: EventRowProps) {
         {event.sequence_id ? (
           <NavLink to={`/admin/sequences/${event.sequence_id}?bta=1`}>
             <Stack h alignItems="center">
-              {t('sequence')}
+              {t('sequence._')}
               <Icon size={0.9} path={mdiArrowRight} />
             </Stack>
           </NavLink>

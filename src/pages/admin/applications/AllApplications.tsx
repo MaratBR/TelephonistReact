@@ -6,7 +6,7 @@ import ContentSection from '@ui/ContentSection';
 import { DataGrid, DataGridColumn, renderBoolean, renderObjectID } from '@ui/DataGrid';
 import ErrorView from '@ui/Error';
 import PageHeader from '@ui/PageHeader';
-import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
+import { mdiPencil, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Application } from 'api/definition';
 import PaginationLayout from 'components/ui/PaginationLayout';
@@ -86,9 +86,6 @@ export default function AllApplications() {
                 left={<Icon size={0.9} path={mdiPlus} />}
               >
                 {t('createNew')}
-              </Button>
-              <Button disabled color="danger" left={<Icon size={0.9} path={mdiTrashCan} />}>
-                {t('delete')}
               </Button>
             </ButtonGroup>
           </Padded>

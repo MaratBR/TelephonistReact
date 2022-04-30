@@ -1,3 +1,3 @@
-import LogsViewer from './Logs';
+import LogsViewer from './LogsViewer';
 
 export default LogsViewer;

@@ -1,8 +1,12 @@
 import ApiBase from '../../ApiBase';
 import { IAuthApi } from './definition';
-import { LoginRequest, LoginResponse, ResetPassword, WhoAmI } from 'api/definition';
+import { ChangePassword, LoginRequest, LoginResponse, ResetPassword, WhoAmI } from 'api/definition';
 
 export default class AuthApi extends ApiBase implements IAuthApi {
+  async changePassword(data: ChangePassword): Promise<void> {
+    await this.client.post('auth/reset-password-current', data);
+  }
+
   getCSRFToken(): Promise<string> {
     return this.client.get('auth/csrf').then((r) => r.data);
   }

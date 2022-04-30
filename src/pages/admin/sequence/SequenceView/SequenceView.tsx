@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
 import { Breadcrumb } from '@ui/Breadcrumb';
+import { Button } from '@ui/Button';
+import ButtonGroup from '@ui/ButtonGroup';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
 import ErrorView from '@ui/Error';
@@ -9,10 +10,12 @@ import { Parameters } from '@ui/Parameters';
 import { Text } from '@ui/Text';
 import SequenceMetaBar from './SequenceMetaBar';
 import SequenceStateView from './SequenceStateView';
-import { ConnectionInfo, SequenceStandalone, ServerInfo } from 'api/definition';
+import TriggeredByView from './TriggeredByView';
+import { mdiText } from '@mdi/js';
+import Icon from '@mdi/react';
+import { ConnectionInfo, SequenceStandalone, SequenceState, ServerInfo } from 'api/definition';
 import { isNotFound } from 'api/utils';
 import { useApi } from 'hooks';
-import LogsViewer from 'pages/admin/logs/LogsViewer';
 import { Trans, useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
@@ -45,7 +48,7 @@ function SequenceConnectionView({
   return (
     <>
       <h3>
-        <NavLink to={`/admin/connection/${connection._id}`}>{connection._id}</NavLink>
+        <NavLink to={`/admin/connections/${connection._id}`}>{connection._id}</NavLink>
       </h3>
       <Trans
         values={{ os: server.os, name: connection.client_name, serverName: server.ip }}
@@ -60,27 +63,24 @@ function SequenceConnectionView({
 
 export default function SequenceView() {
   const { id } = useParams();
-  const {
-    t,
-    i18n: { language },
-  } = useTranslation();
+  const { t } = useTranslation();
   const { events } = useApi();
   const {
     data: sequence,
     error,
     isLoading,
-  } = useQuery(['sequence', id], () => events.getSequence(id));
-  const title = isLoading ? t('loading') : `${t('sequence')} – ${sequence.name}`;
-  const td = useMemo(
-    () => ({
-      notFound: t('sequenceNotFound', { sequence: id }),
-      sequence: t('sequence'),
-      id: t('id'),
-      name: t('name'),
-      clientName: t('clientName'),
-    }),
-    [language, id]
-  );
+  } = useQuery(['sequence', id], () => events.getSequence(id), {
+    refetchInterval: (v) => {
+      if (!v || v.state === SequenceState.IN_PROGRESS) {
+        return 1800;
+      }
+      if (v.state === SequenceState.FROZEN) {
+        return 10000;
+      }
+      return undefined;
+    },
+  });
+  const title = isLoading ? t('loading') : `${t('sequence._')} – ${sequence.name}`;
 
   const breadcrumb = sequence ? (
     <Breadcrumb>
@@ -101,38 +101,62 @@ export default function SequenceView() {
     content = <LoadingSpinner />;
   } else if (error) {
     if (isNotFound(error)) {
-      content = <ErrorView error={td.notFound} />;
+      content = <ErrorView error={t('sequenceNotFound', { sequence: id })} />;
     } else {
       content = <ErrorView error={error} />;
     }
   } else {
     content = (
       <>
+        <ContentSection padded>
+          <TriggeredByView triggeredBy={sequence.triggered_by} />
+        </ContentSection>
+        <ContentSection padded>
+          <ButtonGroup>
+            <Button
+              to={`/admin/logs?sequenceID=${sequence._id}`}
+              variant="ghost"
+              left={<Icon size={0.9} path={mdiText} />}
+            >
+              {t('sequence.logs')}
+            </Button>
+          </ButtonGroup>
+        </ContentSection>
         <ErrorView error={sequence.error} />
         <ContentSection padded header={t('generalInformation')}>
           <Parameters
             parameters={{
-              [td.id]: sequence._id,
-              [td.name]: sequence.name,
+              [t('id')]: sequence._id,
+              [t('name')]: sequence.name,
+              [t('sequence.startedAt')]: `${new Date(sequence.created_at).toLocaleString()} (${
+                sequence.created_at
+              })`,
             }}
           />
         </ContentSection>
-        <ContentSection padded header={t('connnection')}>
-          {sequence.connection ? (
-            <SequenceConnectionView server={sequence.host} connection={sequence.connection} />
-          ) : undefined}
-        </ContentSection>
-        <ContentSection header={t('logs')}>
-          <LogsViewer logs={sequence.logs} />
-        </ContentSection>
-        <ContentSection padded header={t('application')}>
-          <h3>
-            <NavLink to={`/admin/applications/${sequence.app.name}`}>
-              {sequence.app.display_name} ({sequence.app.name})
-            </NavLink>
-          </h3>
-          <Text type="hint">{sequence.app._id}</Text>
-        </ContentSection>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1em' }}>
+          <ContentSection padded header={t('connection')}>
+            {sequence.connection ? (
+              <SequenceConnectionView server={sequence.host} connection={sequence.connection} />
+            ) : (
+              <p>{t('noConnectionAssignedToSequence')}</p>
+            )}
+          </ContentSection>
+          <ContentSection padded header={t('application')}>
+            <h3>
+              <NavLink to={`/admin/applications/${sequence.app.name}`}>
+                {sequence.app.display_name} ({sequence.app.name})
+              </NavLink>
+            </h3>
+            <Text type="hint">{sequence.app._id}</Text>
+          </ContentSection>
+          <ContentSection padded header={t('task')}>
+            <h3>
+              <NavLink to={`/admin/tasks/${sequence.task_name}`}>{sequence.task_name}</NavLink>
+            </h3>
+            <Text type="hint">{sequence.task_id}</Text>
+          </ContentSection>
+        </div>
       </>
     );
   }

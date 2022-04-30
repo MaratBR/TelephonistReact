@@ -4,7 +4,6 @@ import ButtonGroup from '@ui/ButtonGroup';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
 import ErrorView from '@ui/Error';
-import { Form } from '@ui/Form';
 import { Input, InputLayout, Textarea } from '@ui/Input';
 import PageHeader from '@ui/PageHeader';
 import TagInput from '@ui/TagInput';
@@ -17,9 +16,16 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { isIdent } from 'utils/validation';
 
 export default function NewApplication() {
-  const { control, register, getValues } = useForm<CreateApplication>({
+  const {
+    control,
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateApplication>({
     defaultValues: {
       name: '',
       display_name: '',
@@ -69,15 +75,27 @@ export default function NewApplication() {
       <Container>
         <ContentSection padded>
           <ErrorView error={submit.error} />
-          <Form id="create-new-application-form" action="#" onSubmit={() => submit.mutate()}>
+          <form
+            id="create-new-application-form"
+            action="#"
+            onSubmit={handleSubmit(() => submit.mutate())}
+          >
             <ParametersStack>
               <InputLayout
                 descriptionPos="nearInput"
                 id="name"
                 header={t('name')}
+                error={errors.name?.message}
                 description={t('nameCannotBeChangedAfterwards')}
               >
-                <Input {...register('name')} required placeholder={t('name')} />
+                <Input
+                  {...register('name', {
+                    validate: (v) =>
+                      isIdent(v) ? undefined : t<string>('errors.validation.ident'),
+                  })}
+                  required
+                  placeholder={t('name')}
+                />
               </InputLayout>
               <InputLayout
                 descriptionPos="nearInput"
@@ -106,7 +124,7 @@ export default function NewApplication() {
                 />
               </InputLayout>
             </ParametersStack>
-          </Form>
+          </form>
         </ContentSection>
       </Container>
     </>

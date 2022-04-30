@@ -16,10 +16,9 @@ import { useAppSelector } from 'store';
 
 interface ApplicationEventsProps {
   appID: string;
-  maxEvents: number;
 }
 
-function ApplicationEvents({ appID, maxEvents }: ApplicationEventsProps) {
+function ApplicationEvents({ appID }: ApplicationEventsProps) {
   const [active, setActive] = useState(true);
   const isConnected = useAppSelector((s) => s.ws.isConnected);
   const api = useApi();
@@ -34,6 +33,7 @@ function ApplicationEvents({ appID, maxEvents }: ApplicationEventsProps) {
     keepPreviousData: true,
     onSuccess: () => setNewEvents([]),
     refetchOnWindowFocus: false,
+    refetchInterval: 30000,
   });
 
   useTopic(active, `m/appEvents/${appID}`, (ctx) => {

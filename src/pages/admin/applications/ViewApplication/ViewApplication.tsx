@@ -31,7 +31,13 @@ function ViewApplication() {
   const { applications } = useApi();
 
   const queryClient = useQueryClient();
-  const { data: value, error, status } = useQuery(['application', id], () => applications.get(id));
+  const {
+    data: value,
+    error,
+    status,
+  } = useQuery(['application', id], () => applications.get(id), {
+    refetchInterval: 60000,
+  });
   const { reset, control, getValues } = useForm<UpdateApplication>();
 
   const save = useMutation(
@@ -125,7 +131,7 @@ function ViewApplication() {
         </TabPanel>
         <TabPanel>
           <ContentSection>
-            <ApplicationEvents maxEvents={100} appID={value.app._id} />
+            <ApplicationEvents appID={value.app._id} />
           </ContentSection>
         </TabPanel>
         <TabPanel>

@@ -1,0 +1,13 @@
+.connectionBull {
+  height: 1em;
+  width: 1em;
+  margin: 0.1em;
+  border-radius: 1000px;
+  display: inline-block;
+  background-color: red;
+  border: 1px solid black;
+
+  &.connected {
+    background-color: #0f0;
+  }
+}

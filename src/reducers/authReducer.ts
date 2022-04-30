@@ -2,9 +2,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IAuthApi } from 'api/apis/auth';
 import { LoginResponse, User, WhoAmI, isPasswordReset } from 'api/definition';
-import { PersistConfig } from 'redux-persist';
-import persistReducer from 'redux-persist/es/persistReducer';
-import storage from 'redux-persist/lib/storage';
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -18,7 +15,6 @@ interface AuthState {
     deadline: number;
     token: string;
   } | null;
-  isLoggingIn: boolean;
   sRefID: string | null;
 }
 
@@ -28,7 +24,6 @@ const initialState: AuthState = {
   lastLogin: null,
   passwordReset: null,
   user: null,
-  isLoggingIn: false,
   csrfToken: null,
   sRefID: null,
 };
@@ -46,7 +41,7 @@ interface APIThunkOptions {
   authAPI: IAuthApi;
 }
 
-const initializeAuthThunk = createAsyncThunk(
+export const initializeAuthThunk = createAsyncThunk(
   'auth/initializeAuthThunk',
   async ({ authAPI }: APIThunkOptions): Promise<InitializationData> => {
     const csrfToken = await authAPI.getCSRFToken();
@@ -59,13 +54,23 @@ const initializeAuthThunk = createAsyncThunk(
   }
 );
 
-const logoutThunk = createAsyncThunk(
+export const fetchUserThunk = createAsyncThunk(
+  'auth/fetchUserThunk',
+  async ({ authAPI }: APIThunkOptions): Promise<{ user: User }> => {
+    const whoami = await authAPI.whoami();
+
+    return {
+      user: whoami.user,
+    };
+  }
+);
+
+export const logoutThunk = createAsyncThunk(
   'auth/logoutThunk',
   async ({ authAPI }: APIThunkOptions): Promise<void> => {
     await authAPI.logout();
   }
 );
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -76,6 +81,9 @@ const authSlice = createSlice({
       if (payload.removeLastLogin) {
         state.lastLogin = null;
       }
+    },
+    setLastLogin: (state, { payload: { username } }: PayloadAction<{ username: string }>) => {
+      state.lastLogin = { username };
     },
     handleLoginResponse: (state, { payload }: PayloadAction<LoginResponse>) => {
       if (isPasswordReset(payload)) {
@@ -92,9 +100,6 @@ const authSlice = createSlice({
         state.csrfToken = payload.csrf;
       }
     },
-    setLastLogin: (state, { payload: { username } }: PayloadAction<{ username: string }>) => {
-      state.lastLogin = { username };
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(initializeAuthThunk.fulfilled, (state, { payload }) => {
@@ -109,24 +114,20 @@ const authSlice = createSlice({
       state.isInitialized = true;
       state.csrfToken = null;
     });
+
     builder.addCase(logoutThunk.fulfilled, (state) => {
       state.isLoggedIn = false;
       state.csrfToken = null;
+    });
+
+    builder.addCase(fetchUserThunk.fulfilled, (state, { payload: { user } }) => {
+      state.user = user;
     });
   },
 });
 
 const authReducer = authSlice.reducer;
 
-const { logout, handleLoginResponse, setLastLogin } = authSlice.actions;
+export const { logout, setLastLogin, handleLoginResponse } = authSlice.actions;
 
-const persistConfig: PersistConfig<AuthState> = {
-  key: 'auth',
-  storage,
-};
-
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-
-export default persistedAuthReducer;
-
-export { logout, handleLoginResponse, setLastLogin, initializeAuthThunk, logoutThunk };
+export default authReducer;

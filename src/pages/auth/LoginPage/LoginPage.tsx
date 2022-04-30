@@ -17,11 +17,19 @@ import { handleLoginResponse, logout } from 'reducers/authReducer';
 import { useAppDispatch, useAppSelector } from 'store';
 
 function LoginPage() {
+  const lastLoggedInUsername = useAppSelector((s) => s.auth.lastLogin?.username);
+
   const {
     register,
     getValues,
-    formState: { errors },
-  } = useForm<LoginRequest>();
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm<LoginRequest>({
+    defaultValues: {
+      password: '',
+      username: lastLoggedInUsername,
+    },
+  });
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -31,29 +39,33 @@ function LoginPage() {
 
   let formBody: React.ReactNode;
 
-  const login = useMutation(() => api.authorize(getValues()), {
-    retry: false,
-    onMutate: () => {
-      toast.loading(t('login.progress'), { id: 'login' });
+  const login = useMutation(
+    async () => {
+      const response = await api.authorize(getValues());
+      await api.whoami();
+      return response;
     },
-    onError: (err) => {
-      toast.error(t('login.error'), { id: 'login' });
-      toast.error(err.toString());
-    },
-    onSuccess: (data) => {
-      dispatch(handleLoginResponse(data));
-      if (isPasswordReset(data)) {
-        navigate(`/login/password-reset`);
-      } else {
-        if (params.has('next')) {
+    {
+      retry: false,
+      onMutate: () => {
+        toast.loading(t('login.progress'), { id: 'login' });
+      },
+      onError: (err) => {
+        toast.error(t('login.error', { error: err.toString() }), { id: 'login' });
+      },
+      onSuccess: (response) => {
+        dispatch(handleLoginResponse(response));
+        toast.success(t('login.welcome'), { id: 'login' });
+        if (isPasswordReset(response)) {
+          navigate(`/login/password-reset`);
+        } else if (params.has('next')) {
           navigate(params.get('next'));
         } else {
           navigate('/');
         }
-        toast.success(t('login.welcome'), { id: 'login' });
-      }
-    },
-  });
+      },
+    }
+  );
 
   if (isLoggedIn) {
     formBody = (
@@ -64,29 +76,45 @@ function LoginPage() {
     );
   } else {
     formBody = (
-      <>
-        <InputLayout variant="top" id="username" header={t('username')}>
+      <form onSubmit={handleSubmit(() => login.mutate())}>
+        <InputLayout
+          error={errors.username?.message}
+          variant="top"
+          id="username"
+          header={t('username')}
+        >
           <Input
             id="username"
+            autoComplete="off"
             isInvalid={!!errors.username}
             disabled={login.isLoading}
             placeholder={t('username')}
-            {...register('username')}
+            {...register('username', { required: true })}
           />
         </InputLayout>
-        <InputLayout variant="top" id="password" header={t('password')}>
+        <InputLayout
+          error={errors.password?.message}
+          variant="top"
+          id="password"
+          header={t('password')}
+        >
           <Input
             isInvalid={!!errors.password}
             type="password"
             disabled={login.isLoading}
-            {...register('password')}
+            {...register('password', { required: true })}
             placeholder={t('password')}
           />
         </InputLayout>
-        <Button loading={login.isLoading} color="primary" onClick={() => login.mutate()}>
+        <Button
+          disabled={!isValid && !isDirty}
+          loading={login.isLoading}
+          color="primary"
+          type="submit"
+        >
           {t('login._')}
         </Button>
-      </>
+      </form>
     );
   }
 

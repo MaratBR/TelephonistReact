@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { Api } from './Api';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from 'store';
+import { setApiStatus } from 'reducers/apiStatusReducer';
+import { useAppDispatch, useAppSelector } from 'store';
 import { getMeta } from 'utils';
 
 export interface ApiConfiguration {
@@ -15,6 +16,10 @@ export function getApiURL() {
 
   if (process.env.NODE_ENV === 'development') {
     metaApiUrl = process.env.DEBUG_API_URL || 'http://locahost:5789';
+  }
+
+  if (metaApiUrl.startsWith('/')) {
+    metaApiUrl = window.location.origin + metaApiUrl;
   }
 
   let u: URL;
@@ -35,9 +40,24 @@ export function getApiURL() {
 export function ApiProvider({ children }: React.PropsWithChildren<{}>) {
   const csrfToken = useAppSelector((s) => s.auth.csrfToken);
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   const api = useMemo(
-    () => new Api({ t, csrfToken, baseURL: `${getApiURL().toString()}api/user-v1` }),
+    () =>
+      new Api({
+        t,
+        csrfToken,
+        baseURL: `${getApiURL().toString()}api/user-v1`,
+        onBackendAvailabilityUpdate: ({ available, isProxyError, isNetworkError }) => {
+          dispatch(
+            setApiStatus({
+              isAvailable: available,
+              isProxyError,
+              isNetworkError,
+            })
+          );
+        },
+      }),
     [csrfToken, t]
   );
 

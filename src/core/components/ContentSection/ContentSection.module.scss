@@ -3,12 +3,6 @@
   border-radius: var(--t-radius-md);
   margin-block-end: var(--t-spacing-md);
   box-shadow: 0 3px 6px var(--t-neutral-8);
-
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    'h h'
-    'b a';
 }
 
 .header {

@@ -16,18 +16,21 @@ type InputBoxProps = {
   isInvalid?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
-const InputBox = forwardRef(({ variant, className, focused, ...props }: InputBoxProps) => (
-  <div
-    className={classNames(
-      S.box,
-      variants[variant ?? 'default'],
-      {
-        [S.focused]: focused,
-      },
-      className
-    )}
-    {...props}
-  />
-));
+const InputBox = forwardRef(
+  ({ variant, isInvalid, className, focused, ...props }: InputBoxProps) => (
+    <div
+      className={classNames(
+        S.box,
+        variants[variant ?? 'default'],
+        {
+          [S.focused]: focused,
+          [S.invalid]: isInvalid,
+        },
+        className
+      )}
+      {...props}
+    />
+  )
+);
 
 export default InputBox;

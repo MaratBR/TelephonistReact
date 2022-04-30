@@ -13,6 +13,7 @@ interface InputLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   description?: React.ReactNode;
   id: string;
   isChanged?: boolean;
+  error?: string;
 }
 
 const variants: Record<InputLayoutVariant, string> = {
@@ -33,6 +34,7 @@ const InputLayout = forwardRef(
     isChanged,
     id,
     descriptionPos,
+    error,
     ...props
   }: InputLayoutProps) => {
     const descriptionNode = <span className={S.description}>{description}</span>;
@@ -54,6 +56,7 @@ const InputLayout = forwardRef(
         <div className={S.body}>
           {children}
           {descriptionPos === 'nearInput' ? descriptionNode : undefined}
+          {error ? <span className={S.error}>{error}</span> : undefined}
         </div>
       </div>
     );

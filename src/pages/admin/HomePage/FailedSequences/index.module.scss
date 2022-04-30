@@ -1,12 +1,13 @@
 .count {
   margin: var(--t-spacing-sm);
   display: inline-block;
-  height: 1.2em;
-  width: 1.2em;
+  height: 1.5rem;
+  width: 1.5rem;
   background-color: var(--t-danger);
   color: var(--t-on-danger);
   border-radius: 1000px;
   text-align: center;
-  line-height: 1.2em;
+  line-height: 1.5rem;
   vertical-align: middle;
+  font-size: 0.95rem;
 }

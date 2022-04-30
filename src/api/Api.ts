@@ -3,17 +3,24 @@ import IApi from './IApi';
 import { IApplicationsApi } from './apis/applications';
 import ApplicationsApi from './apis/applications/implementation';
 import { AuthApi, IAuthApi } from './apis/auth';
+import IConnectionsApi from './apis/connections/definition';
+import ConnectionsApi from './apis/connections/implementation';
 import { EventsApi, IEventsApi } from './apis/events';
+import ILogsApi from './apis/logs/definition';
+import LogsApi from './apis/logs/implementation';
 import { ITasksApi, TasksApi } from './apis/tasks';
 import { IUsersApi, UsersApi } from './apis/users';
 import { TelephonistStats, WSTicketResponse } from './definition';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { TFunction } from 'i18next';
 
 export interface BackendAvailability {
   available: boolean;
+  lastErrorMessage?: string;
   lastError?: any;
   lastErrorCode?: number;
+  isProxyError: boolean;
+  isNetworkError: boolean;
 }
 
 export interface ApiOptions {
@@ -34,9 +41,17 @@ export class Api extends ApiBase implements IApi {
 
   readonly users: IUsersApi;
 
+  readonly connections: IConnectionsApi;
+
+  readonly logs: ILogsApi;
+
   isOnline: boolean = true;
 
-  private _availability: BackendAvailability = { available: true };
+  private _availability: BackendAvailability = {
+    available: true,
+    isNetworkError: false,
+    isProxyError: false,
+  };
 
   private readonly _availabilityCallback?: (availability: BackendAvailability) => void;
 
@@ -55,12 +70,14 @@ export class Api extends ApiBase implements IApi {
       t,
     });
     const opts = { client: this.client, t };
-    this.client.interceptors.response.use(undefined, this._onError.bind(this));
+    this.client.interceptors.response.use(this._onResponse.bind(this), this._onError.bind(this));
     this.events = new EventsApi(opts);
     this.applications = new ApplicationsApi(opts);
     this.auth = new AuthApi(opts);
     this.tasks = new TasksApi(opts);
     this.users = new UsersApi(opts);
+    this.connections = new ConnectionsApi(opts);
+    this.logs = new LogsApi(opts);
     this.checkApi();
     this._availabilityCallback = onBackendAvailabilityUpdate;
   }
@@ -85,20 +102,36 @@ export class Api extends ApiBase implements IApi {
     if (this._availabilityCallback) this._availabilityCallback(this._availability);
   }
 
+  private _onResponse(response: AxiosResponse) {
+    if (!this._availability.available) {
+      this._updateAvailability({ available: true, isNetworkError: false, isProxyError: false });
+    }
+    return response;
+  }
+
   private _onError(error: any) {
     if (axios.isAxiosError(error)) {
+      (window as any).lastError = error;
       if (error.message === 'Network Error') {
-        this._updateAvailability({ available: false, lastError: error, lastErrorCode: undefined });
+        this._updateAvailability({
+          available: false,
+          lastError: error,
+          lastErrorCode: undefined,
+          isNetworkError: true,
+          isProxyError: false,
+        });
       }
 
       if (error.response) {
-        if (error.response.status === 502) {
+        if (error.response.status === 502 || error.response.status === 503) {
           this._updateAvailability({
             available: false,
             lastError: error,
             lastErrorCode: error.response.status,
+            isNetworkError: false,
+            isProxyError: true,
           });
-        } else {
+        } else if (!this._availability.available) {
           this._updateAvailability({
             available: true,
             lastError: error,

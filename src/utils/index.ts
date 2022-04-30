@@ -10,11 +10,11 @@ export function ellipsizeFn(length: number): (v: string) => string {
 }
 
 export function isYes(v: string): boolean {
-  return ['y', '1', 'yes'].includes(v);
+  return ['y', '1', 'yes', 'true', 't', '+'].includes(v);
 }
 
 export function isNo(v: string): boolean {
-  return ['n', '0', 'no'].includes(v);
+  return ['n', '0', 'no', 'false', 'f', '-'].includes(v);
 }
 
 export function getMeta(name: string) {

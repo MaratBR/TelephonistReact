@@ -2,13 +2,15 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface ApiState {
-  isReachable: boolean;
-  isOnline: boolean;
+  isProxyError: boolean;
+  isAvailable: boolean;
+  isNetworkError: boolean;
 }
 
 const initialState: ApiState = {
-  isReachable: true,
-  isOnline: true,
+  isProxyError: true,
+  isAvailable: true,
+  isNetworkError: false,
 };
 
 const apiStatusSlice = createSlice({
@@ -16,8 +18,9 @@ const apiStatusSlice = createSlice({
   initialState,
   reducers: {
     set: (state, { payload }: PayloadAction<ApiState>) => {
-      state.isOnline = payload.isOnline;
-      state.isReachable = payload.isReachable;
+      state.isAvailable = payload.isAvailable;
+      state.isProxyError = payload.isProxyError;
+      state.isNetworkError = payload.isNetworkError;
     },
   },
 });

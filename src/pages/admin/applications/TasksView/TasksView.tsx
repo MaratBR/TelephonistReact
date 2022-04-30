@@ -7,7 +7,7 @@ import { Shruggie } from '../../../../components/ui/misc';
 import NewTaskModalDialog from '../../tasks/NewTask/NewTaskModalDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 import S from './TasksView.module.scss';
-import { mdiExclamationThick, mdiTrashCan } from '@mdi/js';
+import { mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Task, TaskStandalone } from 'api/definition';
 import { DataGrid, renderBoolean } from 'core/components/DataGrid';
@@ -67,7 +67,10 @@ export default function ApplicationTasks({
       <Modal open={modalOpen}>
         <NewTaskModalDialog
           appID={appID}
-          onSaved={onTaskAdded}
+          onSaved={(task) => {
+            toggleModal(false);
+            if (onTaskAdded) onTaskAdded(task);
+          }}
           onClose={() => toggleModal(false)}
         />
       </Modal>
@@ -99,23 +102,12 @@ export default function ApplicationTasks({
             key: '__body_type',
             custom: true,
             render: (v) => <code>{v.body.type}</code>,
-            title: t('type'),
+            title: t('taskType'),
           },
           {
             key: 'disabled',
             title: t('disabled'),
             render: renderBoolean,
-          },
-          {
-            title: '',
-            key: '__misc',
-            custom: true,
-            render: (v) => {
-              if (v.errors !== {}) {
-                return <Icon path={mdiExclamationThick} size={1} />;
-              }
-              return '';
-            },
           },
           {
             title: '',

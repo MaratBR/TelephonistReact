@@ -1,11 +1,7 @@
-VERSION ?= 0.1.0dev
+VERSION ?= 0.1.1
 IMAGE = maratbr/telephonist-admin
 
 docker-image:
-	docker build \
-		-t maratbr/telephonist-admin:latest-proxy \
-		-t maratbr/telephonist-admin:$(VERSION)-proxy \
-		-f ./docker/Dockerfile.proxy .
 	docker build \
 		-t maratbr/telephonist-admin:latest \
 		-t maratbr/telephonist-admin:$(VERSION) \
@@ -20,6 +16,4 @@ run-docker-image:
 
 publish: 
 	docker push maratbr/telephonist-admin:$(VERSION)
-	docker push maratbr/telephonist-admin:$(VERSION)-proxy
-	docker push maratbr/telephonist-admin:latest-proxy
 	docker push maratbr/telephonist-admin:latest

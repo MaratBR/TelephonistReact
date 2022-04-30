@@ -2,6 +2,8 @@
   margin: 0;
   padding: var(--t-spacing-md) var(--t-spacing-lg);
   font-family: 'Jetbrains Mono', monospace;
+  overflow-x: auto;
+  max-height: 700px;
 }
 
 .body {
@@ -15,5 +17,34 @@
   &.error {
     color: var(--t-on-danger);
     background-color: var(--t-danger);
+  }
+}
+
+.log {
+  &:hover {
+    background-color: var(--t-highlight);
+  }
+
+  &.error {
+    color: red;
+  }
+
+  &.info {
+    .tag {
+      color: blue;
+    }
+  }
+
+  &.fatal,
+  &.error {
+    .tag {
+      color: red;
+    }
+  }
+
+  &.warning {
+    .tag {
+      color: rgb(217, 184, 0);
+    }
   }
 }
