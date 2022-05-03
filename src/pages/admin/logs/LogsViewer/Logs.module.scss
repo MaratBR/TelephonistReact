@@ -4,6 +4,22 @@
   font-family: 'Jetbrains Mono', monospace;
   overflow-x: auto;
   max-height: 700px;
+
+  &.withExtra {
+    .log {
+      border-bottom: 1px solid var(--t-neutral-7);
+
+      .extra {
+        padding-right: 0.5em;
+        display: inline-block;
+        height: 100%;
+      }
+
+      pre {
+        display: inline-block;
+      }
+    }
+  }
 }
 
 .body {
@@ -21,6 +37,8 @@
 }
 
 .log {
+  display: flex;
+
   &:hover {
     background-color: var(--t-highlight);
   }
@@ -29,21 +47,17 @@
     color: red;
   }
 
-  &.info {
-    .tag {
+  .tag {
+    &.info {
       color: blue;
     }
-  }
 
-  &.fatal,
-  &.error {
-    .tag {
+    &.fatal,
+    &.error {
       color: red;
     }
-  }
 
-  &.warning {
-    .tag {
+    &.warning {
       color: rgb(217, 184, 0);
     }
   }

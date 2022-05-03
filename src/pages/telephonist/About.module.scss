@@ -1,0 +1,19 @@
+.valueCard {
+  border-bottom: 1px solid var(--t-neutral-8);
+  padding: 0.4em 0;
+
+  .value {
+    font-family: var(--t-font-headers);
+    font-size: 2em;
+  }
+
+  .name {
+    color: var(--t-color-2);
+  }
+}
+
+.about {
+  h3 {
+    margin: 1em 0;
+  }
+}

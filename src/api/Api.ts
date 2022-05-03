@@ -10,7 +10,7 @@ import ILogsApi from './apis/logs/definition';
 import LogsApi from './apis/logs/implementation';
 import { ITasksApi, TasksApi } from './apis/tasks';
 import { IUsersApi, UsersApi } from './apis/users';
-import { TelephonistStats, WSTicketResponse } from './definition';
+import { TelephonistStats, TelephonistSummary, WSTicketResponse } from './definition';
 import axios, { AxiosResponse } from 'axios';
 import { TFunction } from 'i18next';
 
@@ -84,6 +84,10 @@ export class Api extends ApiBase implements IApi {
 
   getStats(): Promise<TelephonistStats> {
     return this.client.get('status').then((r) => r.data);
+  }
+
+  getSummary(): Promise<TelephonistSummary> {
+    return this.client.get('summary').then((r) => r.data);
   }
 
   issueWsTicket(): Promise<string> {

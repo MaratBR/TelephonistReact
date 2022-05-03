@@ -54,3 +54,15 @@ export interface TelephonistStats {
     collections: Record<CollectionName, CollectionStats>;
   };
 }
+
+export interface TelephonistSummary {
+  timezone: {
+    name: string;
+    offset_seconds: number;
+  };
+  settings: {
+    cookies_policy: string;
+    non_secure_cookies: boolean;
+  };
+  version: string;
+}

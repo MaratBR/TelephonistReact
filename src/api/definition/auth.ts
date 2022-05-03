@@ -7,7 +7,7 @@ export interface PasswordResetResponse {
   detail: 'Password reset required';
   password_reset: {
     token: string;
-    exp: number;
+    exp: string;
   };
 }
 
@@ -25,7 +25,7 @@ export function isPasswordReset(o: LoginResponse): o is PasswordResetResponse {
     o !== null &&
     typeof (o as any).password_reset === 'object' &&
     typeof (o as any).password_reset.token === 'string' &&
-    typeof (o as any).password_reset.exp === 'number'
+    typeof (o as any).password_reset.exp === 'string'
   );
 }
 

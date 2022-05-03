@@ -196,16 +196,5 @@
       "subtitle": "Profile and UI settings",
       "language": "Language"
     }
-  },
-  "clientVersion": "",
-  "disconnect": "",
-  "telephonist": {
-    "_": "",
-    "about": ""
-  },
-  "about": {
-    "backendVersion": "",
-    "backendTz": "",
-    "uiVersion": ""
   }
 }

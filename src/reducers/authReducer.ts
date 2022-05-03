@@ -86,6 +86,7 @@ const authSlice = createSlice({
       state.lastLogin = { username };
     },
     handleLoginResponse: (state, { payload }: PayloadAction<LoginResponse>) => {
+      debugger;
       if (isPasswordReset(payload)) {
         state.isLoggedIn = false;
         state.passwordReset = {

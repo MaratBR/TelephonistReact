@@ -103,7 +103,7 @@ export default function PasswordResetPage() {
               {...register('password2')}
             />
 
-            <Button type="submit">{t('setNewPwd')}</Button>
+            <Button type="submit">{t('pwdreset.set')}</Button>
           </Stack>
         </form>
       </ContentBox>

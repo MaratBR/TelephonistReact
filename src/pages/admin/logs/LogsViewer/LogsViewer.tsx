@@ -52,7 +52,7 @@ export default function LogsViewer() {
 
   return (
     <>
-      <PageHeader title={t('logs')} />
+      <PageHeader title={t('logs._')} />
       <Container>
         {lastResponse ? (
           <Stack h spacing="md">

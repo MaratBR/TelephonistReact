@@ -212,10 +212,10 @@ export function renderDate(d: string | number) {
   );
 }
 
-export function renderBoolean(b: boolean): React.ReactNode {
+export function renderBoolean(b: boolean, size: number = 1): React.ReactNode {
   return b ? (
-    <Icon size={1} path={mdiCheckCircle} color="var(--t-success)" />
+    <Icon size={size} path={mdiCheckCircle} color="var(--t-success)" />
   ) : (
-    <Icon size={1} path={mdiCloseCircle} color="var(--t-danger)" />
+    <Icon size={size} path={mdiCloseCircle} color="var(--t-danger)" />
   );
 }

@@ -5,11 +5,23 @@ import { ModalProvider } from '@ui/Modal';
 import { ThemeProvider } from '@ui/theme';
 import GlobalAppNotifications from './GlobalAppNotifications';
 import HomePage from '@admin/HomePage';
+import ViewApplication from '@admin/applications/ViewApplication/ViewApplication';
 import ConnectionView from '@admin/connections/ConnectionView';
 import LogsViewer from '@admin/logs/LogsViewer';
+import SequenceView from '@admin/sequence/SequenceView/SequenceView';
 import { ApiProvider } from 'api/context';
 import { UserHubProvider } from 'api/userHub/context';
+import AllApplications from 'pages/admin/applications/AllApplications';
+import GenerateRegistrationCode from 'pages/admin/applications/GenerateRegistrationCode';
+import NewApplication from 'pages/admin/applications/NewApplication';
+import ViewApplicationTask from 'pages/admin/tasks/ViewApplicationTask';
+import NewUser from 'pages/admin/users/NewUser';
+import UserView from 'pages/admin/users/UserView';
+import UsersList from 'pages/admin/users/UsersList';
+import LoginPage from 'pages/auth/LoginPage';
+import PasswordResetPage from 'pages/auth/PasswordResetPage';
 import Settings from 'pages/profile/Settings';
+import About from 'pages/telephonist/About';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental';
@@ -59,21 +71,22 @@ function AppRouter() {
     <React.Suspense fallback={loader}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={COMPONENTS.LoginPage} />
-          <Route path="/login/password-reset" element={COMPONENTS.PasswordResetPage} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/password-reset" element={<PasswordResetPage />} />
+          <Route path="/telephonist/about" element={<About />} />
           <Route path="/admin/" element={lazy(() => import('pages/admin/MainPage'))}>
             <Route path="" element={<HomePage />} />
             <Route path="profile" element={<Settings />} />
-            <Route path="applications" element={COMPONENTS.AllApplications} />
-            <Route path="applications/new" element={COMPONENTS.NewApplication} />
-            <Route path="applications/cr" element={COMPONENTS.GenerateRegistrationCode} />
-            <Route path="applications/:id" element={COMPONENTS.ViewApplication} />
-            <Route path="tasks/:appName/:taskName" element={COMPONENTS.ViewApplicationTask} />
-            <Route path="sequences/:id" element={COMPONENTS.SequenceView} />
+            <Route path="applications" element={<AllApplications />} />
+            <Route path="applications/new" element={<NewApplication />} />
+            <Route path="applications/cr" element={<GenerateRegistrationCode />} />
+            <Route path="applications/:id" element={<ViewApplication />} />
+            <Route path="tasks/:appName/:taskName" element={<ViewApplicationTask />} />
+            <Route path="sequences/:id" element={<SequenceView />} />
 
-            <Route path="users" element={COMPONENTS.UsersList} />
-            <Route path="users/new" element={COMPONENTS.NewUser} />
-            <Route path="users/:name" element={COMPONENTS.UserView} />
+            <Route path="users" element={<UsersList />} />
+            <Route path="users/new" element={<NewUser />} />
+            <Route path="users/:name" element={<UserView />} />
 
             <Route path="connections/:id" element={<ConnectionView />} />
 

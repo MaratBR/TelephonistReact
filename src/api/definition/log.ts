@@ -65,12 +65,6 @@ export interface CompactLogsResponse {
   limit: string;
   sequence_id: string;
   app_id: string;
-}
-
-export interface LogsResponse {
-  logs: LogRecord[];
-  cur: string;
-  limit: string;
   sequence: {
     _id: string;
     name: string;
@@ -83,3 +77,5 @@ export interface LogsResponse {
     display_name: string;
   };
 }
+
+export type LogsResponse = Omit<CompactLogsResponse, 'logs'> & { logs: LogRecord[] };
