@@ -127,7 +127,7 @@
     "closeAll": "Close all sessions",
     "isCurrent": "This is current session",
     "wantClose": "Do you want to close the session {{id}} for user {{username}}",
-    "empty": ""
+    "empty": "Empty"
   },
   "userAgent": "User agent",
   "os": "OS",
@@ -197,15 +197,15 @@
       "language": "Language"
     }
   },
-  "clientVersion": "",
-  "disconnect": "",
+  "clientVersion": "Client version",
+  "disconnect": "Disconnect",
   "telephonist": {
-    "_": "",
-    "about": ""
+    "_": "Telephonist",
+    "about": "About Telephonist"
   },
   "about": {
-    "backendVersion": "",
-    "backendTz": "",
-    "uiVersion": ""
+    "backendVersion": "Backend (server) version",
+    "backendTz": "Backend timezone",
+    "uiVersion": "Telephonist UI version"
   }
 }

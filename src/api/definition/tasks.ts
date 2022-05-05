@@ -54,7 +54,7 @@ export const TASK_EXEC = 'exec';
 export const TASK_ARBITRARY = 'arbitrary';
 
 export const DEFAULT_TASK_BODY: Record<string, () => any> = {
-  [TASK_SCRIPT]: () => '#!/bin/sh\necho "It works in shell!"',
+  [TASK_SCRIPT]: () => '#!/bin/bash\necho "It works in shell!"',
   [TASK_EXEC]: () => 'echo "It works"',
   [TASK_ARBITRARY]: () => ({}),
 };

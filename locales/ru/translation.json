@@ -129,7 +129,7 @@
     "closeAll": "Закрыть все сессии",
     "isCurrent": "Это текущая сессия",
     "wantClose": "",
-    "empty": ""
+    "empty": "Пусто"
   },
   "os": "ОС",
   "browser": "Браузер",
@@ -161,15 +161,15 @@
     "isBlocked": "Заблокирован",
     "isSuperuser": "Суперпользователь"
   },
-  "nSecondsAgo+0": "",
-  "nSecondsAgo+1": "",
-  "nSecondsAgo+2": "",
-  "nMinutesAgo+0": "",
-  "nMinutesAgo+1": "",
-  "nMinutesAgo+2": "",
-  "nHoursAgo+0": "",
-  "nHoursAgo+1": "",
-  "nHoursAgo+2": "",
+  "nSecondsAgo+0": "{{count}} секунда назад",
+  "nSecondsAgo+1": "{{count}} секунды назад",
+  "nSecondsAgo+2": "{{count}} секунд назад",
+  "nMinutesAgo+0": "{{count}} минута назад",
+  "nMinutesAgo+1": "{{count}} минуты назад",
+  "nMinutesAgo+2": "{{count}} минут назад",
+  "nHoursAgo+0": "{{count}} час назад",
+  "nHoursAgo+1": "{{count}} часа назад",
+  "nHoursAgo+2": "{{count}} часов назад",
   "yes": "Да",
   "no": "Нет",
   "less": "Меньше",
@@ -180,7 +180,7 @@
   },
   "userWillBePromptedNewPassword": "Пользователя попросят ввести новый пароль при первом входе в систему",
   "order": {
-    "new2Old": ""
+    "new2Old": "Новые к старым"
   },
   "profile": {
     "changePassword": {

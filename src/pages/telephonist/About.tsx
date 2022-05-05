@@ -43,7 +43,14 @@ export default function About() {
         <Value name={t('about.backendVersion')} value={summary.version} />
         <Value name={t('about.backendTz')} value={summary.timezone.name} />
         <h3>{t('about.settings')}</h3>
-        <Value name={t('about.cookiesPolicy')} value={summary.settings.cookies_policy} />
+        <Value
+          name={t('about.cookiesPolicy')}
+          value={
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">
+              {summary.settings.cookies_policy}
+            </a>
+          }
+        />
         <Value
           name={t('about.useNonSecureCookies')}
           value={renderBoolean(summary.settings.non_secure_cookies, 1.5)}

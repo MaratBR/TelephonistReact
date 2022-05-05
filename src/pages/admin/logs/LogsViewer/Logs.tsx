@@ -34,7 +34,7 @@ class Logs extends React.Component<LogsProps & WithTranslationProps, LogsState> 
   private readonly ref = React.createRef<HTMLDivElement>();
   private wasUpdatedOnce: boolean = false;
   state: LogsState = {
-    showInfo: true,
+    showInfo: false,
   };
 
   componentDidUpdate(prevProps?: Readonly<LogsProps>) {

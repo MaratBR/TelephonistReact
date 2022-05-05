@@ -30,9 +30,17 @@
   padding: 2px;
   border-radius: 4px;
 
+  &.info {
+    color: blue;
+  }
+
+  &.fatal,
   &.error {
-    color: var(--t-on-danger);
-    background-color: var(--t-danger);
+    color: red;
+  }
+
+  &.warning {
+    color: rgb(217, 184, 0);
   }
 }
 
@@ -45,20 +53,5 @@
 
   &.error {
     color: red;
-  }
-
-  .tag {
-    &.info {
-      color: blue;
-    }
-
-    &.fatal,
-    &.error {
-      color: red;
-    }
-
-    &.warning {
-      color: rgb(217, 184, 0);
-    }
   }
 }
