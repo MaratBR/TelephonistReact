@@ -4,12 +4,11 @@ import ContentSection from '@ui/ContentSection';
 import { renderBoolean } from '@ui/DataGrid';
 import ErrorView from '@ui/Error';
 import LoadingSpinner from '@ui/LoadingSpinner';
-import { StringValue } from '@ui/Parameters';
 import { Stack } from '@ui/Stack';
 import { Logo } from '@ui/brand';
 import S from './About.module.scss';
-import ValueCard from '@admin/HomePage/ValueCard';
-import { mdiArrowLeft, mdiArrowRight } from '@mdi/js';
+import { mdiArrowLeft, mdiOpenInNew } from '@mdi/js';
+import Icon from '@mdi/react';
 import { useApi } from 'hooks';
 import Padded from 'pages/Padded';
 import { useTranslation } from 'react-i18next';
@@ -39,15 +38,20 @@ export default function About() {
   } else {
     statusUI = (
       <>
-        <Value name={t('about.uiVersion')} value="0.2.0" />
+        <Value name={t('about.uiVersion')} value="0.2.2" />
         <Value name={t('about.backendVersion')} value={summary.version} />
         <Value name={t('about.backendTz')} value={summary.timezone.name} />
         <h3>{t('about.settings')}</h3>
         <Value
           name={t('about.cookiesPolicy')}
           value={
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">
+            <a
+              target="_blank"
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite"
+              rel="noreferrer"
+            >
               {summary.settings.cookies_policy}
+              <Icon path={mdiOpenInNew} size={1} />
             </a>
           }
         />

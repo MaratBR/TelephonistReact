@@ -3,14 +3,7 @@ import { Alert } from '@ui/Alert';
 import CurrentUser from './CurrentUser';
 import S from './MainPage.module.scss';
 import { Nav, NavGroup, NavItem, NavItems } from './Nav';
-import {
-  mdiDotsGrid,
-  mdiHomeCircleOutline,
-  mdiInformation,
-  mdiInformationOutline,
-  mdiMore,
-  mdiPlus,
-} from '@mdi/js';
+import { mdiDotsGrid, mdiHomeCircleOutline, mdiInformationOutline, mdiPlus } from '@mdi/js';
 import { TFunction } from 'i18next';
 import AuthorizatioRequired from 'pages/AuthorizationRequired';
 import { withTranslation } from 'react-i18next';

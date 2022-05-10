@@ -2,29 +2,29 @@ import { useState } from 'react';
 import { CodeEditor, CodeViewer } from '@ui/Editor';
 import S from './TaskBodyEditor.module.scss';
 import TaskTypeSelect from './TaskTypeSelect';
-import { DEFAULT_TASK_BODY, TASK_ARBITRARY, TaskBody } from 'api/definition';
+import { rest } from 'api/definition';
 
 function taskBodyToString(body: any, type: string): string {
-  if (type === TASK_ARBITRARY) return JSON.stringify(body, null, 2);
+  if (type === rest.TASK_ARBITRARY) return JSON.stringify(body, null, 2);
   if (typeof body !== 'string') return `INVALID BODY TYPE: ${typeof body}`;
   return body;
 }
 
 function stringToTaskBody(s: string, type: string): any {
-  if (type === TASK_ARBITRARY) return JSON.parse(s);
+  if (type === rest.TASK_ARBITRARY) return JSON.parse(s);
   return s;
 }
 
 function getLanguage(type: string) {
-  if (type === TASK_ARBITRARY) {
+  if (type === rest.TASK_ARBITRARY) {
     return 'json';
   }
   return 'shell';
 }
 
 interface TaskBodyEditorProps {
-  value?: TaskBody;
-  onChange: (value: TaskBody) => void;
+  value?: rest.TaskBody;
+  onChange: (value: rest.TaskBody) => void;
 }
 
 export function TaskBodyEditor({ value, onChange }: TaskBodyEditorProps) {
@@ -47,7 +47,7 @@ export function TaskBodyEditor({ value, onChange }: TaskBodyEditorProps) {
   const onTypeChange = (newType: string) => {
     if (!value) return;
     const newValue = {
-      value: DEFAULT_TASK_BODY[newType](),
+      value: rest.DEFAULT_TASK_BODY[newType](),
       type: newType,
     };
     onChange(newValue);
@@ -67,7 +67,7 @@ export function TaskBodyEditor({ value, onChange }: TaskBodyEditorProps) {
 }
 
 interface TaskBodyViewerProps {
-  body: TaskBody;
+  body: rest.TaskBody;
 }
 
 export function TaskBodyViewer({ body }: TaskBodyViewerProps) {

@@ -5,7 +5,7 @@ import PageHeader from '@ui/PageHeader';
 import { Stack } from '@ui/Stack';
 import { Text } from '@ui/Text';
 import Logs from './Logs';
-import { LogRecord, LogsResponse } from 'api/definition';
+import { rest } from 'api/definition';
 import { useApi } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
@@ -24,8 +24,8 @@ export default function LogsViewer() {
   const fatal = !isNo(params.get('fatal'));
   const { logs: api } = useApi();
 
-  const [logs, setLogs] = useState<LogRecord[]>([]);
-  const [lastResponse, setLastResponse] = useState<LogsResponse | undefined>();
+  const [logs, setLogs] = useState<rest.LogRecord[]>([]);
+  const [lastResponse, setLastResponse] = useState<rest.LogsResponse | undefined>();
   const [limit, setLimit] = useState(1000);
   const [cur, setCursor] = useState<number | undefined>();
 

@@ -3,7 +3,7 @@ import { Button } from '@ui/Button';
 import ButtonGroup from '@ui/ButtonGroup';
 import { ModalDialog } from '@ui/Modal';
 import S from './index.module.scss';
-import { mdiExitToApp } from '@mdi/js';
+import { mdiCog, mdiExitToApp } from '@mdi/js';
 import Icon from '@mdi/react';
 import { useApi } from 'hooks';
 import useModal from 'hooks/useModal';
@@ -52,14 +52,18 @@ export default function CurrentUser() {
 
   return (
     <div className={S.root}>
-      <span>
+      <span className={S.loggedIn}>
         <Trans i18nKey="login.loggedInAs" values={{ username: user.username }}>
           Logged in as <NavLink to={`/admin/users/${user.username}`}>{'{{username}}'}</NavLink>
         </Trans>
+        <br />
       </span>
 
       <Button onClick={onClickLogout} className={S.leave} variant="ghost">
         <Icon path={mdiExitToApp} size={1} />
+      </Button>
+      <Button to="/admin/settings" variant="ghost">
+        <Icon path={mdiCog} size={1} />
       </Button>
     </div>
   );

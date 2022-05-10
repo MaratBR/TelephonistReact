@@ -9,11 +9,13 @@
     background-color: var(--t-highlight);
   }
 
-  a:hover {
-    border-bottom: 3px solid var(--t-color);
-  }
-
   .leave {
     margin-left: auto;
+  }
+
+  .loggedIn {
+    a:hover {
+      border-bottom: 3px solid var(--t-color);
+    }
   }
 }

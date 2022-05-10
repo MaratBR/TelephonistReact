@@ -5,7 +5,7 @@ import { DataGrid, renderBoolean } from '@ui/DataGrid';
 import { Select } from '@ui/Input';
 import PageHeader from '@ui/PageHeader';
 import { Stack } from '@ui/Stack';
-import { User } from 'api/definition';
+import { rest } from 'api/definition';
 import PaginationLayout from 'components/ui/PaginationLayout';
 import { useApi } from 'hooks';
 import { usePageParam } from 'hooks/useSearchParam';
@@ -19,6 +19,7 @@ export default function UsersList() {
   const [page, setPage] = usePageParam();
   const { users } = useApi();
 
+  // TODO: complete this
   const isSuperuser = useAppSelector((s) => s.auth.user.is_superuser);
   const { t } = useTranslation();
   const [order, setOrder] = useState<'_id' | 'username'>('_id');
@@ -50,7 +51,7 @@ export default function UsersList() {
             onSelect={setPage}
             selectedPage={page}
           >
-            <DataGrid<User>
+            <DataGrid<rest.User>
               data={pagination?.result}
               keyFactory={(u) => u._id}
               columns={[

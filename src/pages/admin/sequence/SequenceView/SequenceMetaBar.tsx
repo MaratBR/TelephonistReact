@@ -1,15 +1,15 @@
 import { useMemo } from 'react';
 import S from './SequenceMetaBar.module.scss';
-import { SequenceState, toSequenceMeta } from 'api/definition';
+import { rest } from 'api/definition';
 import LoadingBar from 'core/LoaderBar';
 
 interface SequenceMetaBarProps {
   meta: Record<string, any>;
-  state: SequenceState;
+  state: rest.SequenceState;
 }
 
 export default function SequenceMetaBar({ meta: rawMeta, state }: SequenceMetaBarProps) {
-  const meta = useMemo(() => toSequenceMeta(rawMeta), [rawMeta]);
+  const meta = useMemo(() => rest.toSequenceMeta(rawMeta), [rawMeta]);
 
   if (state === 'succeeded') return null;
   if (state === 'failed') return <div className={S.error} />;

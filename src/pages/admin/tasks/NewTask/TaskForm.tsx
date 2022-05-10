@@ -3,7 +3,7 @@ import { Form, FormError, SaveButton } from '@ui/Form';
 import { Input, InputLayout } from '@ui/Input';
 import { TaskBodyEditor } from '../_common/TaskBodyEditor';
 import S from './TaskForm.module.scss';
-import { DEFAULT_TASK_BODY, DefineTask, TASK_SCRIPT, TaskStandalone } from 'api/definition';
+import { rest } from 'api/definition';
 import { ParametersStack } from 'components/ui/Parameters';
 import { useApi } from 'hooks';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,19 +13,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 type TaskFormProps = {
   appID?: string;
-  onSaved?: (task: TaskStandalone) => void;
+  onSaved?: (task: rest.TaskStandalone) => void;
 };
 
 export default function TaskForm({ appID, onSaved }: TaskFormProps) {
   const api = useApi();
   const { t } = useTranslation();
 
-  const { register, getValues, control } = useForm<DefineTask>({
+  const { register, getValues, control } = useForm<rest.DefineTask>({
     defaultValues: {
       name: '',
       body: {
-        type: TASK_SCRIPT,
-        value: DEFAULT_TASK_BODY[TASK_SCRIPT](),
+        type: rest.TASK_SCRIPT,
+        value: rest.DEFAULT_TASK_BODY[rest.TASK_SCRIPT](),
       },
       description: '',
       display_name: '',

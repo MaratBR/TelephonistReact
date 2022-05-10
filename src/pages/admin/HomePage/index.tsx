@@ -7,7 +7,6 @@ import ErrorView from '@ui/Error';
 import LoadingSpinner from '@ui/LoadingSpinner';
 import { Stack } from '@ui/Stack';
 import { TextHeader } from '@ui/Text';
-import FailedSequences from './FailedSequences';
 import ValueCard from './ValueCard';
 import SequenceCard from 'components/ui/SequenceCard';
 import { useApi } from 'hooks';
@@ -124,19 +123,49 @@ export default function HomePage() {
             </>
           ) : undefined}
         </Card>
-        <FailedSequences
-          key="sequences"
-          totalCount={stats.failed_sequences.count}
-          sequences={stats.failed_sequences.list}
-        />
         <Card>
-          <h3>{t('home.seqInProgress')}</h3>
+          <h3>{t('home.seqFailLast7D')}</h3>
+          {stats.failed_sequences.list.length === 0 ? (
+            t('home.noFailedRecently')
+          ) : (
+            <>
+              {stats.failed_sequences.list.map((sequence) => (
+                <SequenceCard sequence={sequence} />
+              ))}
+              <Button variant="ghost" to="/admin/sequences?state=failed">
+                {t('more')}
+              </Button>
+            </>
+          )}
+        </Card>
+        <Card>
+          <h3>{t('home.seqInProgressLast7D')}</h3>
           {stats.in_progress_sequences.list.length ? (
-            stats.in_progress_sequences.list.map((seq) => (
-              <SequenceCard sequence={seq} key={seq._id} />
-            ))
+            <>
+              {stats.in_progress_sequences.list.map((seq) => (
+                <SequenceCard sequence={seq} key={seq._id} />
+              ))}
+              <Button variant="ghost" to="/admin/sequences?state=in_progress">
+                {t('more')}
+              </Button>
+            </>
           ) : (
             <p>{t('home.noSeqInProgress')}</p>
+          )}
+        </Card>
+        <Card>
+          <h3>{t('home.seqSuccessfulLast7D')}</h3>
+          {stats.successful_sequences.list.length === 0 ? (
+            t('home.noSuccessfulSequences')
+          ) : (
+            <>
+              {stats.successful_sequences.list.map((sequence) => (
+                <SequenceCard sequence={sequence} />
+              ))}
+              <Button variant="ghost" to="/admin/sequences?state=succeeded">
+                {t('more')}
+              </Button>
+            </>
           )}
         </Card>
       </>

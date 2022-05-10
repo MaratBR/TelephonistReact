@@ -1,12 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IAuthApi } from 'api/apis/auth';
-import { LoginResponse, User, WhoAmI, isPasswordReset } from 'api/definition';
+import { api, rest } from 'api/definition';
 
 interface AuthState {
   isLoggedIn: boolean;
   isInitialized: boolean;
-  user: User | null;
+  user: rest.User | null;
   lastLogin: {
     username: string;
   } | null;
@@ -33,12 +32,12 @@ interface LogoutOptions {
 }
 
 interface InitializationData {
-  whoami: WhoAmI;
+  whoami: rest.WhoAmI;
   csrfToken: string;
 }
 
 interface APIThunkOptions {
-  authAPI: IAuthApi;
+  authAPI: api.IAuth;
 }
 
 export const initializeAuthThunk = createAsyncThunk(
@@ -56,7 +55,7 @@ export const initializeAuthThunk = createAsyncThunk(
 
 export const fetchUserThunk = createAsyncThunk(
   'auth/fetchUserThunk',
-  async ({ authAPI }: APIThunkOptions): Promise<{ user: User }> => {
+  async ({ authAPI }: APIThunkOptions): Promise<{ user: rest.User }> => {
     const whoami = await authAPI.whoami();
 
     return {
@@ -85,9 +84,8 @@ const authSlice = createSlice({
     setLastLogin: (state, { payload: { username } }: PayloadAction<{ username: string }>) => {
       state.lastLogin = { username };
     },
-    handleLoginResponse: (state, { payload }: PayloadAction<LoginResponse>) => {
-      debugger;
-      if (isPasswordReset(payload)) {
+    handleLoginResponse: (state, { payload }: PayloadAction<rest.LoginResponse>) => {
+      if (rest.isPasswordReset(payload)) {
         state.isLoggedIn = false;
         state.passwordReset = {
           token: payload.password_reset.token,

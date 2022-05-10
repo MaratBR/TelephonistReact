@@ -72,10 +72,10 @@ const StyledButton = React.forwardRef(
 
 const ButtonLikeNavLink = React.forwardRef(
   (
-    { _style, children, className, ...props }: ButtonLikeNavLinkProps,
+    { _style, to, children, className, ...props }: ButtonLikeNavLinkProps,
     ref: React.ForwardedRef<HTMLAnchorElement>
   ) => (
-    <NavLink {..._attrs(className, _style)} role="button" {...props} ref={ref}>
+    <NavLink to={to} {..._attrs(className, _style)} role="button" {...props} ref={ref}>
       {children ?? ''}
     </NavLink>
   )

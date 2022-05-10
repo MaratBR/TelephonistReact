@@ -7,6 +7,8 @@ import { ModalDialog } from '@ui/Modal';
 import { Stack } from '@ui/Stack';
 import { TextHeader } from '@ui/Text';
 import ChangePasswordForm from './ChangePasswordForm';
+import { mdiTranslate } from '@mdi/js';
+import Icon from '@mdi/react';
 import { useApi } from 'hooks';
 import useModal from 'hooks/useModal';
 import { languageNames } from 'i18n';
@@ -38,7 +40,15 @@ export default function Settings() {
       <TextHeader title={t('profile.settings.title')} subtitle={t('profile.settings.subtitle')} />
       <Card>
         <Stack>
-          <InputLayout id="language" header={t('profile.settings.language')}>
+          <InputLayout
+            id="language"
+            header={
+              <>
+                <Icon size={1} path={mdiTranslate} />
+                {t('profile.settings.language')}
+              </>
+            }
+          >
             <Select
               keyFactory={(v) => v}
               onChange={(v) => i18next.changeLanguage(v)}

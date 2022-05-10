@@ -4,13 +4,13 @@ import { Input, Select } from '@ui/Input';
 import Table from '@ui/Table';
 import { mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import { DEFAULT_TRIGGER_BODY, TRIGGER_EVENT, UpdateTask } from 'api/definition';
+import { rest } from 'api/definition';
 import { Shruggie } from 'components/ui/misc';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 type TaskTriggersProps = {
-  control: Control<UpdateTask>;
+  control: Control<rest.UpdateTask>;
 };
 
 function TaskTriggers({ control }: TaskTriggersProps) {
@@ -38,7 +38,7 @@ function TaskTriggers({ control }: TaskTriggersProps) {
         <Button
           color="primary"
           left={<Icon size={0.7} path={mdiPlus} />}
-          onClick={() => append({ name: TRIGGER_EVENT, body: '' })}
+          onClick={() => append({ name: rest.TRIGGER_EVENT, body: '' })}
         >
           {t('addTrigger')}
         </Button>
@@ -62,7 +62,7 @@ function TaskTriggers({ control }: TaskTriggersProps) {
                     <Select<string>
                       value={value}
                       onChange={onChange}
-                      options={Object.keys(DEFAULT_TRIGGER_BODY)}
+                      options={Object.keys(rest.DEFAULT_TRIGGER_BODY)}
                       keyFactory={(v) => v}
                     />
                   )}

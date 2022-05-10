@@ -13,7 +13,7 @@ import SequenceStateView from './SequenceStateView';
 import TriggeredByView from './TriggeredByView';
 import { mdiText } from '@mdi/js';
 import Icon from '@mdi/react';
-import { ConnectionInfo, SequenceStandalone, SequenceState, ServerInfo } from 'api/definition';
+import { rest } from 'api/definition';
 import { isNotFound } from 'api/utils';
 import { useApi } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 import { NavLink, useSearchParams } from 'react-router-dom';
 
-function getBackAction(params: URLSearchParams, sequence: SequenceStandalone | undefined) {
+function getBackAction(params: URLSearchParams, sequence: rest.SequenceStandalone | undefined) {
   if (!sequence) return undefined;
 
   if (params.has('ba')) {
@@ -42,8 +42,8 @@ function SequenceConnectionView({
   connection,
   server,
 }: {
-  connection: ConnectionInfo;
-  server: ServerInfo;
+  connection: rest.ConnectionInfo;
+  server: rest.ServerInfo;
 }) {
   return (
     <>
@@ -71,10 +71,10 @@ export default function SequenceView() {
     isLoading,
   } = useQuery(['sequence', id], () => events.getSequence(id), {
     refetchInterval: (v) => {
-      if (!v || v.state === SequenceState.IN_PROGRESS) {
+      if (!v || v.state === rest.SequenceState.IN_PROGRESS) {
         return 1800;
       }
-      if (v.state === SequenceState.FROZEN) {
+      if (v.state === rest.SequenceState.FROZEN) {
         return 10000;
       }
       return undefined;

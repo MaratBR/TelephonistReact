@@ -9,20 +9,20 @@ import {
   mdiProgressQuestion,
 } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Sequence, SequenceState } from 'api/definition';
+import { rest } from 'api/definition';
 import SequenceStateView from 'pages/admin/sequence/SequenceView/SequenceStateView';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 interface SequenceCardProps {
-  sequence: Sequence;
+  sequence: rest.Sequence;
 }
 
-const icons: Record<SequenceState, string> = {
-  [SequenceState.SUCCEEDED]: mdiCheckOutline,
-  [SequenceState.IN_PROGRESS]: mdiDotsCircle,
-  [SequenceState.FAILED]: mdiAlertCircleOutline,
-  [SequenceState.FROZEN]: mdiProgressQuestion,
-  [SequenceState.SKIPPED]: mdiDebugStepOver,
+const icons: Record<rest.SequenceState, string> = {
+  [rest.SequenceState.SUCCEEDED]: mdiCheckOutline,
+  [rest.SequenceState.IN_PROGRESS]: mdiDotsCircle,
+  [rest.SequenceState.FAILED]: mdiAlertCircleOutline,
+  [rest.SequenceState.FROZEN]: mdiProgressQuestion,
+  [rest.SequenceState.SKIPPED]: mdiDebugStepOver,
 };
 
 export default function SequenceCard({ sequence }: SequenceCardProps) {

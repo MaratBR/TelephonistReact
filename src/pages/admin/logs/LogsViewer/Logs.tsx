@@ -1,29 +1,29 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Checkbox } from '@ui/Input';
 import { Stack } from '@ui/Stack';
 import S from './Logs.module.scss';
-import { LogRecord, LogSeverity } from 'api/definition';
+import { rest } from 'api/definition';
 import classNames from 'classnames';
 import { WithTranslationProps, withTranslation } from 'react-i18next';
 
 const severityClasses = {
-  [LogSeverity.DEBUG]: S.debug,
-  [LogSeverity.INFO]: S.info,
-  [LogSeverity.WARNING]: S.warning,
-  [LogSeverity.ERROR]: S.error,
-  [LogSeverity.FATAL]: S.fatal,
+  [rest.LogSeverity.DEBUG]: S.debug,
+  [rest.LogSeverity.INFO]: S.info,
+  [rest.LogSeverity.WARNING]: S.warning,
+  [rest.LogSeverity.ERROR]: S.error,
+  [rest.LogSeverity.FATAL]: S.fatal,
 };
 
 const severityRepr = {
-  [LogSeverity.DEBUG]: 'DEBUG',
-  [LogSeverity.INFO]: 'INFO ',
-  [LogSeverity.WARNING]: 'WARN ',
-  [LogSeverity.ERROR]: 'ERR  ',
-  [LogSeverity.FATAL]: 'FATAL',
+  [rest.LogSeverity.DEBUG]: 'DEBUG',
+  [rest.LogSeverity.INFO]: 'INFO ',
+  [rest.LogSeverity.WARNING]: 'WARN ',
+  [rest.LogSeverity.ERROR]: 'ERR  ',
+  [rest.LogSeverity.FATAL]: 'FATAL',
 };
 
 interface LogsProps {
-  logs: LogRecord[];
+  logs: rest.LogRecord[];
 }
 
 interface LogsState {
@@ -32,10 +32,15 @@ interface LogsState {
 
 class Logs extends React.Component<LogsProps & WithTranslationProps, LogsState> {
   private readonly ref = React.createRef<HTMLDivElement>();
+
   private wasUpdatedOnce: boolean = false;
-  state: LogsState = {
-    showInfo: false,
-  };
+
+  constructor(props: Readonly<LogsProps & WithTranslationProps>) {
+    super(props);
+    this.state = {
+      showInfo: false,
+    };
+  }
 
   componentDidUpdate(prevProps?: Readonly<LogsProps>) {
     if (this.ref.current) {

@@ -1,18 +1,15 @@
 import ApiBase from './ApiBase';
-import IApi from './IApi';
-import { IApplicationsApi } from './apis/applications';
-import ApplicationsApi from './apis/applications/implementation';
-import { AuthApi, IAuthApi } from './apis/auth';
-import IConnectionsApi from './apis/connections/definition';
-import ConnectionsApi from './apis/connections/implementation';
-import { EventsApi, IEventsApi } from './apis/events';
-import ILogsApi from './apis/logs/definition';
-import LogsApi from './apis/logs/implementation';
-import { ITasksApi, TasksApi } from './apis/tasks';
-import { IUsersApi, UsersApi } from './apis/users';
-import { TelephonistStats, TelephonistSummary, WSTicketResponse } from './definition';
+import ApplicationsApi from './ApplicationsApi';
+import AuthApi from './AuthApi';
+import ConnectionsApi from './ConnectionsApi';
+import EventsApi from './EventsApi';
+import LogsApi from './LogsApi';
+import TasksApi from './TasksApi';
+import UsersApi from './UsersApi';
+import { api, rest, ws } from './definition';
 import axios, { AxiosResponse } from 'axios';
 import { TFunction } from 'i18next';
+import qs from 'qs';
 
 export interface BackendAvailability {
   available: boolean;
@@ -30,20 +27,36 @@ export interface ApiOptions {
   onBackendAvailabilityUpdate?: (availability: BackendAvailability) => void;
 }
 
+export interface IApi {
+  readonly events: api.IEvents;
+
+  readonly applications: api.IApplications;
+
+  readonly auth: api.IAuth;
+
+  readonly tasks: api.ITasks;
+
+  readonly users: api.IUsers;
+
+  getStats(): Promise<rest.TelephonistStats>;
+  issueWsTicket(): Promise<string>;
+  checkApi(): Promise<void>;
+}
+
 export class Api extends ApiBase implements IApi {
-  readonly events: IEventsApi;
+  readonly events: api.IEvents;
 
-  readonly applications: IApplicationsApi;
+  readonly applications: api.IApplications;
 
-  readonly auth: IAuthApi;
+  readonly auth: api.IAuth;
 
-  readonly tasks: ITasksApi;
+  readonly tasks: api.ITasks;
 
-  readonly users: IUsersApi;
+  readonly users: api.IUsers;
 
-  readonly connections: IConnectionsApi;
+  readonly connections: api.IConnections;
 
-  readonly logs: ILogsApi;
+  readonly logs: api.ILogs;
 
   isOnline: boolean = true;
 
@@ -66,6 +79,7 @@ export class Api extends ApiBase implements IApi {
           : {},
         baseURL,
         withCredentials: true,
+        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       }),
       t,
     });
@@ -82,16 +96,16 @@ export class Api extends ApiBase implements IApi {
     this._availabilityCallback = onBackendAvailabilityUpdate;
   }
 
-  getStats(): Promise<TelephonistStats> {
+  getStats(): Promise<rest.TelephonistStats> {
     return this.client.get('status').then((r) => r.data);
   }
 
-  getSummary(): Promise<TelephonistSummary> {
+  getSummary(): Promise<rest.TelephonistSummary> {
     return this.client.get('summary').then((r) => r.data);
   }
 
   issueWsTicket(): Promise<string> {
-    return this.client.get<WSTicketResponse>('ws/issue-ws-ticket').then((d) => d.data.ticket);
+    return this.client.get<ws.WSTicketResponse>('ws/issue-ws-ticket').then((d) => d.data.ticket);
   }
 
   async checkApi() {
@@ -148,3 +162,5 @@ export class Api extends ApiBase implements IApi {
     throw this.wrapError(error);
   }
 }
+
+// #endregion

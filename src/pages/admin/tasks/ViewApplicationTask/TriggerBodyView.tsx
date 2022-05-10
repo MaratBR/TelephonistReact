@@ -1,5 +1,5 @@
 import { Input } from '@ui/Input';
-import { TRIGGER_CRON, TRIGGER_EVENT, TRIGGER_FSNOTIFY } from 'api/definition';
+import { rest } from 'api/definition';
 import { useTranslation } from 'react-i18next';
 
 type TriggerBodyViewProps = {
@@ -10,7 +10,7 @@ type TriggerBodyViewProps = {
 };
 
 function isTextBody(triggerType: string): boolean {
-  return [TRIGGER_CRON, TRIGGER_EVENT, TRIGGER_FSNOTIFY].includes(triggerType);
+  return [rest.TRIGGER_CRON, rest.TRIGGER_EVENT, rest.TRIGGER_FSNOTIFY].includes(triggerType);
 }
 
 function TriggerBodyView({ editable, triggerType, body, onChange }: TriggerBodyViewProps) {

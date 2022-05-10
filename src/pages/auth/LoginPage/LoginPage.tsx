@@ -5,7 +5,7 @@ import { ContentBox } from '@ui/ContentBox';
 import { Input, InputLayout } from '@ui/Input';
 import { SerenityLayout } from '@ui/Layout';
 import { Logo } from '@ui/brand';
-import { LoginRequest, isPasswordReset } from 'api/definition';
+import { rest } from 'api/definition';
 import { useApi } from 'hooks';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -24,7 +24,7 @@ function LoginPage() {
     getValues,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<LoginRequest>({
+  } = useForm<rest.LoginRequest>({
     defaultValues: {
       password: '',
       username: lastLoggedInUsername,
@@ -56,7 +56,7 @@ function LoginPage() {
       onSuccess: (response) => {
         dispatch(handleLoginResponse(response));
         toast.success(t('login.welcome'), { id: 'login' });
-        if (isPasswordReset(response)) {
+        if (rest.isPasswordReset(response)) {
           navigate(`/login/password-reset`);
         } else if (params.has('next')) {
           navigate(params.get('next'));

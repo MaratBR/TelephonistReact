@@ -1,15 +1,15 @@
-import { TRIGGER_CRON, TRIGGER_EVENT, TRIGGER_FSNOTIFY, TriggeredBy } from 'api/definition';
+import { rest } from 'api/definition';
 import { Trans } from 'react-i18next';
 
 interface TriggeredByProps {
-  triggeredBy: TriggeredBy | undefined;
+  triggeredBy: rest.TriggeredBy | undefined;
 }
 
 export default function TriggeredByView({ triggeredBy }: TriggeredByProps) {
   let content: React.ReactNode;
 
   if (triggeredBy) {
-    if (triggeredBy.trigger_type === TRIGGER_CRON) {
+    if (triggeredBy.trigger_type === rest.TRIGGER_CRON) {
       content = (
         <>
           <Trans i18nKey="sequence.triggeredBy.cron" values={{ cron: triggeredBy.trigger_body }}>
@@ -24,13 +24,13 @@ export default function TriggeredByView({ triggeredBy }: TriggeredByProps) {
           </a>
         </>
       );
-    } else if (triggeredBy.trigger_type === TRIGGER_EVENT) {
+    } else if (triggeredBy.trigger_type === rest.TRIGGER_EVENT) {
       content = (
         <Trans i18nKey="sequence.triggeredBy.event" values={{ event: triggeredBy.trigger_body }}>
           Sequence was triggered because event <b>{'{{event}}'}</b> occured
         </Trans>
       );
-    } else if (triggeredBy.trigger_type === TRIGGER_FSNOTIFY) {
+    } else if (triggeredBy.trigger_type === rest.TRIGGER_FSNOTIFY) {
       /* const path =
         triggeredBy.extra && typeof triggeredBy.extra === 'object'
           ? triggeredBy.extra.FILEPATH

@@ -1,0 +1,19 @@
+.tag {
+  background-color: var(--t-neutral-7);
+  border-radius: var(--t-spacing-xl);
+  padding: var(--t-spacing-sm) var(--t-spacing-md);
+  font-family: var(--t-font-headers);
+
+  input {
+    height: 0;
+    width: 0;
+    border: none;
+    background: none;
+    outline: none;
+  }
+
+  &.checked {
+    background-color: var(--t-primary);
+    color: var(--t-on-primary);
+  }
+}

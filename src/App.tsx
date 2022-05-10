@@ -8,6 +8,7 @@ import HomePage from '@admin/HomePage';
 import ViewApplication from '@admin/applications/ViewApplication/ViewApplication';
 import ConnectionView from '@admin/connections/ConnectionView';
 import LogsViewer from '@admin/logs/LogsViewer';
+import SequenceListView from '@admin/sequence/SequenceListView';
 import SequenceView from '@admin/sequence/SequenceView/SequenceView';
 import { ApiProvider } from 'api/context';
 import { UserHubProvider } from 'api/userHub/context';
@@ -50,22 +51,6 @@ function Root({ children }: React.PropsWithChildren<{}>) {
   return <React.Suspense fallback={<Loader />}>{children}</React.Suspense>;
 }
 
-const COMPONENTS = {
-  LoginPage: lazy(() => import('pages/auth/LoginPage/LoginPage')),
-  PasswordResetPage: lazy(() => import('pages/auth/PasswordResetPage')),
-
-  AllApplications: lazy(() => import('pages/admin/applications/AllApplications')),
-  NewApplication: lazy(() => import('pages/admin/applications/NewApplication')),
-  ViewApplication: lazy(() => import('pages/admin/applications/ViewApplication')),
-  ViewApplicationTask: lazy(() => import('pages/admin/tasks/ViewApplicationTask')),
-  SequenceView: lazy(() => import('pages/admin/sequence/SequenceView')),
-  GenerateRegistrationCode: lazy(() => import('pages/admin/applications/GenerateRegistrationCode')),
-
-  UsersList: lazy(() => import('pages/admin/users/UsersList')),
-  UserView: lazy(() => import('pages/admin/users/UserView')),
-  NewUser: lazy(() => import('pages/admin/users/NewUser')),
-};
-
 function AppRouter() {
   return (
     <React.Suspense fallback={loader}>
@@ -82,6 +67,7 @@ function AppRouter() {
             <Route path="applications/cr" element={<GenerateRegistrationCode />} />
             <Route path="applications/:id" element={<ViewApplication />} />
             <Route path="tasks/:appName/:taskName" element={<ViewApplicationTask />} />
+            <Route path="sequences" element={<SequenceListView />} />
             <Route path="sequences/:id" element={<SequenceView />} />
 
             <Route path="users" element={<UsersList />} />
@@ -91,6 +77,8 @@ function AppRouter() {
             <Route path="connections/:id" element={<ConnectionView />} />
 
             <Route path="logs" element={<LogsViewer />} />
+
+            <Route path="settings" element={<Settings />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/admin" replace />} />

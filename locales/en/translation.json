@@ -103,6 +103,7 @@
   "application": "Application",
   "sequence": {
     "_": "Sequence",
+    "plural": "Sequences",
     "startedAt": "Started at",
     "logs": "Logs"
   },
@@ -146,8 +147,14 @@
     "events": "Events",
     "seqCompleted": "Finished sequences",
     "seqInProgress": "Sequences in progress",
+    "seqSuccessful": "Successful sequences",
     "seqFail": "Failed sequences",
+    "seqCompletedLast7D": "Finished sequences in last 7 days",
+    "seqInProgressLast7D": "Sequences in progress in last 7 days",
+    "seqSuccessfulLast7D": "Successful sequences in last 7 days",
+    "seqFailLast7D": "Failed sequences in last 7 days",
     "noFailedRecently": "No failed sequences recently",
+    "noSuccessfulSequences": "No successful sequences in last 7 days",
     "inLast24h": "In last 24 hours",
     "noSeqInProgress": "No ongoing sequences",
     "welcomeBack": "Welcome back",

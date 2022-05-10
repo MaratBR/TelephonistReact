@@ -1,6 +1,6 @@
 import DescriptiveItem from '@ui/DescriptiveItem';
 import { Select } from '@ui/Input';
-import { DEFAULT_TASK_BODY } from 'api/definition';
+import { rest } from 'api/definition';
 import { useTranslation } from 'react-i18next';
 
 function TaskType({ type }: { type: string }) {
@@ -22,7 +22,7 @@ export default function TaskTypeSelect({ onChange, selected }: TaskTypeSelectPro
     <Select<string>
       onChange={onChange}
       value={selected}
-      options={Object.keys(DEFAULT_TASK_BODY)}
+      options={Object.keys(rest.DEFAULT_TASK_BODY)}
       keyFactory={(v) => v}
       renderElement={renderType}
     />
