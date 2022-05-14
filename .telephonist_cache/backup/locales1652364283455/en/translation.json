@@ -30,9 +30,7 @@
   "delete": "Delete",
   "tags": "Tags",
   "applications": "Applications",
-  "task": {
-    "_": "Task"
-  },
+  "task": "Task",
   "connections": "Connections",
   "events": "Events",
   "generalInformation": "General information",
@@ -73,6 +71,7 @@
   "actionCanBeUndone": "",
   "emptyShrugMsg": "Looks like there's nothing here",
   "newTask": "New task",
+  "noTasksPreset": "This application has no tasks",
   "addTask": "Add task",
   "viewDeletedTasks": "View deleted tasks",
   "general": "General",
@@ -101,26 +100,18 @@
   "eventKey": "Event key",
   "createdAt": "Created at",
   "ip": "IP-address",
-  "application": {
-    "_": "Application",
-    "noTasks": "This application has no tasks"
-  },
+  "application": "Application",
   "sequence": {
     "_": "Sequence",
     "plural": "Sequences",
     "startedAt": "Started at",
     "logs": "Logs",
-    "notFound": "Sequence not found",
-    "state": {
-      "in_progress": "In-progress",
-      "failed": "Failed",
-      "succeeded": "Succeeded",
-      "frozen": "Frozen"
-    }
+    "state": {}
   },
   "noConnectionAssignedToSequence": "No connection asssigned to this sequence",
   "noEvents": "No events",
   "loading": "Loading...",
+  "sequenceNotFound": "Sequence not found",
   "sequencesNotFound": "Sequences not found",
   "connection": "Connection",
   "sequences": "Sequences",
@@ -157,7 +148,9 @@
     "events": "Events",
     "seqCompleted": "Finished sequences",
     "seqInProgress": "Sequences in progress",
+    "seqSuccessful": "Successful sequences",
     "seqFail": "Failed sequences",
+    "seqCompletedLast7D": "Finished sequences in last 7 days",
     "seqInProgressLast7D": "Sequences in progress in last 7 days",
     "seqSuccessfulLast7D": "Successful sequences in last 7 days",
     "seqFailLast7D": "Failed sequences in last 7 days",
@@ -221,9 +214,6 @@
   "about": {
     "backendVersion": "Backend (server) version",
     "backendTz": "Backend timezone",
-    "uiVersion": "Telephonist UI version",
-    "settings": "Settings",
-    "cookiesPolicy": "Cookies policy",
-    "useNonSecureCookies": "Uses non-secure cookies"
+    "uiVersion": "Telephonist UI version"
   }
 }

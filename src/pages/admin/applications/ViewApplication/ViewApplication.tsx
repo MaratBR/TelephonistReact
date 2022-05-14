@@ -193,7 +193,7 @@ function ViewApplication() {
         }
       />
 
-      <Container>
+      <Container padded>
         {error ? <ErrorView error={error} /> : undefined}
         {content}
       </Container>

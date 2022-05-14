@@ -142,7 +142,7 @@ export default function ViewApplicationTask() {
               }}
             />
           </ContentSection>
-          <ContentSection padded header={t('application')}>
+          <ContentSection padded header={t('application._')}>
             <h3>
               <NavLink to={`/admin/applications/${task.app.name}`}>
                 {task.app.display_name} ({task.app.name})

@@ -27,20 +27,18 @@ export default function SequenceListView() {
   const { events } = useApi();
   const { t } = useTranslation();
 
-  const appID = params.get('appID');
   const states = (params.get('state') ?? '').split('.').filter(rest.isSequenceState);
   const [page, setPage] = usePageParam();
 
-  const [formFilter, setFormFilter] = useState<{ state: rest.SequenceState[]; app_id?: string }>({
+  const [formFilter, setFormFilter] = useState<{ state: rest.SequenceState[] }>({
     state: states.length ? states : ALL_STATES,
-    app_id: undefined,
   });
 
   const {
     data: sequences,
     status,
     error,
-  } = useQuery(['sequences', `appID=${appID};  states=${states.sort().join(',')}`, page], () =>
+  } = useQuery(['sequences', `states=${states.sort().join(',')}`, page], () =>
     events.getSequences({ page, state: states, page_size: 20 })
   );
 
@@ -92,7 +90,7 @@ export default function SequenceListView() {
                 formFilter.state.includes(rest.SequenceState.IN_PROGRESS)
               }
             >
-              {t('sequenceState.in_progress')}
+              {t('sequence.state.in_progress')}
             </SelectableTag>
             <SelectableTag
               onChange={(event) => toggleState(rest.SequenceState.FAILED, event.target.checked)}
@@ -101,7 +99,7 @@ export default function SequenceListView() {
                 formFilter.state.includes(rest.SequenceState.FAILED)
               }
             >
-              {t('sequenceState.failed')}
+              {t('sequence.state.failed')}
             </SelectableTag>
             <SelectableTag
               onChange={(event) => toggleState(rest.SequenceState.SUCCEEDED, event.target.checked)}
@@ -110,7 +108,7 @@ export default function SequenceListView() {
                 formFilter.state.includes(rest.SequenceState.SUCCEEDED)
               }
             >
-              {t('sequenceState.succeeded')}
+              {t('sequence.state.succeeded')}
             </SelectableTag>
             {/*
               <SelectableTag
@@ -120,7 +118,7 @@ export default function SequenceListView() {
                 formFilter.state.includes(rest.SequenceState.FROZEN)
               }
             >
-              {t('sequenceState.frozen')}
+              {t('sequence.state.frozen')}
             </SelectableTag> */}
           </Stack>
           {content}

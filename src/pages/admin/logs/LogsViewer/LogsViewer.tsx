@@ -57,7 +57,7 @@ export default function LogsViewer() {
         {lastResponse ? (
           <Stack h spacing="md">
             {lastResponse.app ? (
-              <ContentSection padded header={t('application')}>
+              <ContentSection padded header={t('application._')}>
                 <h3>
                   <NavLink to={`/admin/applications/${lastResponse.app.name}`}>
                     {lastResponse.app.display_name} ({lastResponse.app.name})
@@ -75,7 +75,7 @@ export default function LogsViewer() {
                     </NavLink>
                   </h3>
                 </ContentSection>
-                <ContentSection padded header={t('task')}>
+                <ContentSection padded header={t('task._')}>
                   <h3>
                     <NavLink to={`/admin/tasks/${lastResponse.sequence.task_name}`}>
                       {lastResponse.sequence.task_name}

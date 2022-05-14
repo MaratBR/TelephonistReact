@@ -76,7 +76,7 @@ export default function AllApplications() {
         }
         title={t('allApps')}
       />
-      <Container>
+      <Container padded>
         <ContentSection>
           <Padded>
             <ButtonGroup>

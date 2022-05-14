@@ -38,7 +38,7 @@ export default function About() {
   } else {
     statusUI = (
       <>
-        <Value name={t('about.uiVersion')} value="0.2.2" />
+        <Value name={t('about.uiVersion')} value="0.2.3" />
         <Value name={t('about.backendVersion')} value={summary.version} />
         <Value name={t('about.backendTz')} value={summary.timezone.name} />
         <h3>{t('about.settings')}</h3>

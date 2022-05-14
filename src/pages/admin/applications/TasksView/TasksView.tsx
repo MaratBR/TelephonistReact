@@ -9,7 +9,7 @@ import DeleteTaskDialog from './DeleteTaskDialog';
 import S from './TasksView.module.scss';
 import { mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Task, TaskStandalone } from 'api/definition';
+import { rest } from 'api/definition';
 import { DataGrid, renderBoolean } from 'core/components/DataGrid';
 import useModal from 'hooks/useModal';
 import Padded from 'pages/Padded';
@@ -17,10 +17,10 @@ import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 type ApplicationTasksProps = {
-  tasks: Task[];
+  tasks: rest.Task[];
   appID: string;
   onTaskDeleted?: (taskID: string) => void;
-  onTaskAdded?: (task: TaskStandalone) => void;
+  onTaskAdded?: (task: rest.TaskStandalone) => void;
 };
 
 export default function ApplicationTasks({
@@ -33,7 +33,7 @@ export default function ApplicationTasks({
   const modal = useModal();
   const [modalOpen, toggleModal] = useState(false);
 
-  const deleteTask = useCallback((task: Task) => {
+  const deleteTask = useCallback((task: rest.Task) => {
     modal(({ onClose }) => (
       <DeleteTaskDialog
         task={task}
@@ -45,7 +45,7 @@ export default function ApplicationTasks({
 
   const renderNoItems = () => (
     <Shruggie>
-      <p>{t('noTasksPreset')}</p>
+      <p>{t('application.noTasks')}</p>
       <ButtonGroup>
         <Button onClick={() => toggleModal(true)}>{t('addTask')}</Button>
         <Button>{t('viewDeletedTasks')}</Button>
@@ -83,7 +83,7 @@ export default function ApplicationTasks({
           {
             key: '__id',
             custom: true,
-            title: t('task'),
+            title: t('task._'),
             render: (v) => {
               const [appName, taskName] = v.qualified_name.split('/');
               return (

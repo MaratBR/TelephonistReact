@@ -101,7 +101,7 @@ export default function SequenceView() {
     content = <LoadingSpinner />;
   } else if (error) {
     if (isNotFound(error)) {
-      content = <ErrorView error={t('sequenceNotFound', { sequence: id })} />;
+      content = <ErrorView error={t('sequence.notFound', { sequence: id })} />;
     } else {
       content = <ErrorView error={error} />;
     }
@@ -142,7 +142,7 @@ export default function SequenceView() {
               <p>{t('noConnectionAssignedToSequence')}</p>
             )}
           </ContentSection>
-          <ContentSection padded header={t('application')}>
+          <ContentSection padded header={t('application._')}>
             <h3>
               <NavLink to={`/admin/applications/${sequence.app.name}`}>
                 {sequence.app.display_name} ({sequence.app.name})
@@ -150,7 +150,7 @@ export default function SequenceView() {
             </h3>
             <Text type="hint">{sequence.app._id}</Text>
           </ContentSection>
-          <ContentSection padded header={t('task')}>
+          <ContentSection padded header={t('task._')}>
             <h3>
               <NavLink to={`/admin/tasks/${sequence.task_name}`}>{sequence.task_name}</NavLink>
             </h3>
