@@ -10,7 +10,7 @@ import S from './TasksView.module.scss';
 import { mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { rest } from 'api/definition';
-import { DataGrid, renderBoolean } from 'core/components/DataGrid';
+import { DataGrid } from 'core/components/DataGrid';
 import useModal from 'hooks/useModal';
 import Padded from 'pages/Padded';
 import { useTranslation } from 'react-i18next';
@@ -103,11 +103,6 @@ export default function ApplicationTasks({
             custom: true,
             render: (v) => <code>{v.body.type}</code>,
             title: t('taskType'),
-          },
-          {
-            key: 'disabled',
-            title: t('disabled'),
-            render: renderBoolean,
           },
           {
             title: '',

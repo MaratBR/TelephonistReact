@@ -3,12 +3,12 @@ import { Button } from '@ui/Button';
 import ButtonGroup from '@ui/ButtonGroup';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
-import { DataGrid, DataGridColumn, renderBoolean, renderObjectID } from '@ui/DataGrid';
+import { DataGrid, DataGridColumn, renderObjectID } from '@ui/DataGrid';
 import ErrorView from '@ui/Error';
 import PageHeader from '@ui/PageHeader';
 import { mdiPencil, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Application } from 'api/definition';
+import { rest } from 'api/definition';
 import PaginationLayout from 'components/ui/PaginationLayout';
 import { useApi } from 'hooks';
 import { usePageParam } from 'hooks/useSearchParam';
@@ -30,7 +30,7 @@ export default function AllApplications() {
 
   const { t } = useTranslation();
 
-  const columns: DataGridColumn<Application>[] = [
+  const columns: DataGridColumn<rest.Application>[] = [
     {
       key: '_id',
       title: 'ID',
@@ -41,7 +41,6 @@ export default function AllApplications() {
       title: t('name'),
       render: (name) => <NavLink to={`/admin/applications/${name}`}>{name}</NavLink>,
     },
-    { key: 'disabled', title: t('disabled'), render: renderBoolean },
     {
       key: 'description',
       title: t('description'),

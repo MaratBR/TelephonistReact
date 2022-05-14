@@ -9,12 +9,12 @@ import LoadingSpinner from '@ui/LoadingSpinner';
 import PageHeader from '@ui/PageHeader';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@ui/tabs';
 import ApplicationEvents from './ApplicationEvents';
+import ApplicationInfo from './ApplicationInfo';
+import ApplicationSequences from './ApplicationSequences';
 import EditApplication from './EditApplication';
-import ViewApplicationInfo from './ViewApplicationInfo';
-import ViewApplicationSequences from './ViewApplicationSequences';
 import { mdiCancel, mdiContentSave, mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
-import { ApplicationResponse, TaskStandalone, UpdateApplication } from 'api/definition';
+import { rest } from 'api/definition';
 import { useApi } from 'hooks';
 import ConnectionsView from 'pages/admin/applications/ConnectionsView';
 import ApplicationTasks from 'pages/admin/applications/TasksView/TasksView';
@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 
-function ViewApplication() {
+function Application() {
   const { id } = useParams();
   const { t } = useTranslation();
   const [search, setSearch] = useSearchParams();
@@ -38,7 +38,7 @@ function ViewApplication() {
   } = useQuery(['application', id], () => applications.get(id), {
     refetchInterval: 60000,
   });
-  const { reset, control, getValues } = useForm<UpdateApplication>();
+  const { reset, control, getValues } = useForm<rest.UpdateApplication>();
 
   const save = useMutation(
     async () => {
@@ -62,7 +62,7 @@ function ViewApplication() {
 
   const onTaskDeleted = useCallback(
     (taskID: string) => {
-      queryClient.setQueryData<ApplicationResponse>(['application', id], (response) => ({
+      queryClient.setQueryData<rest.ApplicationResponse>(['application', id], (response) => ({
         ...response,
         tasks: response.tasks.filter((task) => task._id !== taskID),
       }));
@@ -72,9 +72,9 @@ function ViewApplication() {
   );
 
   const onTaskAdded = useCallback(
-    (task: TaskStandalone) => {
+    (task: rest.TaskStandalone) => {
       // do optimistic update for now
-      queryClient.setQueryData<ApplicationResponse>(['application', id], (response) => ({
+      queryClient.setQueryData<rest.ApplicationResponse>(['application', id], (response) => ({
         ...response,
         tasks: [
           ...response.tasks,
@@ -109,7 +109,7 @@ function ViewApplication() {
       <TabPanels>
         <TabPanel>
           <ContentSection header={t('generalInformation')} padded>
-            <ViewApplicationInfo app={value.app} />
+            <ApplicationInfo app={value.app} />
           </ContentSection>
         </TabPanel>
 
@@ -136,7 +136,7 @@ function ViewApplication() {
         </TabPanel>
         <TabPanel>
           <ContentSection padded>
-            <ViewApplicationSequences appID={value.app._id} />
+            <ApplicationSequences appID={value.app._id} />
           </ContentSection>
         </TabPanel>
       </TabPanels>
@@ -201,4 +201,4 @@ function ViewApplication() {
   );
 }
 
-export default ViewApplication;
+export default Application;

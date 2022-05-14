@@ -4,14 +4,14 @@ import { Parameters, StringValue } from '@ui/Parameters';
 import Tags from '@ui/Tags';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Application } from 'api/definition';
+import { rest } from 'api/definition';
 import { useTranslation } from 'react-i18next';
 
 type ApplicationInfoProps = {
-  app: Application;
+  app: rest.Application;
 };
 
-export default function ViewApplicationInfo({ app }: ApplicationInfoProps) {
+export default function ApplicationInfo({ app }: ApplicationInfoProps) {
   const [showKey, setShowKey] = useState(false);
   const { t } = useTranslation();
   return (

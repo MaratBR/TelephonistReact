@@ -5,7 +5,7 @@ import { ModalProvider } from '@ui/Modal';
 import { ThemeProvider } from '@ui/theme';
 import GlobalAppNotifications from './GlobalAppNotifications';
 import HomePage from '@admin/HomePage';
-import ViewApplication from '@admin/applications/ViewApplication/ViewApplication';
+import Application from '@admin/applications/Application';
 import ConnectionView from '@admin/connections/ConnectionView';
 import LogsViewer from '@admin/logs/LogsViewer';
 import SequenceListView from '@admin/sequence/SequenceListView';
@@ -15,7 +15,7 @@ import { UserHubProvider } from 'api/userHub/context';
 import AllApplications from 'pages/admin/applications/AllApplications';
 import GenerateRegistrationCode from 'pages/admin/applications/GenerateRegistrationCode';
 import NewApplication from 'pages/admin/applications/NewApplication';
-import ViewApplicationTask from 'pages/admin/tasks/ViewApplicationTask';
+import ApplicationTask from 'pages/admin/tasks/ApplicationTask';
 import NewUser from 'pages/admin/users/NewUser';
 import UserView from 'pages/admin/users/UserView';
 import UsersList from 'pages/admin/users/UsersList';
@@ -65,8 +65,8 @@ function AppRouter() {
             <Route path="applications" element={<AllApplications />} />
             <Route path="applications/new" element={<NewApplication />} />
             <Route path="applications/cr" element={<GenerateRegistrationCode />} />
-            <Route path="applications/:id" element={<ViewApplication />} />
-            <Route path="tasks/:appName/:taskName" element={<ViewApplicationTask />} />
+            <Route path="applications/:id" element={<Application />} />
+            <Route path="tasks/:appName/:taskName" element={<ApplicationTask />} />
             <Route path="sequences" element={<SequenceListView />} />
             <Route path="sequences/:id" element={<SequenceView />} />
 

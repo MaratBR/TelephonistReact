@@ -17,7 +17,7 @@ import TaskTriggers from './TaskTriggersEditor';
 import TaskTriggersViewer from './TaskTriggersViewer';
 import { mdiCancel, mdiContentSave } from '@mdi/js';
 import Icon from '@mdi/react';
-import { UpdateTask } from 'api/definition';
+import { rest } from 'api/definition';
 import { useApi } from 'hooks';
 import useModal from 'hooks/useModal';
 import ContentLoader from 'react-content-loader';
@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
-export default function ViewApplicationTask() {
+export default function ApplicationTask() {
   const { t } = useTranslation();
   const { appName, taskName } = useParams();
   const { tasks } = useApi();
@@ -39,7 +39,7 @@ export default function ViewApplicationTask() {
     refetch,
   } = useQuery(['task', appName, taskName], () => tasks.getByName(appName, taskName));
   const isEditing = search.get('edit') === '1';
-  const { control, getValues, reset } = useForm<UpdateTask>();
+  const { control, getValues, reset } = useForm<rest.UpdateTask>();
 
   useEffect(() => {
     reset(task);

@@ -8,11 +8,11 @@ import { usePageParam } from 'hooks/useSearchParam';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
-interface ViewApplicationSequencesProps {
+interface ApplicationSequencesProps {
   appID: string;
 }
 
-export default function ViewApplicationSequences({ appID }: ViewApplicationSequencesProps) {
+export default function ApplicationSequences({ appID }: ApplicationSequencesProps) {
   const api = useApi();
   const { t } = useTranslation();
   const [page, setPage] = usePageParam();
