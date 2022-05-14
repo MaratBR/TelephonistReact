@@ -1,3 +1,4 @@
 node_modules/
 .parcle-cache/
 dist/
+.vscode/*.log
