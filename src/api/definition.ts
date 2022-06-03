@@ -12,6 +12,7 @@ export module api {
     checkName(name: string): Promise<boolean>;
     createRegistrationCode(params?: { del_code?: string }): Promise<rest.CodeRegistrationResponse>;
     deleteRegistrationCode(code: string): Promise<void>;
+    delete(id: string, options?: rest.DeleteApplicationOptions): Promise<void>;
   }
 
   export interface IAuth {
@@ -55,6 +56,7 @@ export module api {
     create(body: rest.CreateUser): Promise<rest.User>;
     block(id: string, body: rest.BlockUser): Promise<void>;
     closeSession(userID: string, sessionRefID: string): Promise<void>;
+    delete(id: string): Promise<void>;
   }
 
   export interface ILogs {
@@ -324,7 +326,6 @@ export module rest {
       SequenceState.FAILED,
       SequenceState.FROZEN,
       SequenceState.IN_PROGRESS,
-      SequenceState.SKIPPED,
       SequenceState.SUCCEEDED,
     ].includes(v);
   }
@@ -457,6 +458,10 @@ export module rest {
     ttl: number;
   }
 
+  export interface DeleteApplicationOptions {
+    wipe?: boolean;
+  }
+
   // #endregion
 
   // #region Auth
@@ -511,6 +516,7 @@ export module rest {
     is_superuser: boolean;
     created_at: string;
     is_blocked: boolean;
+    will_be_deleted_at: string | null;
   }
 
   export interface WhoAmI {

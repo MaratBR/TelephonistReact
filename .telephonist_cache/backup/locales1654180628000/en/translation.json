@@ -184,9 +184,7 @@
     "deleteYourselfWarning": "You cannot delete yourself",
     "delete": "Delete the user",
     "deleteWarning": "You are deleting the user {{name}} (id={{id}}). The user will still remain in the database for 14 days before being permanently deleted.",
-    "block": "Block the user",
-    "beenDeleted": "This user has been deactivated and will be deleted at {{date}}",
-    "isDeleted": "Is deleted"
+    "block": "Block the user"
   },
   "nSecondsAgo+plural": "{{count}} seconds ago",
   "nMinutesAgo+plural": "{{count}} minutes ago",
@@ -223,6 +221,7 @@
     }
   },
   "clientVersion": "Client version",
+  "disconnect": "Disconnect",
   "telephonist": {
     "_": "Telephonist",
     "about": "About Telephonist"

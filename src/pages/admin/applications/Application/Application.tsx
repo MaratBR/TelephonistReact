@@ -11,11 +11,13 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@ui/tabs';
 import ApplicationEvents from './ApplicationEvents';
 import ApplicationInfo from './ApplicationInfo';
 import ApplicationSequences from './ApplicationSequences';
+import DeleteApplicationModal from './DeleteApplicationModal';
 import EditApplication from './EditApplication';
-import { mdiCancel, mdiContentSave, mdiPencil } from '@mdi/js';
+import { mdiCancel, mdiContentSave, mdiPencil, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { rest } from 'api/definition';
 import { useApi } from 'hooks';
+import useModal from 'hooks/useModal';
 import ConnectionsView from 'pages/admin/applications/ConnectionsView';
 import ApplicationTasks from 'pages/admin/applications/TasksView/TasksView';
 import { useForm } from 'react-hook-form';
@@ -37,6 +39,8 @@ function Application() {
     status,
   } = useQuery(['application', id], () => applications.get(id), {
     refetchInterval: 60000,
+    refetchOnWindowFocus: false,
+    cacheTime: 0,
   });
   const { reset, control, getValues } = useForm<rest.UpdateApplication>();
 
@@ -143,6 +147,47 @@ function Application() {
     );
   }
 
+  let actions: React.ReactNode;
+
+  const openModal = useModal();
+  const openDeleteModal = useCallback(() => {
+    openModal(({ onClose }) => (
+      <DeleteApplicationModal onClose={onClose} appID={value.app._id} appName={appName} />
+    ));
+  }, [value]);
+
+  if (value) {
+    actions = isEditing ? (
+      <ButtonGroup>
+        <Button
+          onClick={() => save.mutate()}
+          loading={save.isLoading}
+          disabled={save.isLoading}
+          left={<Icon size={1} path={mdiContentSave} />}
+          color="success"
+        >
+          {t('save')}
+        </Button>
+        <Button onClick={() => setSearch({ edit: '' })} left={<Icon size={1} path={mdiCancel} />}>
+          {t('cancel')}
+        </Button>{' '}
+      </ButtonGroup>
+    ) : (
+      <ButtonGroup>
+        <Button to="?edit=1" left={<Icon size={1} path={mdiPencil} />} color="primary">
+          {t('edit')}
+        </Button>
+        <Button
+          onClick={openDeleteModal}
+          left={<Icon size={1} path={mdiTrashCan} />}
+          color="danger"
+        >
+          {t('delete')}
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
   return (
     <Tabs id="d" hidden={isEditing}>
       <PageHeader
@@ -166,37 +211,10 @@ function Application() {
             </TabList>
           )
         }
-        actions={
-          isEditing ? (
-            <ButtonGroup>
-              <Button
-                onClick={() => save.mutate()}
-                loading={save.isLoading}
-                disabled={save.isLoading}
-                left={<Icon size={1} path={mdiContentSave} />}
-                color="success"
-              >
-                {t('save')}
-              </Button>
-              <Button
-                onClick={() => setSearch({ edit: '' })}
-                left={<Icon size={1} path={mdiCancel} />}
-              >
-                {t('cancel')}
-              </Button>{' '}
-            </ButtonGroup>
-          ) : (
-            <Button to="?edit=1" left={<Icon size={1} path={mdiPencil} />} color="primary">
-              {t('edit')}
-            </Button>
-          )
-        }
+        actions={actions}
       />
 
-      <Container padded>
-        {error ? <ErrorView error={error} /> : undefined}
-        {content}
-      </Container>
+      <Container padded>{content}</Container>
     </Tabs>
   );
 }

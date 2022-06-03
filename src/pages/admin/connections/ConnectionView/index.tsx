@@ -58,7 +58,7 @@ function ConnectionView() {
       <PageHeader
         subtitle={`${t('connection')} (${(connection?.is_connected
           ? t('connected')
-          : t('disconnect')
+          : t('disconnected')
         ).toLowerCase()})`}
         title={
           connection ? (

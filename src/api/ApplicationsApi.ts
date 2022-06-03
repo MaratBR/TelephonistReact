@@ -20,6 +20,10 @@ export default class ApplicationsApi extends ApiBase implements api.IApplication
     return this.client.get(`applications/${id}`).then((r) => r.data);
   }
 
+  async delete(id: string, options?: rest.DeleteApplicationOptions): Promise<void> {
+    await this.client.delete(`applications/${id}`, { params: options });
+  }
+
   getByName(name: string): Promise<rest.ApplicationResponse> {
     return this.client.get(`applications/name/${name}`).then((r) => r.data);
   }

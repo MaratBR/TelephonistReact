@@ -79,7 +79,8 @@ export class Api extends ApiBase implements IApi {
           : {},
         baseURL,
         withCredentials: true,
-        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
+        paramsSerializer: (params) =>
+          qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true }),
       }),
       t,
     });

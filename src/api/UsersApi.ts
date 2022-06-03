@@ -23,4 +23,8 @@ export default class UsersApi extends ApiBase implements api.IUsers {
   async block(id: string, body: rest.BlockUser): Promise<void> {
     await this.client.post(`users/${id}/block`, body);
   }
+
+  async delete(id: string): Promise<void> {
+    await this.client.delete(`users/${id}`);
+  }
 }

@@ -185,8 +185,7 @@
     "delete": "Delete the user",
     "deleteWarning": "You are deleting the user {{name}} (id={{id}}). The user will still remain in the database for 14 days before being permanently deleted.",
     "block": "Block the user",
-    "beenDeleted": "This user has been deactivated and will be deleted at {{date}}",
-    "isDeleted": "Is deleted"
+    "beenDeleted": "This user has been deactivated and will be deleted at {{date}}"
   },
   "nSecondsAgo+plural": "{{count}} seconds ago",
   "nMinutesAgo+plural": "{{count}} minutes ago",

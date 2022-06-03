@@ -11,9 +11,10 @@ import { Parameters } from '@ui/Parameters';
 import { Stack } from '@ui/Stack';
 import BlockUserDialog from './BlockUserDialog';
 import CloseSessionDialog from './CloseSessionDialog';
-import { mdiAccount, mdiBlockHelper, mdiNotificationClearAll, mdiTrashCan } from '@mdi/js';
+import DeleteUserDialog from './DeleteUserDialog';
+import { mdiAccount, mdiBlockHelper, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
-import { UserSession } from 'api/definition';
+import { rest } from 'api/definition';
 import { Shruggie } from 'components/ui/misc';
 import { useApi } from 'hooks';
 import useModal from 'hooks/useModal';
@@ -35,6 +36,21 @@ export default function UserView() {
     refetchOnWindowFocus: false,
   });
   const openModal = useModal();
+
+  const renderDeleteUserDialog = useCallback(
+    ({ onClose }) => (
+      <DeleteUserDialog
+        userID={data.user._id}
+        username={data.user.username}
+        onClose={onClose}
+        onDeleted={() => {
+          onClose();
+          refetch();
+        }}
+      />
+    ),
+    [data]
+  );
 
   const renderBlockUserDialog = useCallback(
     ({ onClose }) => (
@@ -75,6 +91,15 @@ export default function UserView() {
   } else {
     content = (
       <>
+        {data.user.will_be_deleted_at ? (
+          <ContentSection padded>
+            <b>
+              {t('user.beenDeleted', {
+                date: new Date(data.user.will_be_deleted_at).toLocaleDateString(),
+              })}
+            </b>
+          </ContentSection>
+        ) : undefined}
         <ContentSection padded>
           <Parameters
             parameters={{
@@ -86,7 +111,7 @@ export default function UserView() {
           />
         </ContentSection>
         <ContentSection padded header={t('sessions._')}>
-          <DataGrid<UserSession>
+          <DataGrid<rest.UserSession>
             noItemsRenderer={shruggie}
             keyFactory={(v) => v.id}
             columns={[
@@ -150,12 +175,28 @@ export default function UserView() {
             left={<Icon path={mdiBlockHelper} size={0.8} />}
             color="danger"
           >
-            {t('blockTheUser')}
+            {t('user.block')}
           </Button>
 
-          <Button left={<Icon path={mdiNotificationClearAll} size={0.8} />} color="danger">
+          {/* TODO: make "restore" button when API for that is done */}
+
+          {data.user.will_be_deleted_at ? undefined : (
+            <Button
+              onClick={() => openModal(renderDeleteUserDialog)}
+              left={<Icon path={mdiTrashCan} size={0.8} />}
+              color="danger"
+            >
+              {t('user.delete')}
+            </Button>
+          )}
+
+          {/**
+           * 
+           * <Button left={<Icon path={mdiNotificationClearAll} size={0.8} />} color="danger">
             {t('sessions.closeAll')}
           </Button>
+           * 
+           */}
         </ButtonGroup>
       </>
     );

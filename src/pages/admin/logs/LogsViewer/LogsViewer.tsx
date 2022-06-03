@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
+import ErrorView from '@ui/Error';
 import PageHeader from '@ui/PageHeader';
 import { Stack } from '@ui/Stack';
 import { Text } from '@ui/Text';
@@ -88,6 +89,7 @@ export default function LogsViewer() {
           </Stack>
         ) : undefined}
         <ContentSection padded>
+          {fetch.error ? <ErrorView error={fetch.error.toString()} /> : undefined}
           <Logs logs={logs} />
         </ContentSection>
       </Container>

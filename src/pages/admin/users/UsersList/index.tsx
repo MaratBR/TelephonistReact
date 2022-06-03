@@ -74,6 +74,12 @@ export default function UsersList() {
                   title: t('user.isSuperuser'),
                   render: renderBoolean,
                 },
+                {
+                  key: '__isDeleted',
+                  custom: true,
+                  title: t('user.isDeleted'),
+                  render: ({ will_be_deleted_at }) => renderBoolean(!!will_be_deleted_at),
+                },
               ]}
             />
           </PaginationLayout>
