@@ -1,7 +1,6 @@
 import { IconButton } from '@ui/Button';
 import Container from '@ui/Container';
 import ContentSection from '@ui/ContentSection';
-import { renderBoolean } from '@ui/DataGrid';
 import ErrorView from '@ui/Error';
 import LoadingSpinner from '@ui/LoadingSpinner';
 import { Stack } from '@ui/Stack';
@@ -54,10 +53,6 @@ export default function About() {
               <Icon path={mdiOpenInNew} size={1} />
             </a>
           }
-        />
-        <Value
-          name={t('about.useNonSecureCookies')}
-          value={renderBoolean(summary.settings.non_secure_cookies, 1.5)}
         />
       </>
     );

@@ -235,7 +235,6 @@
     "backendTz": "Временная зона бэкенда",
     "uiVersion": "Версия интерфейса",
     "cookiesPolicy": "Политика Cookie",
-    "settings": "Настройки",
-    "useNonSecureCookies": "Изспользуются незащищенные Cookie"
+    "settings": "Настройки"
   }
 }

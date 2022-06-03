@@ -710,7 +710,6 @@ export module rest {
     };
     settings: {
       cookies_policy: string;
-      non_secure_cookies: boolean;
     };
     version: string;
   }
